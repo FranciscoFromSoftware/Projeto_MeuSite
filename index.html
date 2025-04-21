@@ -251,18 +251,23 @@
         .modal-content {
             margin: auto;
             display: block;
-            width: 80%;
-            max-width: 800px;
+            width: auto;
+            max-width: 90%;
+            max-height: 90vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             animation-name: zoom;
             animation-duration: 0.6s;
         }
 
         @keyframes zoom {
             from {
-                transform: scale(0)
+                transform: translate(-50%, -50%) scale(0);
             }
             to {
-                transform: scale(1)
+                transform: translate(-50%, -50%) scale(1);
             }
         }
 
@@ -275,6 +280,7 @@
             font-weight: bold;
             transition: color 0.3s ease;
             cursor: pointer;
+            z-index: 1001;
         }
 
         .modal-close:hover,
@@ -297,6 +303,7 @@
             border-radius: 0 3px 3px 0;
             user-select: none;
             -webkit-user-select: none;
+            z-index: 1001;
         }
 
         .modal-prev {
@@ -480,9 +487,9 @@
 
             <!-- Seção de imagens do Power BI -->
             <div class="project-images powerbi-images" style="display: none;">
-                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true" alt="Imagem 1 do Power BI" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true">
-                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonLocal.png?raw=true" alt="Imagem 2 do Power BI" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonLocal.png?raw=true">
-                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonViloes.png?raw=true" alt="Imagem 3 do Power BI" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonViloes.png?raw=true">
+                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printpowerbiNecron.png?raw=true" alt="Imagem 1 do Power BI" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printpowerbiNecron.png?raw=true">
+                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printpowerbinecron2.png?raw=true" alt="Imagem 2 do Power BI" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printpowerbinecron2.png?raw=true">
+                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printpowerbiNecron3.png?raw=true" alt="Imagem 3 do Power BI" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printpowerbiNecron3.png?raw=true">
             </div>
 
             <!-- Seção de imagens do Power Apps -->
