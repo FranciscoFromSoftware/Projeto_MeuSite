@@ -1,108 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Francisco Henrique Lomas</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Open+Sans&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <style>
-        /* Exemplo para telas menores (até 768px de largura) */
-        @media (max-width: 768px) {
-            .skills-container {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adapta o número de colunas */
-            }
-        }
-
-        /* Exemplo para telas um pouco maiores (até 1024px de largura) */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .skills-container {
-                grid-template-columns: repeat(2, 1fr); /* Mostra 2 colunas em tablets */
-            }
-        }
-
-        .skills-layout {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Duas colunas principais: uma para os gráficos, outra para o projeto */
-            gap: 1rem; /* Espaçamento entre as colunas principais */
-            padding: 1rem;
-            max-width: 2000px; /* Mantenha uma largura máxima para layouts maiores */
-            margin: 0rem auto;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Layout dos gráficos */
-            grid-template-rows: auto; /* Espaçamento menor entre os cards de habilidade */
-            gap: 1rem;
-            padding: 1rem;
-            justify-items: end; /* Alinhar os itens ao final da célula (horizontalmente) */
-            align-items: end;   /* Alinhar os itens ao final da célula (verticalmente) */
-        }
-
-        .skill-card {
-            background-color: #1a1d29;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0, 198, 255, 0.3);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: visible;
-            min-height: 50px; /* Altura menor para caber no novo layout */
-            margin-bottom: 0; /* Remova a margem inferior, pois o espaçamento é controlado pelo grid */
-            width: 90%; /* Garante que os cards ocupem a largura da célula do grid */
-        }
-
-        .skill-card canvas {
-            width: 50px !important; /* Reduzi o tamanho dos gráficos para caber melhor */
-            height: 50px !important;
-            margin-bottom: 0.3rem;
-        }
-
-        .skill-percentage {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: bold;
-            z-index: 3;
-        }
-
-        .skill-label {
-            color: #e0e0e0;
-            font-size: 0.8rem;
-            text-align: center;
-            margin-top: 0.3rem;
-            word-break: break-word;
-        }
-
-        .project-placeholder {
-            background-color: #1a1d29;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0, 198, 255, 0.3);
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 200px; /* Altura aproximada para o projeto */
-        }
-
-        .project-placeholder h3 {
-            color: #00c6ff;
-            margin-bottom: 1rem;
-        }
-
-        .project-placeholder p {
-            color: #e0e0e0;
-            text-align: center;
-        }
-
+        /* Estilos gerais */
         body {
             margin: 0;
             font-family: 'Open Sans', sans-serif;
@@ -116,7 +22,7 @@
             grid-template-rows: auto auto auto;
             grid-gap: 1rem;
             margin: 0 auto;
-            padding: 1rem 1rem;
+            padding: 1rem;
             min-height: 100vh;
         }
 
@@ -129,10 +35,10 @@
             align-items: center;
         }
 
-        .header-info { /* Adicionada classe para o div da foto e texto */
+        .header-info {
             display: flex;
             align-items: center;
-            caret-color: transparent; /* Oculta o cursor de digitação */
+            caret-color: transparent;
         }
 
         header h1 {
@@ -148,9 +54,9 @@
         }
 
         #foto-perfil {
-            width: 150px; /* Tamanho aumentado para a foto de perfil */
-            height: 150px; /* Tamanho aumentado para a foto de perfil */
-            border-radius: 50%;
+            width: 220px;
+            height: 220px;
+            border-radius: 20%;
             margin-right: 0.5rem;
         }
 
@@ -159,13 +65,15 @@
         }
 
         header .connect-links h2 {
-            font-size: 1.2rem;
-            margin-bottom: 0.2rem;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            margin-right: 3rem;
         }
 
         header .connect-links img {
-            width: 50px; /* Tamanho original para os ícones de link */
-            margin-left: 0.3rem;
+            width: 70px;
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
         }
 
         main {
@@ -176,57 +84,205 @@
             font-family: 'Orbitron', sans-serif;
             color: #00c6ff;
             margin-bottom: 1rem;
-            margin-left: 2rem; /* Aumentei a margem inferior do título */
+            margin-left: 2rem;
         }
 
-        .skills-container {
+        .skills-layout {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: auto auto;
-            gap: 2rem; /* Aumentei o gap para 2rem */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
             padding: 1rem;
-            margin: 0 auto;
+            max-width: 2480px;
+            margin: 0rem auto;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Aumentei o tamanho mínimo do grid */
+            grid-template-rows: auto;
+            gap: 1rem;
+            padding: 1rem;
+            justify-items: end;
+            align-items: end;
         }
 
         .skill-card {
-            background-color: #010b18;
+            background-color: #020927;
             border-radius: 12px;
-            box-shadow: 0 0 12px rgba(0, 89, 255, 0.616);
+            box-shadow: 0 0 15px rgba(0, 200, 255, 0.959);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 0.4rem;
             position: relative;
             overflow: visible;
-            min-height: 80px;
-            margin-bottom: 1rem;
+            min-height: 150px; /* Aumentei a altura mínima do cartão */
+            margin-bottom: 0;
+            width: 90%;
+            cursor: pointer; /* Adiciona cursor de clique */
         }
 
         .skill-card canvas {
-            width: 80px !important; /* Aumentei a largura dos gráficos */
-            height: 80px !important; /* Aumentei a altura dos gráficos */
-            margin-bottom: 2rem;
+            width: 100px !important; /* Aumentei o tamanho do canvas */
+            height: 100px !important;
+            margin-bottom: 0.3rem;
         }
 
         .skill-percentage {
             position: absolute;
-            top: 60%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: #00c3ff;
-            font-size: 0.9rem;
+            color: #ffffff;
+            font-size: 1.5rem; /* Aumentei o tamanho da fonte da porcentagem */
             font-weight: bold;
             z-index: 3;
         }
 
         .skill-label {
-            color: #16d9e7;
-            font-size: 0,5rem;
+            color: #e0e0e0;
+            font-size: 1rem; /* Aumentei o tamanho da fonte do label */
             text-align: center;
+            margin-top: 0.3rem;
             word-break: break-word;
         }
 
+        /* Estilos da galeria de projetos */
+        .project-gallery {
+            background-color: #020822;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgb(0, 200, 255);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .project-gallery h3 {
+            color: #00c6ff;
+            margin-bottom: 1rem;
+        }
+
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .project-cover {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .project-cover:hover {
+            transform: scale(1.05);
+        }
+
+        .project-images {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .project-images img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer; /* Adiciona cursor de clique */
+        }
+
+        /* Estilos do Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 800px;
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+        @keyframes zoom {
+            from {
+                transform: scale(0)
+            }
+            to {
+                transform: scale(1)
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: #bbb;
+            text-decoration: none;
+        }
+
+        .modal-prev, .modal-next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .modal-prev {
+            left: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .modal-next {
+            right: 0;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .modal-prev:hover, .modal-next:hover {
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        @media only screen and (max-width: 700px) {
+            .modal-content {
+                width: 100%;
+            }
+        }
         footer {
             text-align: center;
             padding: 1rem;
@@ -248,16 +304,16 @@
         }
 
         footer img {
-            width: 30px;
+            width: 80px;
             height: auto;
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <header>
-            <div class="header-info"> <img id="foto-perfil" src="https://media.licdn.com/dms/image/v2/D4D03AQHNnNd1vxq-Dg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1701051341167?e=1750896000&v=beta&t=5LgcJ_tXUtMifjwZQM3ZG_RCDvAPvK8HNIMiMG0She0" alt="Sua Foto">
+            <div class="header-info">
+                <img id="foto-perfil" src="https://media.licdn.com/dms/image/v2/D4D03AQHNnNd1vxq-Dg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1701051341167?e=1750896000&v=beta&t=5LgcJ_tXUtMifjwZQM3ZG_RCDvAPvK8HNIMiMG0She0" alt="Sua Foto">
                 <div>
                     <h1>Francisco Henrique Lomas</h1>
                     <p>Apaixonado por ficção científica futurista e cyberpunk, sou fascinado por mundos onde tecnologia e humanidade se encontram de formas inesperadas. A inovação me motiva, sempre buscando explorar novas tendências e avanços tecnológicos. Com um olhar analítico e estratégico, tenho um grande interesse por estatística e análise de dados, transformando informações em conhecimento valioso. Seja desvendando padrões ocultos ou imaginando sociedades futurísticas, estou sempre imerso na conexão entre dados, ciência e imaginação.</p>
@@ -281,102 +337,248 @@
                 </div>
             </div>
         </header>
-
         <main>
             <h2>Habilidades Técnicas</h2>
             <div class="skills-layout">
                 <div class="skills-grid">
-                    <div class="skill-card"><canvas id="chartPowerAutomate"></canvas></div>
-                    <div class="skill-card"><canvas id="chartR"></canvas></div>
-                    <div class="skill-card"><canvas id="chartPython"></canvas></div>
-                    <div class="skill-card"><canvas id="chartSQL"></canvas></div>
-                    <div class="skill-card"><canvas id="chartExcel"></canvas></div>
-                    <div class="skill-card"><canvas id="chartPowerApps"></canvas></div>
-                    <div class="skill-card"><canvas id="chartSharepoint"></canvas></div>
-                    <div class="skill-card"><canvas id="chartPowerBI"></canvas></div>
-                    <div class="skill-card"><canvas id="chartFigma"></canvas></div>
-                    <div class="skill-card"><canvas id="chartPentaho"></canvas></div>
+                    <div class="skill-card" data-skill="chartPowerAutomate"><canvas id="chartPowerAutomate"></canvas></div>
+                    <div class="skill-card" data-skill="chartR"><canvas id="chartR"></canvas></div>
+                    <div class="skill-card" data-skill="chartPython"><canvas id="chartPython"></canvas></div>
+                    <div class="skill-card" data-skill="chartSQL"><canvas id="chartSQL"></canvas></div>
+                    <div class="skill-card" data-skill="chartExcel"><canvas id="chartExcel"></canvas></div>
+                    <div class="skill-card" data-skill="chartPowerApps"><canvas id="chartPowerApps"></canvas></div>
+                    <div class="skill-card" data-skill="chartSharepoint"><canvas id="chartSharepoint"></canvas></div>
+                    <div class="skill-card" data-skill="chartPowerBI"><canvas id="chartPowerBI"></canvas></div>
+                    <div class="skill-card" data-skill="chartFigma"><canvas id="chartFigma"></canvas></div>
+                    <div class="skill-card" data-skill="chartPentaho"><canvas id="chartPentaho"></canvas></div>
                 </div>
-                <div class="project-placeholder">
-                    <h3>Projeto em Destaque</h3>
-                    <p>Descrição breve do projeto...</p>
+                <div class="project-gallery">
+                    <h3>Projetos em Destaque</h3>
+                    <div class="projects-container">
+                        <div class="project">
+                            <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/capaprojetoHeroes.png?raw=true" alt="Capa do Projeto 1" class="project-cover" data-project="projeto1">
+                            <div class="project-images projeto1">
+                                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true" alt="Imagem 1 do Projeto 1" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true">
+                                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/capaprojetoHeroes.png?raw=true" alt="Imagem 2 do Projeto 1" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/capaprojetoHeroes.png?raw=true">
+                                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true" alt="Imagem 3 do Projeto 1" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true">
+                            </div>
+                        </div>
+                        <div class="project">
+                            <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/capaprojetoHeroes.png?raw=true" alt="Capa do Projeto 2" class="project-cover" data-project="projeto2">
+                            <div class="project-images projeto2">
+                                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true" alt="Imagem 1 do Projeto 2" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true">
+                                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/capaprojetoHeroes.png?raw=true" alt="Imagem 2 do Projeto 2" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/capaprojetoHeroes.png?raw=true">
+                                 <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true" alt="Imagem 3 do Projeto 2" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true">
+                            </div>
+                        </div>
+                        <div class="project">
+                            <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/capaprojetoHeroes.png?raw=true" alt="Capa do Projeto 3" class="project-cover" data-project="projeto3">
+                            <div class="project-images projeto3">
+                                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true" alt="Imagem 1 do Projeto 3" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true">
+                                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/capaprojetoHeroes.png?raw=true" alt="Imagem 2 do Projeto 3" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/capaprojetoHeroes.png?raw=true">
+                                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true" alt="Imagem 3 do Projeto 3" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
+    <div id="myModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content" id="img01">
+        <a class="modal-prev">&#10094;</a>
+        <a class="modal-next">&#10095;</a>
+    </div>
+
     <script>
-        const skills = {
-            chartPython: { label: "Python", value: 82 },
-            chartPowerBI: { label: "Power BI", value: 86 },
-            chartPowerApps: { label: "Power Apps", value: 78 },
-            chartPowerAutomate: { label: "Power Automate", value: 89 },
-            chartExcel: { label: "Excel", value: 94 },
-            chartSQL: { label: "SQL", value: 84 },
-            chartSharepoint: { label: "Sharepoint", value: 92 },
-            chartR: { label: "R", value: 88 },
-            chartPentaho: { label: "Pentaho", value: 76 },
-            chartFigma: { label: "Figma", value: 71 }
-        };
+        document.addEventListener('DOMContentLoaded', function() {
+            // Registra o plugin globalmente
+            Chart.register(ChartDataLabels);
+            
+            // Código para a galeria de projetos
+            const projectCovers = document.querySelectorAll('.project-cover');
+            const modal = document.getElementById('myModal');
+            const modalImg = document.getElementById('img01');
+            const closeBtn = document.querySelector('.modal-close');
+            const prevBtn = document.querySelector('.modal-prev');
+            const nextBtn = document.querySelector('.modal-next');
+            let currentImgIndex = 0;
+            let currentImages = [];
 
-        const skillColors = {
-            Python: '#3776AB',
-            "Power BI": '#F2C811',
-            "Power Apps": '#5F0483',
-            "Power Automate": '#0C3497',
-            Excel: '#207345',
-            SQL: '#42B160',
-            Sharepoint: '#674987',
-            R: '#198CE7',
-            Pentaho: '#CC0000',
-            Figma: '#F24E1E'
-        };
+            projectCovers.forEach(cover => {
+                cover.addEventListener('click', function() {
+                    const projectId = this.dataset.project;
+                    const projectImages = document.querySelector(`.project-images.${projectId}`);
 
-        Object.entries(skills).forEach(([id, { label, value }]) => {
-    const skillCard = document.getElementById(id).parentNode;
-    const percentageSpan = document.createElement('span');
-    percentageSpan.classList.add('skill-percentage');
-    percentageSpan.textContent = `${value}%`;
-    skillCard.appendChild(percentageSpan);
+                    if (projectImages.style.display === 'none' || projectImages.style.display === '') {
+                        projectImages.style.display = 'grid';
+                         // Código para o Modal
+                        modal.style.display = "block";
+                        modalImg.src = this.src;
+                        modalImg.alt = this.alt; // Define o atributo alt da imagem modal
+                        currentImages = Array.from(projectImages.querySelectorAll('img'));
+                        currentImgIndex = 0;
+                        showCurrentImage();
+                    } else {
+                        projectImages.style.display = 'none';
+                    }
+                });
+            });
 
-    const labelParagraph = document.createElement('p');
-    labelParagraph.classList.add('skill-label');
-    labelParagraph.textContent = label; // Use o 'label' do objeto skills aqui
-    skillCard.appendChild(labelParagraph);
+            // Adiciona o manipulador de eventos para as imagens dentro de .project-images
+            const projectImages = document.querySelectorAll('.project-images img');
+            projectImages.forEach(img => {
+                img.addEventListener('click', function() {
+                    modal.style.display = "block";
+                    modalImg.src = this.dataset.fullSrc; // Usa o atributo data-full-src
+                    modalImg.alt = this.alt;
+                    currentImages = Array.from(this.parentNode.querySelectorAll('img'));
+                    currentImgIndex = currentImages.indexOf(this);
+                    showCurrentImage();
+                });
+            });
 
-    const ctx = document.getElementById(id).getContext('2d');
-    const skillColor = skillColors[label];
-
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: [label], // O label aqui é usado para tooltips (que estão desativados)
-            datasets: [{
-                data: [value, 100 - value],
-                backgroundColor: [skillColor, '#00FFF7'],
-                borderColor: [skillColor, '#9FFFFE'],
-                borderWidth: 3,
-                cutout: '50%',
-                circumference: 180,
-                rotation: 270
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            cutoutPercentage: 70,
-            rotation: -90,
-            circumference: 100,
-            plugins: {
-                tooltip: { enabled: true },
-                legend: { display: false },
-                title: { display: false }
+            closeBtn.onclick = function() {
+                modal.style.display = "none";
             }
-        }
-    });
 
-});
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            prevBtn.onclick = function() {
+                currentImgIndex--;
+                showCurrentImage();
+            }
+
+            nextBtn.onclick = function() {
+                currentImgIndex++;
+                showCurrentImage();
+            }
+
+            function showCurrentImage() {
+                if (currentImgIndex < 0) {
+                    currentImgIndex = currentImages.length - 1;
+                } else if (currentImgIndex >= currentImages.length) {
+                    currentImgIndex = 0;
+                }
+                if (currentImages[currentImgIndex]) {
+                    modalImg.src = currentImages[currentImgIndex].dataset.fullSrc || currentImages[currentImgIndex].src;
+                    modalImg.alt = currentImages[currentImgIndex].alt;
+                }
+            }
+
+            // Código para os gráficos de habilidades
+            const skills = {
+                chartPython: { label: "Python", value: 82 },
+                chartPowerBI: { label: "Power BI", value: 86 },
+                chartPowerApps: { label: "Power Apps", value: 78 },
+                chartPowerAutomate: { label: "Power Automate", value: 89 },
+                chartExcel: { label: "Excel", value: 94 },
+                chartSQL: { label: "SQL", value: 84 },
+                chartSharepoint: { label: "Sharepoint", value: 92 },
+                chartR: { label: "R", value: 88 },
+                chartPentaho: { label: "Pentaho", value: 76 },
+                chartFigma: { label: "Figma", value: 71 }
+            };
+
+            const skillColors = {
+                Python: '#3776AB',
+                "Power BI": '#F2C811',
+                "Power Apps": '#5F0483',
+                "Power Automate": '#0C3497',
+                Excel: '#207345',
+                SQL: '#42B160',
+                Sharepoint: '#674987',
+                R: '#198CE7',
+                Pentaho: '#CC0000',
+                Figma: '#F24E1E'
+            };
+
+            Object.entries(skills).forEach(([id, { label, value }]) => {
+                const skillCard = document.getElementById(id); // Pega o elemento do cartão
+                skillCard.addEventListener('click', function() {  // Adiciona o listener de clique
+                    const canvas = this.querySelector('canvas'); // Encontra o canvas dentro do cartão
+                    modal.style.display = "block";
+                    modalImg.src = canvas.toDataURL(); // Converte o canvas para URL de dados e exibe
+                    modalImg.alt = label; // Define o atributo alt da imagem modal
+                    currentImages = [canvas];
+                    currentImgIndex = 0;
+                    showCurrentImage();
+                });
+
+                const percentageSpan = document.createElement('span');
+                percentageSpan.classList.add('skill-percentage');
+                percentageSpan.textContent = `${value}%`;
+                skillCard.appendChild(percentageSpan);
+
+                const labelParagraph = document.createElement('p');
+                labelParagraph.classList.add('skill-label');
+                labelParagraph.textContent = label;
+                skillCard.appendChild(labelParagraph);
+
+                const ctx = document.getElementById(id).getContext('2d');
+                const skillColor = skillColors[label];
+
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: [label],
+                        datasets: [{
+                            data: [value, 100 - value],
+                            backgroundColor: [skillColor, '#00FFF7'],
+                            borderColor: [skillColor, '#9FFFFE'],
+                            borderWidth: 3,
+                            cutout: '50%',
+                            circumference: 180,
+                            rotation: 270
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        aspectRatio: 1,
+                        layout: {
+                            padding: {
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10
+                            }
+                        },
+                        plugins: {
+                            tooltip: { 
+                                enabled: true,
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.label}: ${context.raw}%`;
+                                    }
+                                }
+                            },
+                            legend: { display: false },
+                            title: { display: true, text: label, color: '#00FFF7', font: { size: 16 } },
+                            datalabels: {
+                                color: '#00FFF7',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                },
+                                formatter: function(value) {
+                                    return value + '%';
+                                },
+                                anchor: 'center',
+                                align: 'center'
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            });
+        });
     </script>
 </body>
-
 </html>
