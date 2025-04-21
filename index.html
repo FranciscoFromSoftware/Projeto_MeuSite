@@ -125,14 +125,14 @@
             justify-content: center;
             position: relative;
             overflow: visible;
-            min-height: 150px; /* Aumentei a altura mínima do cartão */
-            margin-bottom: 0;
+            min-height: 150px;
             width: 90%;
-            cursor: pointer; /* Adiciona cursor de clique */
+            cursor: pointer;
+            padding-bottom: 1rem;
         }
 
         .skill-card canvas {
-            width: 100px !important; /* Aumentei o tamanho do canvas */
+            width: 100px !important;
             height: 100px !important;
             margin-bottom: 0.3rem;
         }
@@ -143,17 +143,37 @@
             left: 50%;
             transform: translate(-50%, -50%);
             color: #ffffff;
-            font-size: 1.5rem; /* Aumentei o tamanho da fonte da porcentagem */
+            font-size: 1.5rem;
             font-weight: bold;
             z-index: 3;
         }
 
-        .skill-label {
+        .skill-description {
+            background-color: rgba(2, 9, 39, 0.9);
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            width: 100%;
+            height: 80px;
+            box-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .description-text {
             color: #e0e0e0;
-            font-size: 1rem; /* Aumentei o tamanho da fonte do label */
+            font-size: 0.85rem;
+            line-height: 1.2;
+            margin: 0;
             text-align: center;
-            margin-top: 0.3rem;
-            word-break: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
         }
 
         /* Estilos da galeria de projetos */
@@ -356,16 +376,66 @@
             <h2>Habilidades Técnicas</h2>
             <div class="skills-layout">
                 <div class="skills-grid">
-                    <div class="skill-card" data-skill="chartPowerAutomate"><canvas id="chartPowerAutomate"></canvas></div>
-                    <div class="skill-card" data-skill="chartR"><canvas id="chartR"></canvas></div>
-                    <div class="skill-card" data-skill="chartPython"><canvas id="chartPython"></canvas></div>
-                    <div class="skill-card" data-skill="chartSQL"><canvas id="chartSQL"></canvas></div>
-                    <div class="skill-card" data-skill="chartExcel"><canvas id="chartExcel"></canvas></div>
-                    <div class="skill-card" data-skill="chartPowerApps"><canvas id="chartPowerApps"></canvas></div>
-                    <div class="skill-card" data-skill="chartSharepoint"><canvas id="chartSharepoint"></canvas></div>
-                    <div class="skill-card" data-skill="chartPowerBI"><canvas id="chartPowerBI"></canvas></div>
-                    <div class="skill-card" data-skill="chartFigma"><canvas id="chartFigma"></canvas></div>
-                    <div class="skill-card" data-skill="chartPentaho"><canvas id="chartPentaho"></canvas></div>
+                    <div class="skill-card" data-skill="chartPowerAutomate">
+                        <canvas id="chartPowerAutomate"></canvas>
+                        <div class="skill-description" style="display: none;">
+                            <p class="description-text"></p>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="chartR">
+                        <canvas id="chartR"></canvas>
+                        <div class="skill-description" style="display: none;">
+                            <p class="description-text"></p>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="chartPython">
+                        <canvas id="chartPython"></canvas>
+                        <div class="skill-description" style="display: none;">
+                            <p class="description-text"></p>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="chartSQL">
+                        <canvas id="chartSQL"></canvas>
+                        <div class="skill-description" style="display: none;">
+                            <p class="description-text"></p>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="chartExcel">
+                        <canvas id="chartExcel"></canvas>
+                        <div class="skill-description" style="display: none;">
+                            <p class="description-text"></p>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="chartPowerApps">
+                        <canvas id="chartPowerApps"></canvas>
+                        <div class="skill-description" style="display: none;">
+                            <p class="description-text"></p>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="chartSharepoint">
+                        <canvas id="chartSharepoint"></canvas>
+                        <div class="skill-description" style="display: none;">
+                            <p class="description-text"></p>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="chartPowerBI">
+                        <canvas id="chartPowerBI"></canvas>
+                        <div class="skill-description" style="display: none;">
+                            <p class="description-text"></p>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="chartFigma">
+                        <canvas id="chartFigma"></canvas>
+                        <div class="skill-description" style="display: none;">
+                            <p class="description-text"></p>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-skill="chartPentaho">
+                        <canvas id="chartPentaho"></canvas>
+                        <div class="skill-description" style="display: none;">
+                            <p class="description-text"></p>
+                        </div>
+                    </div>
                 </div>
                 <div class="project-gallery">
                    <h5>Clique para saber mais sobre os projetos<h5>
@@ -488,41 +558,25 @@
             let currentImgIndex = 0;
             let currentImages = [];
 
-            // Função para lidar com o clique em qualquer card de habilidade
-            function handleSkillClick(skillId) {
-                const imagesSection = document.querySelector(`.${skillId}-images`);
-                if (imagesSection) {
-                    modal.style.display = "block";
-                    modalImg.src = imagesSection.querySelector('img').dataset.fullSrc;
-                    modalImg.alt = imagesSection.querySelector('img').alt;
-                    currentImages = Array.from(imagesSection.querySelectorAll('img'));
-                    currentImgIndex = 0;
-                    showCurrentImage();
-                }
-            }
+            // Adiciona o manipulador de eventos para os projetos
+            projectCovers.forEach(cover => {
+                cover.addEventListener('click', function() {
+                    const projectId = this.dataset.project;
+                    const projectImages = document.querySelector(`.project-images.${projectId}`);
 
-            // Adiciona os manipuladores de eventos para cada card de habilidade
-            const skillCards = {
-                'chartPowerAutomate': 'power-automate',
-                'chartPython': 'python',
-                'chartPowerBI': 'powerbi',
-                'chartPowerApps': 'powerapps',
-                'chartExcel': 'excel',
-                'chartSQL': 'sql',
-                'chartSharepoint': 'sharepoint',
-                'chartR': 'r',
-                'chartPentaho': 'pentaho',
-                'chartFigma': 'figma'
-            };
-
-            Object.entries(skillCards).forEach(([chartId, skillName]) => {
-                const card = document.getElementById(chartId);
-                if (card) {
-                    card.addEventListener('click', () => handleSkillClick(skillName));
-                }
+                    if (projectImages.style.display === 'none' || projectImages.style.display === '') {
+                        projectImages.style.display = 'grid';
+                        // Mostra as descrições do projeto selecionado
+                        showProjectDescriptions(projectId);
+                    } else {
+                        projectImages.style.display = 'none';
+                        // Esconde todas as descrições
+                        hideAllDescriptions();
+                    }
+                });
             });
 
-            // Adiciona o manipulador de eventos para todas as imagens
+            // Adiciona o manipulador de eventos para as imagens dos projetos
             document.querySelectorAll('.project-images img').forEach(img => {
                 img.addEventListener('click', function() {
                     modal.style.display = "block";
@@ -579,6 +633,25 @@
                 chartPentaho: { label: "Pentaho", value: 76 },
                 chartFigma: { label: "Figma", value: 71 }
             };
+
+            // Adiciona o manipulador de eventos para os cards de habilidades
+            document.querySelectorAll('.skill-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const skillId = this.dataset.skill;
+                    const imagesContainer = document.querySelector(`.${skillId.replace('chart', '').toLowerCase()}-images`);
+                    
+                    if (imagesContainer) {
+                        const firstImage = imagesContainer.querySelector('img');
+                        if (firstImage) {
+                            modal.style.display = "block";
+                            modalImg.src = firstImage.dataset.fullSrc;
+                            modalImg.alt = firstImage.alt;
+                            currentImages = Array.from(imagesContainer.querySelectorAll('img'));
+                            currentImgIndex = 0;
+                        }
+                    }
+                });
+            });
 
             const skillColors = {
                 Python: '#3776AB',
@@ -654,6 +727,71 @@
                     plugins: [ChartDataLabels]
                 });
             });
+
+            // Descrições para cada projeto
+            const projectDescriptions = {
+                projeto1: {
+                    'chartPowerAutomate': 'Automação de processos para integração de dados entre sistemas.',
+                    'chartR': 'Análise estatística e visualização de dados do projeto.',
+                    'chartPython': 'Desenvolvimento de scripts para processamento e análise de dados.',
+                    'chartSQL': 'Gerenciamento e consulta do banco de dados do projeto.',
+                    'chartExcel': 'Análise e organização de dados em planilhas.',
+                    'chartPowerApps': 'Desenvolvimento de aplicativos para interação com os dados.',
+                    'chartSharepoint': 'Gerenciamento e compartilhamento de documentos do projeto.',
+                    'chartPowerBI': 'Criação de dashboards e relatórios analíticos.',
+                    'chartFigma': 'Design de interfaces e prototipagem.',
+                    'chartPentaho': 'ETL e transformação de dados.'
+                },
+                projeto2: {
+                    'chartPowerAutomate': 'Automação de fluxos de trabalho para o projeto.',
+                    'chartR': 'Modelagem estatística e análise preditiva.',
+                    'chartPython': 'Desenvolvimento de APIs e integrações.',
+                    'chartSQL': 'Otimização de consultas e performance.',
+                    'chartExcel': 'Criação de modelos financeiros e análises.',
+                    'chartPowerApps': 'Desenvolvimento de formulários e interfaces.',
+                    'chartSharepoint': 'Colaboração e gestão de documentos.',
+                    'chartPowerBI': 'Visualização de dados e KPIs.',
+                    'chartFigma': 'Design de interfaces e experiência do usuário.',
+                    'chartPentaho': 'Integração e transformação de dados.'
+                },
+                projeto3: {
+                    'chartPowerAutomate': 'Automação de tarefas repetitivas.',
+                    'chartR': 'Análise de dados e machine learning.',
+                    'chartPython': 'Desenvolvimento de scripts e automações.',
+                    'chartSQL': 'Gerenciamento de banco de dados.',
+                    'chartExcel': 'Análise e relatórios financeiros.',
+                    'chartPowerApps': 'Criação de aplicativos personalizados.',
+                    'chartSharepoint': 'Gestão de documentos e colaboração.',
+                    'chartPowerBI': 'Criação de dashboards e análises.',
+                    'chartFigma': 'Design de interfaces e protótipos.',
+                    'chartPentaho': 'ETL e integração de dados.'
+                }
+            };
+
+            // Função para mostrar as descrições do projeto
+            function showProjectDescriptions(projectId) {
+                const descriptions = projectDescriptions[projectId];
+                if (descriptions) {
+                    Object.entries(descriptions).forEach(([skillId, description]) => {
+                        const skillCard = document.querySelector(`[data-skill="${skillId}"]`);
+                        if (skillCard) {
+                            const descriptionBox = skillCard.querySelector('.skill-description');
+                            const descriptionText = skillCard.querySelector('.description-text');
+                            if (descriptionBox && descriptionText) {
+                                descriptionText.textContent = description;
+                                descriptionBox.style.display = 'block';
+                            }
+                        }
+                    });
+                }
+            }
+
+            // Função para esconder todas as descrições
+            function hideAllDescriptions() {
+                document.querySelectorAll('.skill-description').forEach(desc => {
+                    desc.style.display = 'none';
+                });
+            }
         });
     </script>
 </body>
