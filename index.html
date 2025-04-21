@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Francisco Henrique Lomas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Open+Sans&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Exemplo para telas menores (até 768px de largura) */
+        @media (max-width: 768px) {
+            .skills-container {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adapta o número de colunas */
+            }
+        }
+
+        /* Exemplo para telas um pouco maiores (até 1024px de largura) */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .skills-container {
+                grid-template-columns: repeat(2, 1fr); /* Mostra 2 colunas em tablets */
+            }
+        }
+
+        .skills-layout {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Duas colunas principais: uma para os gráficos, outra para o projeto */
+            gap: 1rem; /* Espaçamento entre as colunas principais */
+            padding: 1rem;
+            max-width: 2000px; /* Mantenha uma largura máxima para layouts maiores */
+            margin: 0rem auto;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Layout dos gráficos */
+            grid-template-rows: auto; /* Espaçamento menor entre os cards de habilidade */
+            gap: 1rem;
+            padding: 1rem;
+            justify-items: end; /* Alinhar os itens ao final da célula (horizontalmente) */
+            align-items: end;   /* Alinhar os itens ao final da célula (verticalmente) */
+        }
+
+        .skill-card {
+            background-color: #1a1d29;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 198, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: visible;
+            min-height: 50px; /* Altura menor para caber no novo layout */
+            margin-bottom: 0; /* Remova a margem inferior, pois o espaçamento é controlado pelo grid */
+            width: 90%; /* Garante que os cards ocupem a largura da célula do grid */
+        }
+
+        .skill-card canvas {
+            width: 50px !important; /* Reduzi o tamanho dos gráficos para caber melhor */
+            height: 50px !important;
+            margin-bottom: 0.3rem;
+        }
+
+        .skill-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: bold;
+            z-index: 3;
+        }
+
+        .skill-label {
+            color: #e0e0e0;
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 0.3rem;
+            word-break: break-word;
+        }
+
+        .project-placeholder {
+            background-color: #1a1d29;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 198, 255, 0.3);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px; /* Altura aproximada para o projeto */
+        }
+
+        .project-placeholder h3 {
+            color: #00c6ff;
+            margin-bottom: 1rem;
+        }
+
+        .project-placeholder p {
+            color: #e0e0e0;
+            text-align: center;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            background-color: #000411;
+            color: #e0e0e0;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto auto auto;
+            grid-gap: 1rem;
+            margin: 0 auto;
+            padding: 1rem 1rem;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(to right, #00c6ff, #10131C);
+            padding: 1rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-info { /* Adicionada classe para o div da foto e texto */
+            display: flex;
+            align-items: center;
+            caret-color: transparent; /* Oculta o cursor de digitação */
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 0;
+        }
+
+        header p {
+            font-size: 0.9rem;
+            max-width: 600px;
+            margin: 0;
+        }
+
+        #foto-perfil {
+            width: 150px; /* Tamanho aumentado para a foto de perfil */
+            height: 150px; /* Tamanho aumentado para a foto de perfil */
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        header .connect-links {
+            text-align: right;
+        }
+
+        header .connect-links h2 {
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        header .connect-links img {
+            width: 50px; /* Tamanho original para os ícones de link */
+            margin-left: 0.3rem;
+        }
+
+        main {
+            padding: 1rem;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00c6ff;
+            margin-bottom: 1rem;
+            margin-left: 2rem; /* Aumentei a margem inferior do título */
+        }
+
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto auto;
+            gap: 2rem; /* Aumentei o gap para 2rem */
+            padding: 1rem;
+            margin: 0 auto;
+        }
+
+        .skill-card {
+            background-color: #010b18;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0, 89, 255, 0.616);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.4rem;
+            position: relative;
+            overflow: visible;
+            min-height: 80px;
+            margin-bottom: 1rem;
+        }
+
+        .skill-card canvas {
+            width: 80px !important; /* Aumentei a largura dos gráficos */
+            height: 80px !important; /* Aumentei a altura dos gráficos */
+            margin-bottom: 2rem;
+        }
+
+        .skill-percentage {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00c3ff;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 3;
+        }
+
+        .skill-label {
+            color: #16d9e7;
+            font-size: 0,5rem;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #10131c;
+            margin-top: 1rem;
+        }
+
+        footer h2 {
+            color: #00c6ff;
+            font-size: 1.2rem;
+        }
+
+        footer div {
+            margin-top: 0.5rem;
+        }
+
+        footer a {
+            margin: 0 0.5rem;
+        }
+
+        footer img {
+            width: 30px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header-info"> <img id="foto-perfil" src="https://media.licdn.com/dms/image/v2/D4D03AQHNnNd1vxq-Dg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1701051341167?e=1750896000&v=beta&t=5LgcJ_tXUtMifjwZQM3ZG_RCDvAPvK8HNIMiMG0She0" alt="Sua Foto">
+                <div>
+                    <h1>Francisco Henrique Lomas</h1>
+                    <p>Apaixonado por ficção científica futurista e cyberpunk, sou fascinado por mundos onde tecnologia e humanidade se encontram de formas inesperadas. A inovação me motiva, sempre buscando explorar novas tendências e avanços tecnológicos. Com um olhar analítico e estratégico, tenho um grande interesse por estatística e análise de dados, transformando informações em conhecimento valioso. Seja desvendando padrões ocultos ou imaginando sociedades futurísticas, estou sempre imerso na conexão entre dados, ciência e imaginação.</p>
+                </div>
+            </div>
+            <div class="connect-links">
+                <h2>Conecte-se Comigo</h2>
+                <div>
+                    <a href="https://github.com/FranciscoFromSoftware" target="_blank">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub">
+                    </a>
+                    <a href="https://www.kaggle.com/franciscohlomas" target="_blank">
+                        <img src="https://www.kaggle.com/static/images/site-logo.png" alt="Kaggle">
+                    </a>
+                    <a href="https://www.linkedin.com/in/francisco-henrique-lomas/" target="_blank">
+                        <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
+                    </a>
+                    <a href="https://rpubs.com/XscientFHL" target="_blank">
+                        <img src="https://www.r-project.org/Rlogo.png" alt="RPubs">
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <h2>Habilidades Técnicas</h2>
+            <div class="skills-layout">
+                <div class="skills-grid">
+                    <div class="skill-card"><canvas id="chartPowerAutomate"></canvas></div>
+                    <div class="skill-card"><canvas id="chartR"></canvas></div>
+                    <div class="skill-card"><canvas id="chartPython"></canvas></div>
+                    <div class="skill-card"><canvas id="chartSQL"></canvas></div>
+                    <div class="skill-card"><canvas id="chartExcel"></canvas></div>
+                    <div class="skill-card"><canvas id="chartPowerApps"></canvas></div>
+                    <div class="skill-card"><canvas id="chartSharepoint"></canvas></div>
+                    <div class="skill-card"><canvas id="chartPowerBI"></canvas></div>
+                    <div class="skill-card"><canvas id="chartFigma"></canvas></div>
+                    <div class="skill-card"><canvas id="chartPentaho"></canvas></div>
+                </div>
+                <div class="project-placeholder">
+                    <h3>Projeto em Destaque</h3>
+                    <p>Descrição breve do projeto...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const skills = {
+            chartPython: { label: "Python", value: 82 },
+            chartPowerBI: { label: "Power BI", value: 86 },
+            chartPowerApps: { label: "Power Apps", value: 78 },
+            chartPowerAutomate: { label: "Power Automate", value: 89 },
+            chartExcel: { label: "Excel", value: 94 },
+            chartSQL: { label: "SQL", value: 84 },
+            chartSharepoint: { label: "Sharepoint", value: 92 },
+            chartR: { label: "R", value: 88 },
+            chartPentaho: { label: "Pentaho", value: 76 },
+            chartFigma: { label: "Figma", value: 71 }
+        };
+
+        const skillColors = {
+            Python: '#3776AB',
+            "Power BI": '#F2C811',
+            "Power Apps": '#5F0483',
+            "Power Automate": '#0C3497',
+            Excel: '#207345',
+            SQL: '#42B160',
+            Sharepoint: '#674987',
+            R: '#198CE7',
+            Pentaho: '#CC0000',
+            Figma: '#F24E1E'
+        };
+
+        Object.entries(skills).forEach(([id, { label, value }]) => {
+    const skillCard = document.getElementById(id).parentNode;
+    const percentageSpan = document.createElement('span');
+    percentageSpan.classList.add('skill-percentage');
+    percentageSpan.textContent = `${value}%`;
+    skillCard.appendChild(percentageSpan);
+
+    const labelParagraph = document.createElement('p');
+    labelParagraph.classList.add('skill-label');
+    labelParagraph.textContent = label; // Use o 'label' do objeto skills aqui
+    skillCard.appendChild(labelParagraph);
+
+    const ctx = document.getElementById(id).getContext('2d');
+    const skillColor = skillColors[label];
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [label], // O label aqui é usado para tooltips (que estão desativados)
+            datasets: [{
+                data: [value, 100 - value],
+                backgroundColor: [skillColor, '#00FFF7'],
+                borderColor: [skillColor, '#9FFFFE'],
+                borderWidth: 3,
+                cutout: '50%',
+                circumference: 180,
+                rotation: 270
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            cutoutPercentage: 70,
+            rotation: -90,
+            circumference: 100,
+            plugins: {
+                tooltip: { enabled: true },
+                legend: { display: false },
+                title: { display: false }
+            }
+        }
+    });
+
+});
+    </script>
+</body>
+
+</html>
