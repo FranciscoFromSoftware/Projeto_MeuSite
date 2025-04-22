@@ -188,6 +188,31 @@
             flex-direction: column;
             align-items: center;
             margin-top: 1rem;
+            position: relative;
+        }
+
+        .close-gallery-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 200, 255, 0.2);
+            color: #00c6ff;
+            border: 2px solid #00c6ff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-gallery-btn:hover {
+            background-color: rgba(0, 200, 255, 0.4);
+            transform: scale(1.1);
         }
 
         .project-gallery h3 {
@@ -222,12 +247,7 @@
             grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
             gap: 0.5rem;
             margin-top: 1rem;
-        }
-
-        .power-automate-images {
-            display: none !important;
-            position: absolute;
-            visibility: hidden;
+            width: 100%;
         }
 
         .project-images img {
@@ -237,6 +257,71 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             caret-color: transparent;
+            transition: transform 0.3s ease;
+        }
+
+        .project-images img:hover {
+            transform: scale(1.05);
+        }
+
+        .power-automate-images {
+            display: none !important;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .python-images {
+            display: none !important;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .powerbi-images {
+            display: none !important;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .powerapps-images {
+            display: none !important;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .excel-images {
+            display: none !important;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .sql-images {
+            display: none !important;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .sharepoint-images {
+            display: none !important;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .r-images {
+            display: none !important;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .pentaho-images {
+            display: none !important;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .figma-images {
+            display: none !important;
+            position: absolute;
+            visibility: hidden;
         }
 
         /* Estilos do Modal */
@@ -387,6 +472,67 @@
         .github-link.hidden {
             display: none;
         }
+
+        /* Estilos responsivos para dispositivos móveis */
+        @media only screen and (max-width: 768px) {
+            .project-gallery {
+                padding: 1rem;
+            }
+
+            .project-images {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 0.8rem;
+            }
+
+            .project-images img {
+                border-radius: 6px;
+            }
+
+            .modal-content {
+                max-width: 95%;
+                max-height: 80vh;
+            }
+
+            .modal-prev, .modal-next {
+                padding: 12px;
+                font-size: 18px;
+            }
+
+            .close-gallery-btn {
+                width: 25px;
+                height: 25px;
+                font-size: 16px;
+                top: 5px;
+                right: 5px;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .project-images {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 0.6rem;
+            }
+
+            .project-images img {
+                border-radius: 4px;
+            }
+
+            .modal-content {
+                max-width: 98%;
+                max-height: 70vh;
+            }
+
+            .modal-prev, .modal-next {
+                padding: 8px;
+                font-size: 16px;
+            }
+
+            .close-gallery-btn {
+                width: 22px;
+                height: 22px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -484,6 +630,7 @@
                 </div>
                 <div class="project-gallery">
                    <h5>Clique para saber mais sobre os projetos<h5>
+                   <button class="close-gallery-btn">×</button>
                     <div class="projects-container">
                         <div class="project">
                             <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/capaprojetoHeroes.png?raw=true" alt="Capa do Projeto 1" class="project-cover" data-project="projeto1">
@@ -613,15 +760,24 @@
                 cover.addEventListener('click', function() {
                     const projectId = this.dataset.project;
                     const projectImages = document.querySelector(`.project-images.${projectId}`);
+                    const closeButton = document.querySelector('.close-gallery-btn');
 
                     if (projectImages.style.display === 'none' || projectImages.style.display === '') {
+                        // Esconde todas as outras imagens primeiro
+                        document.querySelectorAll('.project-images').forEach(images => {
+                            images.style.display = 'none';
+                        });
                         projectImages.style.display = 'grid';
                         // Mostra as descrições do projeto selecionado
                         showProjectDescriptions(projectId);
+                        // Mostra o botão de fechar
+                        closeButton.style.display = 'flex';
                     } else {
                         projectImages.style.display = 'none';
                         // Esconde todas as descrições
                         hideAllDescriptions();
+                        // Esconde o botão de fechar
+                        closeButton.style.display = 'none';
                     }
                 });
             });
@@ -791,13 +947,13 @@
             // Descrições para cada projeto
             const projectDescriptions = {
                 projeto1: {
-                    'chartPowerAutomate': 'Automação de processos para integração de dados entre sistemas.',
-                    'chartR': 'Análise estatística e visualização de dados do projeto.',
-                    'chartPython': 'Desenvolvimento de scripts para processamento e análise de dados.',
-                    'chartSQL': 'Gerenciamento e consulta do banco de dados do projeto.',
-                    'chartExcel': 'Análise e organização de dados em planilhas.',
-                    'chartPowerApps': 'Desenvolvimento de aplicativos para interação com os dados.',
-                    'chartSharepoint': 'Gerenciamento e compartilhamento de documentos do projeto.',
+                    'chartPowerAutomate': '--',
+                    'chartR': '--',
+                    'chartPython': 'Conexão do MySQL com Sharepoint e interfaces.',
+                    'chartSQL': 'Armazenamento de dados em MySQL.',
+                    'chartExcel': '--',
+                    'chartPowerApps': 'Desenvolvimento de aplicativos para controle de alertas.',
+                    'chartSharepoint': 'Armazenamento de dados no Microsoft List.',
                     'chartPowerBI': 'Criação de dashboards e relatórios analíticos.',
                     'chartFigma': 'Design de interfaces e prototipagem.',
                     'chartPentaho': 'ETL e transformação de dados.'
@@ -828,10 +984,41 @@
                 }
             };
 
+            // Função para calcular o valor do gráfico baseado no comprimento da descrição
+            function calculateChartValue(description) {
+                if (description === '--') return 0;
+                const length = description.length;
+                
+                // Distribuição baseada em faixas de caracteres
+                if (length <= 10) return 20;      // Muito curto
+                if (length <= 20) return 35;      // Curto
+                if (length <= 30) return 50;      // Médio
+                if (length <= 40) return 65;      // Médio-alto
+                if (length <= 50) return 75;      // Alto
+                if (length <= 60) return 82;      // Muito alto
+                return 90;                        // Excelente
+            }
+
+            // Função para atualizar os gráficos
+            function updateCharts(descriptions) {
+                Object.entries(descriptions).forEach(([skillId, description]) => {
+                    const chart = Chart.getChart(document.getElementById(skillId));
+                    if (chart) {
+                        const newValue = calculateChartValue(description);
+                        chart.data.datasets[0].data = [newValue, 100 - newValue];
+                        chart.update();
+                    }
+                });
+            }
+
             // Função para mostrar as descrições do projeto
             function showProjectDescriptions(projectId) {
                 const descriptions = projectDescriptions[projectId];
                 if (descriptions) {
+                    // Atualiza os gráficos primeiro
+                    updateCharts(descriptions);
+                    
+                    // Depois mostra as descrições
                     Object.entries(descriptions).forEach(([skillId, description]) => {
                         const skillCard = document.querySelector(`[data-skill="${skillId}"]`);
                         if (skillCard) {
@@ -851,7 +1038,32 @@
                 document.querySelectorAll('.skill-description').forEach(desc => {
                     desc.style.display = 'none';
                 });
+                // Restaura os valores originais dos gráficos
+                Object.entries(skills).forEach(([id, { value }]) => {
+                    const chart = Chart.getChart(document.getElementById(id));
+                    if (chart) {
+                        chart.data.datasets[0].data = [value, 100 - value];
+                        chart.update();
+                    }
+                });
             }
+
+            // Função para fechar a galeria
+            function closeGallery() {
+                // Esconde todas as imagens dos projetos
+                document.querySelectorAll('.project-images').forEach(images => {
+                    images.style.display = 'none';
+                });
+                
+                // Esconde todas as descrições
+                hideAllDescriptions();
+                
+                // Esconde o botão de fechar
+                document.querySelector('.close-gallery-btn').style.display = 'none';
+            }
+
+            // Adiciona o manipulador de eventos para o botão de fechar
+            document.querySelector('.close-gallery-btn').addEventListener('click', closeGallery);
         });
     </script>
 </body>
