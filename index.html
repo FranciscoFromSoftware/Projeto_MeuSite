@@ -14,6 +14,7 @@
             font-family: 'Open Sans', sans-serif;
             background-color: #000411;
             color: #e0e0e0;
+            caret-color: transparent;
         }
 
         .container {
@@ -129,6 +130,7 @@
             width: 90%;
             cursor: pointer;
             padding-bottom: 1rem;
+            caret-color: transparent;
         }
 
         .skill-card canvas {
@@ -163,13 +165,13 @@
         }
 
         .description-text {
-            color: #e0e0e0;
+            color: #25a7fd;
             font-size: 0.85rem;
             line-height: 1.2;
             margin: 0;
             text-align: center;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -208,6 +210,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
+            caret-color: transparent;
         }
 
         .project-cover:hover {
@@ -232,7 +235,8 @@
             height: auto;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            cursor: pointer; /* Adiciona cursor de clique */
+            cursor: pointer;
+            caret-color: transparent;
         }
 
         /* Estilos do Modal */
@@ -260,6 +264,7 @@
             transform: translate(-50%, -50%);
             animation-name: zoom;
             animation-duration: 0.6s;
+            caret-color: transparent;
         }
 
         @keyframes zoom {
@@ -348,6 +353,39 @@
         footer img {
             width: 80px;
             height: auto;
+        }
+
+        .github-link {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 25px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            caret-color: transparent;
+        }
+
+        .github-link:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+            transform: scale(1.05);
+        }
+
+        .github-link img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .github-link.hidden {
+            display: none;
         }
     </style>
 </head>
@@ -549,6 +587,10 @@
         <img class="modal-content" id="img01">
         <a class="modal-prev">&#10094;</a>
         <a class="modal-next">&#10095;</a>
+        <a href="https://github.com/FranciscoFromSoftware/Projetos_Python/blob/main/InterfaceCadastra_MySQL_3Tela.py" target="_blank" class="github-link" id="githubLink">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub">
+            Ver código no GitHub
+        </a>
     </div>
 
     <script>
@@ -593,6 +635,14 @@
                     currentImages = Array.from(this.parentNode.querySelectorAll('img'));
                     currentImgIndex = currentImages.indexOf(this);
                     showCurrentImage();
+                    
+                    // Mostra/esconde o link do GitHub baseado no projeto
+                    const githubLink = document.getElementById('githubLink');
+                    if (this.parentNode.classList.contains('projeto1')) {
+                        githubLink.classList.remove('hidden');
+                    } else {
+                        githubLink.classList.add('hidden');
+                    }
                 });
             });
 
@@ -656,6 +706,8 @@
                             modalImg.alt = firstImage.alt;
                             currentImages = Array.from(imagesContainer.querySelectorAll('img'));
                             currentImgIndex = 0;
+                            // Esconde o link do GitHub para imagens de habilidades
+                            document.getElementById('githubLink').classList.add('hidden');
                         }
                     }
                 });
