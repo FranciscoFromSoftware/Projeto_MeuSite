@@ -249,7 +249,7 @@
         }
 
         .connection-line {
-            position: absolute;
+            position: fixed;
             background: linear-gradient(90deg, #00c8ff, transparent);
             height: 2px;
             transform-origin: left center;
@@ -695,6 +695,26 @@
             header p {
                 font-size: 0.8rem;
             }
+
+            .connection-line {
+                height: 1px;
+            }
+
+            .connection-line.thin {
+                height: 0.5px;
+            }
+
+            .connection-line.medium {
+                height: 1px;
+            }
+
+            .connection-line.thick {
+                height: 1.5px;
+            }
+
+            .connection-line.very-thick {
+                height: 2px;
+            }
         }
 
         @media only screen and (max-width: 480px) {
@@ -745,6 +765,26 @@
             .header-info img {
                 margin-right: 0;
                 margin-bottom: 1rem;
+            }
+
+            .connection-line {
+                height: 0.5px;
+            }
+
+            .connection-line.thin {
+                height: 0.25px;
+            }
+
+            .connection-line.medium {
+                height: 0.5px;
+            }
+
+            .connection-line.thick {
+                height: 0.75px;
+            }
+
+            .connection-line.very-thick {
+                height: 1px;
             }
         }
 
@@ -1086,7 +1126,7 @@
 
             <!-- Seção de imagens do Power BI -->
             <div class="project-images powerbi-images" style="display: none;">
-                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printpowerbiNecron.png?raw=true" alt="Imagem 1 do Power BI" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printpowerbiNecron.png?raw=true">
+                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/PowerBI3DNecronPrint.png?raw=true" alt="Imagem 1 do Power BI" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/PowerBI3DNecronPrint.png?raw=true">
                 <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printpowerbinecron2.png?raw=true" alt="Imagem 2 do Power BI" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printpowerbinecron2.png?raw=true">
                 <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printpowerbiNecron3.png?raw=true" alt="Imagem 3 do Power BI" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printpowerbiNecron3.png?raw=true">
             </div>
@@ -1482,7 +1522,45 @@
                 return 'very-thick';
             }
 
-            // Função para mostrar as descrições do projeto
+            // Função para atualizar as posições das linhas de conexão
+            function updateConnectionLines() {
+                const activeCards = document.querySelectorAll('.skill-card.active');
+                const projectGallery = document.querySelector('.project-gallery');
+                
+                if (!activeCards.length || !projectGallery) return;
+
+                // Remove linhas antigas
+                document.querySelectorAll('.connection-line').forEach(line => line.remove());
+
+                // Cria novas linhas com posições atualizadas
+                activeCards.forEach(card => {
+                    const cardRect = card.getBoundingClientRect();
+                    const galleryRect = projectGallery.getBoundingClientRect();
+                    
+                    const startX = cardRect.right;
+                    const startY = cardRect.top + cardRect.height / 2;
+                    const endX = galleryRect.left;
+                    const endY = galleryRect.top + galleryRect.height / 2;
+                    
+                    const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+                    const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+                    
+                    const chart = Chart.getChart(card.querySelector('canvas'));
+                    const value = chart.data.datasets[0].data[0];
+                    
+                    const line = document.createElement('div');
+                    line.className = `connection-line ${getThicknessClass(value)}`;
+                    line.style.width = `${length}px`;
+                    line.style.left = `${startX}px`;
+                    line.style.top = `${startY}px`;
+                    line.style.transform = `rotate(${angle}deg)`;
+                    
+                    document.body.appendChild(line);
+                    line.classList.add('active');
+                });
+            }
+
+            // Modifica a função showProjectDescriptions para usar updateConnectionLines
             function showProjectDescriptions(projectId) {
                 const descriptions = projectDescriptions[projectId];
                 if (descriptions) {
@@ -1504,7 +1582,6 @@
                         const skillCard = document.querySelector(`[data-skill="${skillId}"]`);
                         if (skillCard) {
                             if (description === '--') {
-                                // Esconde os cards com descrição vazia
                                 skillCard.classList.add('hidden');
                             } else {
                                 const descriptionBox = skillCard.querySelector('.skill-description');
@@ -1523,33 +1600,8 @@
                     const projectGallery = document.querySelector('.project-gallery');
                     projectGallery.classList.add('active');
 
-                    // Cria conexões entre os cards ativos e a galeria
-                    activeCards.forEach(card => {
-                        const cardRect = card.getBoundingClientRect();
-                        const galleryRect = projectGallery.getBoundingClientRect();
-                        
-                        const startX = cardRect.right;
-                        const startY = cardRect.top + cardRect.height / 2;
-                        const endX = galleryRect.left;
-                        const endY = galleryRect.top + galleryRect.height / 2;
-                        
-                        const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-                        const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
-                        
-                        // Obtém o valor do gráfico para determinar a espessura
-                        const chart = Chart.getChart(card.querySelector('canvas'));
-                        const value = chart.data.datasets[0].data[0];
-                        
-                        const line = document.createElement('div');
-                        line.className = `connection-line ${getThicknessClass(value)}`;
-                        line.style.width = `${length}px`;
-                        line.style.left = `${startX}px`;
-                        line.style.top = `${startY}px`;
-                        line.style.transform = `rotate(${angle}deg)`;
-                        
-                        document.body.appendChild(line);
-                        setTimeout(() => line.classList.add('active'), 100);
-                    });
+                    // Atualiza as linhas de conexão
+                    updateConnectionLines();
                 }
             }
 
@@ -1596,6 +1648,9 @@
 
             // Adiciona o manipulador de eventos para o botão de fechar
             document.querySelector('.close-gallery-btn').addEventListener('click', closeGallery);
+
+            // Adiciona listener para redimensionamento da janela
+            window.addEventListener('resize', updateConnectionLines);
         });
 
         // Funções para o modal de Hobbies
