@@ -941,6 +941,58 @@
                 height: 120px;
             }
         }
+
+        /* Estilos para o personagem correndo */
+        .running-character {
+            position: fixed;
+            bottom: 0;
+            left: -100px;
+            width: 100px;
+            height: auto;
+            z-index: 1000;
+            animation: runAcross 10s linear infinite;
+            transition: opacity 0.3s ease;
+        }
+
+        .running-character.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes runAcross {
+            0% {
+                left: -100px;
+                transform: scaleX(1);
+            }
+            49% {
+                transform: scaleX(1);
+            }
+            50% {
+                left: calc(100vw + 100px);
+                transform: scaleX(-1);
+            }
+            99% {
+                transform: scaleX(-1);
+            }
+            100% {
+                left: -100px;
+                transform: scaleX(1);
+            }
+        }
+
+        @media only screen and (max-width: 768px) {
+            .running-character {
+                width: 80px;
+                bottom: 0; /* Mantém no final da tela */
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .running-character {
+                width: 60px;
+                bottom: 0; /* Mantém no final da tela */
+            }
+        }
     </style>
 </head>
 <body>
@@ -1219,6 +1271,9 @@
         </div>
     </div>
 
+    <!-- Personagem correndo -->
+    <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/giphy-1--unscreen.gif?raw=true" alt="Personagem correndo" class="running-character">
+
     <script>
         // Código para gerar a chuva Matrix
         function createMatrixRain() {
@@ -1255,6 +1310,7 @@
             const closeBtn = document.querySelector('.modal-close');
             const prevBtn = document.querySelector('.modal-prev');
             const nextBtn = document.querySelector('.modal-next');
+            const runningCharacter = document.querySelector('.running-character');
             let currentImgIndex = 0;
             let currentImages = [];
 
@@ -1275,12 +1331,16 @@
                         showProjectDescriptions(projectId);
                         // Mostra o botão de fechar
                         closeButton.style.display = 'flex';
+                        // Esconde o personagem correndo
+                        runningCharacter.classList.add('hidden');
                     } else {
                         projectImages.style.display = 'none';
                         // Esconde todas as descrições
                         hideAllDescriptions();
                         // Esconde o botão de fechar
                         closeButton.style.display = 'none';
+                        // Mostra o personagem correndo
+                        runningCharacter.classList.remove('hidden');
                     }
                 });
             });
@@ -1307,11 +1367,13 @@
 
             closeBtn.onclick = function() {
                 modal.style.display = "none";
+                runningCharacter.classList.remove('hidden');
             }
 
             window.onclick = function(event) {
                 if (event.target === modal) {
                     modal.style.display = "none";
+                    runningCharacter.classList.remove('hidden');
                 }
             }
 
@@ -1367,6 +1429,8 @@
                             currentImgIndex = 0;
                             // Esconde o link do GitHub para imagens de habilidades
                             document.getElementById('githubLink').classList.add('hidden');
+                            // Esconde o personagem correndo
+                            runningCharacter.classList.add('hidden');
                         }
                     }
                 });
@@ -1560,7 +1624,7 @@
                 });
             }
 
-            // Modifica a função showProjectDescriptions para usar updateConnectionLines
+            // Modifica a função showProjectDescriptions para esconder o personagem
             function showProjectDescriptions(projectId) {
                 const descriptions = projectDescriptions[projectId];
                 if (descriptions) {
@@ -1572,6 +1636,9 @@
                         line.remove();
                     });
                     document.querySelector('.project-gallery').classList.remove('active');
+
+                    // Esconde o personagem correndo
+                    runningCharacter.classList.add('hidden');
 
                     // Atualiza os gráficos primeiro
                     updateCharts(descriptions);
@@ -1605,7 +1672,7 @@
                 }
             }
 
-            // Função para esconder todas as descrições
+            // Modifica a função hideAllDescriptions para mostrar o personagem
             function hideAllDescriptions() {
                 document.querySelectorAll('.skill-description').forEach(desc => {
                     desc.style.display = 'none';
@@ -1630,6 +1697,9 @@
                         chart.update();
                     }
                 });
+
+                // Mostra o personagem correndo
+                runningCharacter.classList.remove('hidden');
             }
 
             // Função para fechar a galeria
@@ -1644,6 +1714,9 @@
                 
                 // Esconde o botão de fechar
                 document.querySelector('.close-gallery-btn').style.display = 'none';
+
+                // Mostra o personagem correndo
+                runningCharacter.classList.remove('hidden');
             }
 
             // Adiciona o manipulador de eventos para o botão de fechar
