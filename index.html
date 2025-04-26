@@ -214,7 +214,7 @@
         .skill-card {
             background-color: #020927;
             border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0, 200, 255, 0.959);
+            box-shadow: 0 0 15px rgba(5, 128, 161, 0.959);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -226,6 +226,66 @@
             cursor: pointer;
             padding-bottom: 1rem;
             caret-color: transparent;
+            transition: all 0.3s ease;
+            opacity: 1;
+        }
+
+        .skill-card.hidden {
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .skill-card.hidden canvas {
+            visibility: hidden;
+        }
+
+        .skill-card.hidden .skill-description {
+            display: none;
+        }
+
+        .skill-card.active {
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.8);
+            transform: scale(1.05);
+        }
+
+        .connection-line {
+            position: absolute;
+            background: linear-gradient(90deg, #00c8ff, transparent);
+            height: 2px;
+            transform-origin: left center;
+            z-index: -1;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .connection-line.active {
+            opacity: 1;
+        }
+
+        .connection-line.thin {
+            height: 1px;
+        }
+
+        .connection-line.medium {
+            height: 2px;
+        }
+
+        .connection-line.thick {
+            height: 3px;
+        }
+
+        .connection-line.very-thick {
+            height: 4px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .skill-card.pulse {
+            animation: pulse 1s ease-in-out;
         }
 
         .skill-card canvas {
@@ -276,7 +336,7 @@
         }
 
         .description-text {
-            color: #2595fd;
+            color: #05a3ff;
             font-size: 0.85rem;
             line-height: 1.2;
             margin: 0;
@@ -300,6 +360,12 @@
             align-items: center;
             margin-top: 1rem;
             position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .project-gallery.active {
+            box-shadow: 0 0 30px rgba(0, 200, 255, 0.8);
+            transform: scale(1.02);
         }
 
         .close-gallery-btn {
@@ -327,7 +393,7 @@
         }
 
         .project-gallery h3 {
-            color: #00c6ff;
+            color: #00c8ff;
             margin-bottom: 1rem;
         }
 
@@ -858,7 +924,7 @@
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub">
                     </a>
                     <a href="https://www.kaggle.com/franciscohlomas" target="_blank">
-                        <img src="https://www.kaggle.com/static/images/site-logo.png" alt="Kaggle">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kaggle/kaggle-original.svg" alt="Kaggle">
                     </a>
                     <a href="https://www.linkedin.com/in/francisco-henrique-lomas/" target="_blank">
                         <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
@@ -1098,15 +1164,15 @@
             </div>
             <div class="hobbies-gallery">
                 <div class="hobby-item">
-                    <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true" alt="Jogos de Estratégia">
+                    <img src="https://www.wargamer.com/wp-content/uploads/2021/09/total-war-warhammer-3-factions.jpg" alt="Jogos de Estratégia">
                     <div class="hobby-caption">Jogos de Estratégia</div>
                 </div>
                 <div class="hobby-item">
-                    <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonLocal.png?raw=true" alt="Ficção Científica">
-                    <div class="hobby-caption">Ficção Científica</div>
+                    <img src="https://th.bing.com/th/id/R.0f1b31c726a786ec602f7797013f1c75?rik=%2bC4ExIsQEcI9Fw&pid=ImgRaw&r=0" alt="Ficção Científica">
+                    <div class="hobby-caption">Ficção</div>
                 </div>
                 <div class="hobby-item">
-                    <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonViloes.png?raw=true" alt="Tecnologia">
+                    <img src="https://files.tecnoblog.net/wp-content/uploads/2021/10/asml-euv.jpg" alt="Tecnologia">
                     <div class="hobby-caption">Tecnologia</div>
                 </div>
             </div>
@@ -1322,7 +1388,7 @@
                                 }
                             },
                             legend: { display: false },
-                            title: { display: true, text: label, color: '#00FFF7', font: { size: 16 } },
+                            title: { display: true, text: label, color: '#1D577D', font: { size: 16 } },
                             datalabels: {
                                 color: '#03172C',
                                 font: {
@@ -1408,24 +1474,81 @@
                 });
             }
 
+            // Função para determinar a classe de espessura baseada no valor
+            function getThicknessClass(value) {
+                if (value <= 25) return 'thin';
+                if (value <= 50) return 'medium';
+                if (value <= 75) return 'thick';
+                return 'very-thick';
+            }
+
             // Função para mostrar as descrições do projeto
             function showProjectDescriptions(projectId) {
                 const descriptions = projectDescriptions[projectId];
                 if (descriptions) {
+                    // Remove classes ativas anteriores
+                    document.querySelectorAll('.skill-card').forEach(card => {
+                        card.classList.remove('active', 'pulse', 'hidden');
+                    });
+                    document.querySelectorAll('.connection-line').forEach(line => {
+                        line.remove();
+                    });
+                    document.querySelector('.project-gallery').classList.remove('active');
+
                     // Atualiza os gráficos primeiro
                     updateCharts(descriptions);
                     
-                    // Depois mostra as descrições
+                    // Depois mostra as descrições e cria conexões
+                    const activeCards = [];
                     Object.entries(descriptions).forEach(([skillId, description]) => {
                         const skillCard = document.querySelector(`[data-skill="${skillId}"]`);
                         if (skillCard) {
-                            const descriptionBox = skillCard.querySelector('.skill-description');
-                            const descriptionText = skillCard.querySelector('.description-text');
-                            if (descriptionBox && descriptionText) {
-                                descriptionText.textContent = description;
-                                descriptionBox.style.display = 'block';
+                            if (description === '--') {
+                                // Esconde os cards com descrição vazia
+                                skillCard.classList.add('hidden');
+                            } else {
+                                const descriptionBox = skillCard.querySelector('.skill-description');
+                                const descriptionText = skillCard.querySelector('.description-text');
+                                if (descriptionBox && descriptionText) {
+                                    descriptionText.textContent = description;
+                                    descriptionBox.style.display = 'block';
+                                    skillCard.classList.add('active', 'pulse');
+                                    activeCards.push(skillCard);
+                                }
                             }
                         }
+                    });
+
+                    // Ativa a galeria de projetos
+                    const projectGallery = document.querySelector('.project-gallery');
+                    projectGallery.classList.add('active');
+
+                    // Cria conexões entre os cards ativos e a galeria
+                    activeCards.forEach(card => {
+                        const cardRect = card.getBoundingClientRect();
+                        const galleryRect = projectGallery.getBoundingClientRect();
+                        
+                        const startX = cardRect.right;
+                        const startY = cardRect.top + cardRect.height / 2;
+                        const endX = galleryRect.left;
+                        const endY = galleryRect.top + galleryRect.height / 2;
+                        
+                        const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+                        const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+                        
+                        // Obtém o valor do gráfico para determinar a espessura
+                        const chart = Chart.getChart(card.querySelector('canvas'));
+                        const value = chart.data.datasets[0].data[0];
+                        
+                        const line = document.createElement('div');
+                        line.className = `connection-line ${getThicknessClass(value)}`;
+                        line.style.width = `${length}px`;
+                        line.style.left = `${startX}px`;
+                        line.style.top = `${startY}px`;
+                        line.style.transform = `rotate(${angle}deg)`;
+                        
+                        document.body.appendChild(line);
+                        setTimeout(() => line.classList.add('active'), 100);
                     });
                 }
             }
@@ -1435,6 +1558,18 @@
                 document.querySelectorAll('.skill-description').forEach(desc => {
                     desc.style.display = 'none';
                 });
+                
+                // Remove classes ativas e restaura visibilidade
+                document.querySelectorAll('.skill-card').forEach(card => {
+                    card.classList.remove('active', 'pulse', 'hidden');
+                });
+                document.querySelector('.project-gallery').classList.remove('active');
+                
+                // Remove linhas de conexão
+                document.querySelectorAll('.connection-line').forEach(line => {
+                    line.remove();
+                });
+                
                 // Restaura os valores originais dos gráficos
                 Object.entries(skills).forEach(([id, { value }]) => {
                     const chart = Chart.getChart(document.getElementById(id));
