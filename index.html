@@ -68,13 +68,15 @@
             min-height: 100vh;
             position: relative;
             border-radius: 50px;
+            overflow: hidden;
         }
 
         header {
             background: linear-gradient(to right, #0babc0, #061133);
-            padding: 1rem;
+            padding: 0.5rem;
             color: white;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
             align-items: center;
             position: relative;
@@ -83,8 +85,28 @@
 
         .header-info {
             display: flex;
+            flex-direction: column;
             align-items: center;
+            text-align: center;
+            width: 100%;
             caret-color: transparent;
+        }
+
+        @media only screen and (min-width: 769px) {
+            header {
+                flex-direction: row;
+                padding: 1rem;
+            }
+
+            .header-info {
+                flex-direction: row;
+                text-align: left;
+            }
+
+            .header-info img {
+                margin-right: 0.5rem;
+                margin-bottom: 0;
+            }
         }
 
         header h1 {
@@ -654,12 +676,12 @@
         /* Estilos responsivos para dispositivos móveis */
         @media only screen and (max-width: 768px) {
             .project-gallery {
-                padding: 1rem;
+                padding: 0.5rem;
             }
 
             .project-images {
                 grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-                gap: 0.8rem;
+                gap: 0.5rem;
             }
 
             .project-images img {
@@ -685,16 +707,17 @@
             }
 
             #foto-perfil {
-                width: 150px;
-                height: 150px;
+                width: 120px;
+                height: 120px;
             }
 
             header h1 {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
             }
 
             header p {
                 font-size: 0.8rem;
+                max-width: 100%;
             }
 
             .connection-line {
@@ -716,12 +739,46 @@
             .connection-line.very-thick {
                 height: 2px;
             }
+
+            .skills-layout {
+                padding: 0.5rem;
+                gap: 0.5rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 0.5rem;
+                padding: 0.5rem;
+            }
+
+            .skill-card {
+                min-height: 120px;
+            }
+
+            .skill-card canvas {
+                width: 100px !important;
+                height: 100px !important;
+            }
+
+            .skill-description {
+                height: 60px;
+                padding: 0.5rem;
+            }
+
+            .description-text {
+                font-size: 0.7rem;
+            }
+
+            .hobbies-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
         }
 
         @media only screen and (max-width: 480px) {
             .project-images {
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-                gap: 0.6rem;
+                gap: 0.3rem;
             }
 
             .project-images img {
@@ -745,12 +802,12 @@
             }
 
             #foto-perfil {
-                width: 120px;
-                height: 120px;
+                width: 100px;
+                height: 100px;
             }
 
             header h1 {
-                font-size: 1.2rem;
+                font-size: 1rem;
             }
 
             header p {
@@ -765,7 +822,7 @@
 
             .header-info img {
                 margin-right: 0;
-                margin-bottom: 1rem;
+                margin-bottom: 0.5rem;
             }
 
             .connection-line {
@@ -786,6 +843,49 @@
 
             .connection-line.very-thick {
                 height: 1px;
+            }
+
+            .skills-layout {
+                padding: 0.3rem;
+                gap: 0.3rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                gap: 0.3rem;
+                padding: 0.3rem;
+            }
+
+            .skill-card {
+                min-height: 100px;
+            }
+
+            .skill-card canvas {
+                width: 80px !important;
+                height: 80px !important;
+            }
+
+            .skill-description {
+                height: 50px;
+                padding: 0.3rem;
+            }
+
+            .description-text {
+                font-size: 0.6rem;
+            }
+
+            .hobbies-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .skills-title-container img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .skills-title-container h2 {
+                font-size: 1.2rem;
             }
         }
 
