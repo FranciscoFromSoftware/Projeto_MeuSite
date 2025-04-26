@@ -71,7 +71,7 @@
         }
 
         header {
-            background: linear-gradient(to right, #0b87c0, #061133);
+            background: linear-gradient(to right, #0babc0, #061133);
             padding: 1rem;
             color: white;
             display: flex;
@@ -178,7 +178,7 @@
 
         h2 {
             font-family: 'Orbitron', sans-serif;
-            color: #00c6ff;
+            color: #139eb1;
             margin-bottom: 0.1rem;
             margin-left: 0.1rem;
         }
@@ -994,6 +994,34 @@
                 bottom: 0; /* Mantém no final da tela */
             }
         }
+
+        /* Estilos para o título com ícone */
+        .skills-title-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .skills-title-container img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .skills-title-container img {
+                width: 70px;
+                height: 70px;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .skills-title-container img {
+                width: 60px;
+                height: 60px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1030,7 +1058,10 @@
         </header>
         <main>
             <div class="matrix-rain" id="matrixRain"></div>
-            <h2>Habilidades Técnicas</h2>
+            <div class="skills-title-container">
+                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/brainiconBlueSky.png?raw=true" alt="Ícone de Cérebro">
+                <h2>Habilidades Técnicas</h2>
+            </div>
             <div class="skills-layout">
                 <div class="skills-grid">
                     <div class="skill-card" data-skill="chartExcel">
@@ -1493,7 +1524,7 @@
                                 }
                             },
                             legend: { display: false },
-                            title: { display: true, text: label, color: '#1D577D', font: { size: 16 } },
+                            title: { display: true, text: label, color: '#139eb1', font: { size: 16 } },
                             datalabels: {
                                 color: '#03172C',
                                 font: {
