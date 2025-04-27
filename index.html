@@ -67,7 +67,6 @@
             margin: 0 auto;
             min-height: 100vh;
             position: relative;
-            border-radius: 50px;
             overflow: hidden;
         }
 
@@ -135,12 +134,12 @@
 
         header .connect-links h2 {
             font-size: 2rem;
-            margin-bottom: 1rem;
-            margin-right: 3rem;
+            margin-bottom: 3rem;
+            margin-right: 4rem;
         }
 
         header .connect-links img {
-            width: 70px;
+            width: 60px;
             margin-left: 0.5rem;
             margin-right: 0.5rem;
         }
@@ -1122,6 +1121,26 @@
                 height: 60px;
             }
         }
+
+        /* Estilos para o link do hobby */
+        .hobby-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hobby-link:hover .hobby-caption {
+            background: rgba(0, 198, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .hobby-link:hover img {
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -1352,9 +1371,8 @@
 
             <!-- Seção de imagens do Pentaho -->
             <div class="project-images pentaho-images" style="display: none;">
-                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true" alt="Imagem 1 do Pentaho" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true">
-                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonLocal.png?raw=true" alt="Imagem 2 do Pentaho" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonLocal.png?raw=true">
-                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonViloes.png?raw=true" alt="Imagem 3 do Pentaho" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonViloes.png?raw=true">
+                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/ColetadeDadosAPIPentaho.png?raw=true" alt="Imagem 1 do Pentaho" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/ColetadeDadosAPIPentaho.png?raw=true">
+                
             </div>
 
             <!-- Seção de imagens do Figma -->
@@ -1388,16 +1406,22 @@
             </div>
             <div class="hobbies-gallery">
                 <div class="hobby-item">
-                    <img src="https://www.wargamer.com/wp-content/uploads/2021/09/total-war-warhammer-3-factions.jpg" alt="Jogos de Estratégia">
-                    <div class="hobby-caption">Jogos de Estratégia</div>
+                    <a href="https://warhammer3.totalwar.com/" target="_blank" class="hobby-link">
+                        <img src="https://www.wargamer.com/wp-content/uploads/2021/09/total-war-warhammer-3-factions.jpg" alt="Jogos de Estratégia">
+                        <div class="hobby-caption">Jogos de Estratégia</div>
+                    </a>
                 </div>
                 <div class="hobby-item">
-                    <img src="https://th.bing.com/th/id/R.0f1b31c726a786ec602f7797013f1c75?rik=%2bC4ExIsQEcI9Fw&pid=ImgRaw&r=0" alt="Ficção Científica">
-                    <div class="hobby-caption">Ficção</div>
+                    <a href="https://en.bandainamcoent.eu/elden-ring/elden-ring" target="_blank" class="hobby-link">
+                        <img src="https://th.bing.com/th/id/R.0f1b31c726a786ec602f7797013f1c75?rik=%2bC4ExIsQEcI9Fw&pid=ImgRaw&r=0" alt="Ficção Científica">
+                        <div class="hobby-caption">Ficção</div>
+                    </a>
                 </div>
                 <div class="hobby-item">
-                    <img src="https://files.tecnoblog.net/wp-content/uploads/2021/10/asml-euv.jpg" alt="Tecnologia">
-                    <div class="hobby-caption">Tecnologia</div>
+                    <a href="https://www.asml.com/en" target="_blank" class="hobby-link">
+                        <img src="https://files.tecnoblog.net/wp-content/uploads/2021/10/asml-euv.jpg" alt="Tecnologia">
+                        <div class="hobby-caption">Tecnologia</div>
+                    </a>
                 </div>
             </div>
         </div>
