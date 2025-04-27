@@ -1074,53 +1074,26 @@
 
         /* Estilos para o personagem correndo */
         .running-character {
-            position: fixed;
-            bottom: 0;
-            left: -100px;
-            width: 100px;
-            height: auto;
-            z-index: 1000;
-            animation: runAcross 10s linear infinite;
-            transition: opacity 0.3s ease;
-        }
-
-        .running-character.hidden {
-            opacity: 0;
-            pointer-events: none;
+            display: none; /* Desativa o personagem */
         }
 
         @keyframes runAcross {
-            0% {
-                left: -100px;
-                transform: scaleX(1);
-            }
-            49% {
-                transform: scaleX(1);
-            }
-            50% {
-                left: calc(100vw + 100px);
-                transform: scaleX(-1);
-            }
-            99% {
-                transform: scaleX(-1);
-            }
-            100% {
-                left: -100px;
-                transform: scaleX(1);
-            }
+            0% { left: -100px; transform: scaleX(1); }
+            49% { transform: scaleX(1); }
+            50% { left: calc(100vw + 100px); transform: scaleX(-1); }
+            99% { transform: scaleX(-1); }
+            100% { left: -100px; transform: scaleX(1); }
         }
 
         @media only screen and (max-width: 768px) {
             .running-character {
-                width: 80px;
-                bottom: 0; /* Mantém no final da tela */
+                display: none;
             }
         }
 
         @media only screen and (max-width: 480px) {
             .running-character {
-                width: 60px;
-                bottom: 0; /* Mantém no final da tela */
+                display: none;
             }
         }
 
@@ -1459,7 +1432,7 @@
     </div>
 
     <!-- Personagem correndo -->
-    <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/giphy-1--unscreen.gif?raw=true" alt="Personagem correndo" class="running-character">
+    <!-- Removendo o elemento img do personagem -->
 
     <script>
         // Código para gerar a chuva Matrix
@@ -1591,17 +1564,48 @@
             
             // Configuração do gráfico
             const data = [];
-            const maxPoints = 15; // Reduzido para menos pontos para curvas mais suaves
+            const maxPoints = 15;
             const minValue = 0;
             const maxValue = 100;
+            let lastTime = 5;
+            const updateInterval = 1; // Aumentado de 300 para 500ms
+            let currentData = [];
+            let targetData = [];
+            let interpolationProgress = 5;
+            const interpolationSpeed = 1; // Reduzido de 0.05 para 0.02
             
             // Inicializa os dados
             for (let i = 0; i < maxPoints; i++) {
-                data.push(Math.random() * (maxValue - minValue) + minValue);
+                const value = Math.random() * (maxValue - minValue) + minValue;
+                data.push(value);
+                currentData.push(value);
+                targetData.push(value);
             }
             
             // Função para desenhar o gráfico
-            function drawHeaderGraph() {
+            function drawHeaderGraph(timestamp) {
+                // Verifica se é hora de atualizar os dados
+                if (!lastTime || timestamp - lastTime >= updateInterval) {
+                    lastTime = timestamp;
+                    
+                    // Atualiza os dados alvo
+                    const newValue = Math.random() * (maxValue - minValue) + minValue;
+                    targetData.shift();
+                    targetData.push(newValue);
+                    interpolationProgress = 0;
+                }
+                
+                // Atualiza a interpolação
+                if (interpolationProgress < 1) {
+                    interpolationProgress += interpolationSpeed;
+                    if (interpolationProgress > 1) interpolationProgress = 1;
+                    
+                    // Interpola entre os dados atuais e alvo
+                    for (let i = 0; i < currentData.length; i++) {
+                        currentData[i] = currentData[i] + (targetData[i] - currentData[i]) * interpolationProgress;
+                    }
+                }
+                
                 headerCtx.clearRect(0, 0, headerCanvas.width, headerCanvas.height);
                 
                 // Configura o estilo da linha
@@ -1613,11 +1617,11 @@
                 const step = headerCanvas.width / (maxPoints - 1);
                 
                 // Desenha a curva suavizada
-                for (let i = 0; i < data.length - 1; i++) {
+                for (let i = 0; i < currentData.length - 1; i++) {
                     const x1 = i * step;
-                    const y1 = headerCanvas.height - (data[i] / maxValue * headerCanvas.height);
+                    const y1 = headerCanvas.height - (currentData[i] / maxValue * headerCanvas.height);
                     const x2 = (i + 1) * step;
-                    const y2 = headerCanvas.height - (data[i + 1] / maxValue * headerCanvas.height);
+                    const y2 = headerCanvas.height - (currentData[i + 1] / maxValue * headerCanvas.height);
                     
                     // Calcula os pontos de controle para a curva cúbica
                     const cp1x = x1 + (x2 - x1) * 0.3;
@@ -1637,9 +1641,9 @@
                 
                 // Desenha os marcadores
                 headerCtx.fillStyle = '#0077ff';
-                for (let i = 0; i < data.length; i++) {
+                for (let i = 0; i < currentData.length; i++) {
                     const x = i * step;
-                    const y = headerCanvas.height - (data[i] / maxValue * headerCanvas.height);
+                    const y = headerCanvas.height - (currentData[i] / maxValue * headerCanvas.height);
                     
                     // Desenha um círculo como marcador
                     headerCtx.beginPath();
@@ -1647,19 +1651,12 @@
                     headerCtx.fill();
                 }
                 
-                // Atualiza os dados suavemente
-                const newValue = Math.random() * (maxValue - minValue) + minValue;
-                data.shift();
-                data.push(newValue);
-                
-                // Repete a animação com um intervalo maior para uma animação mais suave
-                setTimeout(() => {
-                    requestAnimationFrame(drawHeaderGraph);
-                }, 1000); // Aumentado para 1000ms para uma animação mais suave
+                // Repete a animação
+                requestAnimationFrame(drawHeaderGraph);
             }
             
             // Inicia a animação
-            drawHeaderGraph();
+            requestAnimationFrame(drawHeaderGraph);
 
             // Resto do código existente...
             createMatrixRain();
@@ -1676,18 +1673,24 @@
             const closeBtn = document.querySelector('.modal-close');
             const prevBtn = document.querySelector('.modal-prev');
             const nextBtn = document.querySelector('.modal-next');
-            const runningCharacter = document.querySelector('.running-character');
             let currentImgIndex = 0;
             let currentImages = [];
 
             // Adiciona o manipulador de eventos para os projetos
             projectCovers.forEach(cover => {
                 cover.addEventListener('click', function() {
+                    console.log('Project cover clicked'); // Debug log
                     const projectId = this.dataset.project;
                     const projectImages = document.querySelector(`.project-images.${projectId}`);
                     const closeButton = document.querySelector('.close-gallery-btn');
 
+                    if (!projectImages) {
+                        console.log('Project images not found for:', projectId); // Debug log
+                        return;
+                    }
+
                     if (projectImages.style.display === 'none' || projectImages.style.display === '') {
+                        console.log('Opening project gallery'); // Debug log
                         // Esconde todas as outras imagens primeiro
                         document.querySelectorAll('.project-images').forEach(images => {
                             images.style.display = 'none';
@@ -1697,16 +1700,13 @@
                         showProjectDescriptions(projectId);
                         // Mostra o botão de fechar
                         closeButton.style.display = 'flex';
-                        // Esconde o personagem correndo
-                        runningCharacter.classList.add('hidden');
                     } else {
+                        console.log('Closing project gallery'); // Debug log
                         projectImages.style.display = 'none';
                         // Esconde todas as descrições
                         hideAllDescriptions();
                         // Esconde o botão de fechar
                         closeButton.style.display = 'none';
-                        // Mostra o personagem correndo
-                        runningCharacter.classList.remove('hidden');
                     }
                 });
             });
@@ -1733,13 +1733,11 @@
 
             closeBtn.onclick = function() {
                 modal.style.display = "none";
-                runningCharacter.classList.remove('hidden');
             }
 
             window.onclick = function(event) {
                 if (event.target === modal) {
                     modal.style.display = "none";
-                    runningCharacter.classList.remove('hidden');
                 }
             }
 
@@ -1795,8 +1793,6 @@
                             currentImgIndex = 0;
                             // Esconde o link do GitHub para imagens de habilidades
                             document.getElementById('githubLink').classList.add('hidden');
-                            // Esconde o personagem correndo
-                            runningCharacter.classList.add('hidden');
                         }
                     }
                 });
@@ -1990,8 +1986,9 @@
                 });
             }
 
-            // Modifica a função showProjectDescriptions para esconder o personagem
+            // Função para mostrar as descrições do projeto
             function showProjectDescriptions(projectId) {
+                console.log('Showing descriptions for project:', projectId); // Debug log
                 const descriptions = projectDescriptions[projectId];
                 if (descriptions) {
                     // Remove classes ativas anteriores
@@ -2002,9 +1999,6 @@
                         line.remove();
                     });
                     document.querySelector('.project-gallery').classList.remove('active');
-
-                    // Esconde o personagem correndo
-                    runningCharacter.classList.add('hidden');
 
                     // Atualiza os gráficos primeiro
                     updateCharts(descriptions);
@@ -2031,14 +2025,16 @@
 
                     // Ativa a galeria de projetos
                     const projectGallery = document.querySelector('.project-gallery');
-                    projectGallery.classList.add('active');
+                    if (projectGallery) {
+                        projectGallery.classList.add('active');
+                    }
 
                     // Atualiza as linhas de conexão
                     updateConnectionLines();
                 }
             }
 
-            // Modifica a função hideAllDescriptions para mostrar o personagem
+            // Função para esconder todas as descrições
             function hideAllDescriptions() {
                 document.querySelectorAll('.skill-description').forEach(desc => {
                     desc.style.display = 'none';
@@ -2063,13 +2059,20 @@
                         chart.update();
                     }
                 });
+            }
 
-                // Mostra o personagem correndo
-                runningCharacter.classList.remove('hidden');
+            // Adiciona o manipulador de eventos para o botão de fechar
+            const closeButton = document.querySelector('.close-gallery-btn');
+            if (closeButton) {
+                closeButton.addEventListener('click', function() {
+                    console.log('Close button clicked'); // Debug log
+                    closeGallery();
+                });
             }
 
             // Função para fechar a galeria
             function closeGallery() {
+                console.log('Closing gallery'); // Debug log
                 // Esconde todas as imagens dos projetos
                 document.querySelectorAll('.project-images').forEach(images => {
                     images.style.display = 'none';
@@ -2079,14 +2082,11 @@
                 hideAllDescriptions();
                 
                 // Esconde o botão de fechar
-                document.querySelector('.close-gallery-btn').style.display = 'none';
-
-                // Mostra o personagem correndo
-                runningCharacter.classList.remove('hidden');
+                const closeButton = document.querySelector('.close-gallery-btn');
+                if (closeButton) {
+                    closeButton.style.display = 'none';
+                }
             }
-
-            // Adiciona o manipulador de eventos para o botão de fechar
-            document.querySelector('.close-gallery-btn').addEventListener('click', closeGallery);
 
             // Adiciona listeners para atualizar as linhas durante scroll e resize
             window.addEventListener('scroll', updateConnectionLines);
@@ -2097,20 +2097,51 @@
 
             // Funções para o modal de Hobbies
             function openHobbiesModal() {
-                document.getElementById('hobbiesModal').style.display = 'block';
+                const modal = document.getElementById('hobbiesModal');
+                if (modal) {
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                }
             }
 
             function closeHobbiesModal() {
-                document.getElementById('hobbiesModal').style.display = 'none';
-            }
-
-            // Fecha o modal se clicar fora dele
-            window.onclick = function(event) {
                 const modal = document.getElementById('hobbiesModal');
-                if (event.target === modal) {
+                if (modal) {
                     modal.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             }
+
+            // Inicializa os event listeners quando o DOM estiver carregado
+            document.addEventListener('DOMContentLoaded', function() {
+                // Inicializa o gráfico do header
+                initHeaderGraph();
+                
+                // Inicializa o modal de hobbies
+                const hobbiesBtn = document.querySelector('.hobbies-btn');
+                if (hobbiesBtn) {
+                    hobbiesBtn.onclick = openHobbiesModal;
+                }
+
+                const closeBtn = document.querySelector('.hobbies-close');
+                if (closeBtn) {
+                    closeBtn.onclick = closeHobbiesModal;
+                }
+
+                const modal = document.getElementById('hobbiesModal');
+                if (modal) {
+                    modal.onclick = function(event) {
+                        if (event.target === modal) {
+                            closeHobbiesModal();
+                        }
+                    };
+                }
+
+                // Resto do código existente...
+                createMatrixRain();
+                createMathFormulas();
+                // ... existing code ...
+            });
         });
 
         // Função para inicializar o gráfico do header
@@ -2130,9 +2161,11 @@
             
             // Configuração do gráfico
             const data = [];
-            const maxPoints = 15; // Reduzido para menos pontos para curvas mais suaves
+            const maxPoints = 15;
             const minValue = 0;
             const maxValue = 100;
+            let lastTime = 0;
+            const updateInterval = 500; // Aumentado de 300 para 500ms
             
             // Inicializa os dados
             for (let i = 0; i < maxPoints; i++) {
@@ -2140,7 +2173,17 @@
             }
             
             // Função para desenhar o gráfico
-            function drawHeaderGraph() {
+            function drawHeaderGraph(timestamp) {
+                // Verifica se é hora de atualizar os dados
+                if (!lastTime || timestamp - lastTime >= updateInterval) {
+                    lastTime = timestamp;
+                    
+                    // Atualiza os dados suavemente
+                    const newValue = Math.random() * (maxValue - minValue) + minValue;
+                    data.shift();
+                    data.push(newValue);
+                }
+                
                 headerCtx.clearRect(0, 0, headerCanvas.width, headerCanvas.height);
                 
                 // Configura o estilo da linha
@@ -2186,20 +2229,77 @@
                     headerCtx.fill();
                 }
                 
-                // Atualiza os dados suavemente
-                const newValue = Math.random() * (maxValue - minValue) + minValue;
-                data.shift();
-                data.push(newValue);
-                
-                // Repete a animação com um intervalo maior para uma animação mais suave
-                setTimeout(() => {
-                    requestAnimationFrame(drawHeaderGraph);
-                }, 1000); // Aumentado para 1000ms para uma animação mais suave
+                // Repete a animação
+                requestAnimationFrame(drawHeaderGraph);
             }
             
             // Inicia a animação
-            drawHeaderGraph();
+            requestAnimationFrame(drawHeaderGraph);
         }
+
+        // Funções do modal de Hobbies (no escopo global)
+        window.openHobbiesModal = function() {
+            console.log('Tentando abrir o modal...');
+            const modal = document.getElementById('hobbiesModal');
+            if (modal) {
+                console.log('Modal encontrado, abrindo...');
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            } else {
+                console.log('Modal não encontrado!');
+            }
+        };
+
+        window.closeHobbiesModal = function() {
+            console.log('Tentando fechar o modal...');
+            const modal = document.getElementById('hobbiesModal');
+            if (modal) {
+                console.log('Modal encontrado, fechando...');
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        };
+
+        // Inicializa quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM carregado, inicializando...');
+            
+            // Inicializa o gráfico do header
+            initHeaderGraph();
+            
+            // Verifica se o botão existe
+            const hobbiesBtn = document.querySelector('.hobbies-btn');
+            console.log('Botão encontrado:', hobbiesBtn);
+            
+            if (hobbiesBtn) {
+                hobbiesBtn.onclick = window.openHobbiesModal;
+            }
+
+            // Verifica se o botão de fechar existe
+            const closeBtn = document.querySelector('.hobbies-close');
+            console.log('Botão de fechar encontrado:', closeBtn);
+            
+            if (closeBtn) {
+                closeBtn.onclick = window.closeHobbiesModal;
+            }
+
+            // Verifica se o modal existe
+            const modal = document.getElementById('hobbiesModal');
+            console.log('Modal encontrado:', modal);
+            
+            if (modal) {
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        window.closeHobbiesModal();
+                    }
+                };
+            }
+
+            // Resto do código existente...
+            createMatrixRain();
+            createMathFormulas();
+            // ... existing code ...
+        });
     </script>
 </body>
 </html>
