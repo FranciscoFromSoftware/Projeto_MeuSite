@@ -82,6 +82,16 @@
             z-index: 2;
         }
 
+        .header-graph {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
         .header-info {
             display: flex;
             flex-direction: column;
@@ -89,6 +99,8 @@
             text-align: center;
             width: 100%;
             caret-color: transparent;
+            position: relative;
+            z-index: 3;
         }
 
         @media only screen and (min-width: 769px) {
@@ -112,12 +124,16 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 2rem;
             margin-bottom: 0;
+            position: relative;
+            z-index: 3;
         }
 
         header p {
             font-size: 0.9rem;
             max-width: 600px;
             margin: 0;
+            position: relative;
+            z-index: 3;
         }
 
         #foto-perfil {
@@ -126,10 +142,14 @@
             border-radius: 20%;
             margin-right: 0.5rem;
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 3;
         }
 
         header .connect-links {
             text-align: right;
+            position: relative;
+            z-index: 3;
         }
 
         header .connect-links h2 {
@@ -170,27 +190,35 @@
             z-index: 0;
         }
 
-        .matrix-column {
+        .math-formula {
             position: absolute;
-            top: -100%;
             color: #00c8ff;
             font-family: 'Courier New', monospace;
-            font-size: 14px;
-            writing-mode: vertical-lr;
-            text-orientation: upright;
+            font-size: 16px;
+            opacity: 0;
+            animation: fadeInOut 8s infinite;
+            pointer-events: none;
             white-space: nowrap;
-            animation: matrix-rain 3s linear infinite;
-            opacity: 0.3;
+            text-shadow: 0 0 5px rgba(0, 200, 255, 0.3);
         }
 
-        @keyframes matrix-rain {
-            0% {
-                transform: translateY(-100%);
-            }
-            100% {
-                transform: translateY(100%);
-            }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: scale(0.8); }
+            20% { opacity: 0.3; transform: scale(1); }
+            80% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.8); }
         }
+
+        .math-formula:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .math-formula:nth-child(2) { top: 30%; left: 15%; animation-delay: 2s; }
+        .math-formula:nth-child(3) { top: 50%; left: 25%; animation-delay: 4s; }
+        .math-formula:nth-child(4) { top: 70%; left: 35%; animation-delay: 6s; }
+        .math-formula:nth-child(5) { top: 20%; left: 45%; animation-delay: 1s; }
+        .math-formula:nth-child(6) { top: 40%; left: 55%; animation-delay: 3s; }
+        .math-formula:nth-child(7) { top: 60%; left: 65%; animation-delay: 5s; }
+        .math-formula:nth-child(8) { top: 80%; left: 75%; animation-delay: 7s; }
+        .math-formula:nth-child(9) { top: 15%; left: 85%; animation-delay: 0.5s; }
+        .math-formula:nth-child(10) { top: 35%; left: 95%; animation-delay: 2.5s; }
 
         .skills-layout, .project-gallery {
             position: relative;
@@ -904,6 +932,8 @@
             margin-top: 1rem;
             transition: all 0.3s ease;
             box-shadow: 0 0 10px rgba(0, 198, 255, 0.5);
+            position: relative;
+            z-index: 3;
         }
 
         .hobbies-btn:hover {
@@ -1146,6 +1176,7 @@
 <body>
     <div class="container">
         <header>
+            <canvas class="header-graph" id="headerGraph"></canvas>
             <div class="header-info">
                 <img id="foto-perfil" src="https://media.licdn.com/dms/image/v2/D4D03AQHNnNd1vxq-Dg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1701051341167?e=1750896000&v=beta&t=5LgcJ_tXUtMifjwZQM3ZG_RCDvAPvK8HNIMiMG0She0" alt="Sua Foto">
                 <div>
@@ -1454,8 +1485,187 @@
             }
         }
 
+        // Código para gerar as fórmulas matemáticas
+        function createMathFormulas() {
+            const matrixRain = document.getElementById('matrixRain');
+            matrixRain.innerHTML = ''; // Limpa qualquer conteúdo existente
+            
+            const formulas = [
+                '∫ f(x) dx = F(x) + C',
+                'e^(iπ) + 1 = 0',
+                '∇⋅E = ρ/ε₀',
+                'F = ma',
+                'E = mc²',
+                'a² + b² = c²',
+                'f(x) = Σ aₙxⁿ',
+                '∇×E = -∂B/∂t',
+                'P(A|B) = P(B|A)P(A)/P(B)',
+                'x = (-b ± √(b²-4ac))/2a',
+                'sin²θ + cos²θ = 1',
+                '∇²ψ + (8π²m/h²)(E-V)ψ = 0'
+            ];
+            
+            // Função para gerar posição aleatória
+            function getRandomPosition() {
+                const top = Math.random() * 80; // Limita a 80% da altura
+                const left = Math.random() * 90; // Limita a 90% da largura
+                return { top, left };
+            }
+            
+            // Função para verificar se uma posição está muito próxima de outra
+            function isTooClose(newPos, existingPositions, minDistance = 15) {
+                return existingPositions.some(pos => {
+                    const distance = Math.sqrt(
+                        Math.pow(pos.top - newPos.top, 2) + 
+                        Math.pow(pos.left - newPos.left, 2)
+                    );
+                    return distance < minDistance;
+                });
+            }
+            
+            const existingPositions = [];
+            const usedFormulas = new Set();
+            
+            // Cria 12 fórmulas em posições aleatórias
+            for (let i = 0; i < 12; i++) {
+                let position;
+                let attempts = 0;
+                const maxAttempts = 50;
+                
+                do {
+                    position = getRandomPosition();
+                    attempts++;
+                } while ((isTooClose(position, existingPositions)) && attempts < maxAttempts);
+                
+                if (attempts >= maxAttempts) continue;
+                
+                existingPositions.push(position);
+                
+                // Seleciona uma fórmula aleatória que ainda não foi usada
+                let randomFormula;
+                do {
+                    randomFormula = formulas[Math.floor(Math.random() * formulas.length)];
+                } while (usedFormulas.has(randomFormula) && usedFormulas.size < formulas.length);
+                
+                usedFormulas.add(randomFormula);
+                
+                const element = document.createElement('div');
+                element.className = 'math-formula';
+                element.textContent = randomFormula;
+                element.style.top = `${position.top}%`;
+                element.style.left = `${position.left}%`;
+                element.style.animationDelay = `${Math.random() * 8}s`;
+                element.style.animationDuration = `${6 + Math.random() * 4}s`;
+                element.style.fontSize = `${8 + Math.random() * 3}px`;
+                element.style.opacity = `${0.2 + Math.random() * 0.2}`;
+                
+                matrixRain.appendChild(element);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            // Inicializa o gráfico do header
+            initHeaderGraph();
+            
+            // Resto do código existente...
             createMatrixRain();
+            createMathFormulas();
+            // Recria as fórmulas a cada 30 segundos
+            setInterval(createMathFormulas, 30000);
+            // Registra o plugin globalmente
+            Chart.register(ChartDataLabels);
+            
+            // Código para o gráfico animado no header
+            const headerCanvas = document.getElementById('headerGraph');
+            const headerCtx = headerCanvas.getContext('2d');
+            
+            // Ajusta o tamanho do canvas para o header
+            function resizeHeaderCanvas() {
+                const header = document.querySelector('header');
+                headerCanvas.width = header.offsetWidth;
+                headerCanvas.height = header.offsetHeight;
+            }
+            
+            resizeHeaderCanvas();
+            window.addEventListener('resize', resizeHeaderCanvas);
+            
+            // Configuração do gráfico
+            const data = [];
+            const maxPoints = 15; // Reduzido para menos pontos para curvas mais suaves
+            const minValue = 0;
+            const maxValue = 100;
+            
+            // Inicializa os dados
+            for (let i = 0; i < maxPoints; i++) {
+                data.push(Math.random() * (maxValue - minValue) + minValue);
+            }
+            
+            // Função para desenhar o gráfico
+            function drawHeaderGraph() {
+                headerCtx.clearRect(0, 0, headerCanvas.width, headerCanvas.height);
+                
+                // Configura o estilo da linha
+                headerCtx.strokeStyle = '#0077ff';
+                headerCtx.lineWidth = 2;
+                headerCtx.beginPath();
+                
+                // Calcula os pontos do gráfico
+                const step = headerCanvas.width / (maxPoints - 1);
+                
+                // Desenha a curva suavizada
+                for (let i = 0; i < data.length - 1; i++) {
+                    const x1 = i * step;
+                    const y1 = headerCanvas.height - (data[i] / maxValue * headerCanvas.height);
+                    const x2 = (i + 1) * step;
+                    const y2 = headerCanvas.height - (data[i + 1] / maxValue * headerCanvas.height);
+                    
+                    // Calcula os pontos de controle para a curva cúbica
+                    const cp1x = x1 + (x2 - x1) * 0.3;
+                    const cp1y = y1;
+                    const cp2x = x2 - (x2 - x1) * 0.3;
+                    const cp2y = y2;
+                    
+                    if (i === 0) {
+                        headerCtx.moveTo(x1, y1);
+                    }
+                    
+                    // Usa curva cúbica para suavizar a transição
+                    headerCtx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x2, y2);
+                }
+                
+                headerCtx.stroke();
+                
+                // Desenha os marcadores
+                headerCtx.fillStyle = '#0077ff';
+                for (let i = 0; i < data.length; i++) {
+                    const x = i * step;
+                    const y = headerCanvas.height - (data[i] / maxValue * headerCanvas.height);
+                    
+                    // Desenha um círculo como marcador
+                    headerCtx.beginPath();
+                    headerCtx.arc(x, y, 3, 0, Math.PI * 2);
+                    headerCtx.fill();
+                }
+                
+                // Atualiza os dados suavemente
+                const newValue = Math.random() * (maxValue - minValue) + minValue;
+                data.shift();
+                data.push(newValue);
+                
+                // Repete a animação com um intervalo maior para uma animação mais suave
+                setTimeout(() => {
+                    requestAnimationFrame(drawHeaderGraph);
+                }, 1000); // Aumentado para 1000ms para uma animação mais suave
+            }
+            
+            // Inicia a animação
+            drawHeaderGraph();
+
+            // Resto do código existente...
+            createMatrixRain();
+            createMathFormulas();
+            // Recria as fórmulas a cada 30 segundos
+            setInterval(createMathFormulas, 30000);
             // Registra o plugin globalmente
             Chart.register(ChartDataLabels);
             
@@ -1884,23 +2094,111 @@
 
             // Atualiza as linhas periodicamente para garantir que estejam corretas
             setInterval(updateConnectionLines, 100);
+
+            // Funções para o modal de Hobbies
+            function openHobbiesModal() {
+                document.getElementById('hobbiesModal').style.display = 'block';
+            }
+
+            function closeHobbiesModal() {
+                document.getElementById('hobbiesModal').style.display = 'none';
+            }
+
+            // Fecha o modal se clicar fora dele
+            window.onclick = function(event) {
+                const modal = document.getElementById('hobbiesModal');
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            }
         });
 
-        // Funções para o modal de Hobbies
-        function openHobbiesModal() {
-            document.getElementById('hobbiesModal').style.display = 'block';
-        }
-
-        function closeHobbiesModal() {
-            document.getElementById('hobbiesModal').style.display = 'none';
-        }
-
-        // Fecha o modal se clicar fora dele
-        window.onclick = function(event) {
-            const modal = document.getElementById('hobbiesModal');
-            if (event.target === modal) {
-                modal.style.display = 'none';
+        // Função para inicializar o gráfico do header
+        function initHeaderGraph() {
+            const headerCanvas = document.getElementById('headerGraph');
+            const headerCtx = headerCanvas.getContext('2d');
+            
+            // Ajusta o tamanho do canvas para o header
+            function resizeHeaderCanvas() {
+                const header = document.querySelector('header');
+                headerCanvas.width = header.offsetWidth;
+                headerCanvas.height = header.offsetHeight;
             }
+            
+            resizeHeaderCanvas();
+            window.addEventListener('resize', resizeHeaderCanvas);
+            
+            // Configuração do gráfico
+            const data = [];
+            const maxPoints = 15; // Reduzido para menos pontos para curvas mais suaves
+            const minValue = 0;
+            const maxValue = 100;
+            
+            // Inicializa os dados
+            for (let i = 0; i < maxPoints; i++) {
+                data.push(Math.random() * (maxValue - minValue) + minValue);
+            }
+            
+            // Função para desenhar o gráfico
+            function drawHeaderGraph() {
+                headerCtx.clearRect(0, 0, headerCanvas.width, headerCanvas.height);
+                
+                // Configura o estilo da linha
+                headerCtx.strokeStyle = '#0077ff';
+                headerCtx.lineWidth = 2;
+                headerCtx.beginPath();
+                
+                // Calcula os pontos do gráfico
+                const step = headerCanvas.width / (maxPoints - 1);
+                
+                // Desenha a curva suavizada
+                for (let i = 0; i < data.length - 1; i++) {
+                    const x1 = i * step;
+                    const y1 = headerCanvas.height - (data[i] / maxValue * headerCanvas.height);
+                    const x2 = (i + 1) * step;
+                    const y2 = headerCanvas.height - (data[i + 1] / maxValue * headerCanvas.height);
+                    
+                    // Calcula os pontos de controle para a curva cúbica
+                    const cp1x = x1 + (x2 - x1) * 0.3;
+                    const cp1y = y1;
+                    const cp2x = x2 - (x2 - x1) * 0.3;
+                    const cp2y = y2;
+                    
+                    if (i === 0) {
+                        headerCtx.moveTo(x1, y1);
+                    }
+                    
+                    // Usa curva cúbica para suavizar a transição
+                    headerCtx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x2, y2);
+                }
+                
+                headerCtx.stroke();
+                
+                // Desenha os marcadores
+                headerCtx.fillStyle = '#0077ff';
+                for (let i = 0; i < data.length; i++) {
+                    const x = i * step;
+                    const y = headerCanvas.height - (data[i] / maxValue * headerCanvas.height);
+                    
+                    // Desenha um círculo como marcador
+                    headerCtx.beginPath();
+                    headerCtx.arc(x, y, 3, 0, Math.PI * 2);
+                    headerCtx.fill();
+                }
+                
+                // Atualiza os dados suavemente
+                const newValue = Math.random() * (maxValue - minValue) + minValue;
+                data.shift();
+                data.push(newValue);
+                
+                // Repete a animação com um intervalo maior para uma animação mais suave
+                setTimeout(() => {
+                    requestAnimationFrame(drawHeaderGraph);
+                }, 1000); // Aumentado para 1000ms para uma animação mais suave
+            }
+            
+            // Inicia a animação
+            drawHeaderGraph();
         }
     </script>
 </body>
