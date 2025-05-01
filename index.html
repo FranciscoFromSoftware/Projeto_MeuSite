@@ -1368,9 +1368,7 @@
 
             <!-- Seção de imagens do R -->
             <div class="project-images r-images" style="display: none;">
-                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true" alt="Imagem 1 do R" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_Python.png?raw=true">
-                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonLocal.png?raw=true" alt="Imagem 2 do R" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonLocal.png?raw=true">
-                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonViloes.png?raw=true" alt="Imagem 3 do R" data-full-src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/printInterfaceMySQL_PythonViloes.png?raw=true">
+                
             </div>
 
             <!-- Seção de imagens do Pentaho -->
@@ -1781,6 +1779,13 @@
             document.querySelectorAll('.skill-card').forEach(card => {
                 card.addEventListener('click', function() {
                     const skillId = this.dataset.skill;
+                    
+                    // Adiciona verificação especial para o card R
+                    if (skillId === 'chartR') {
+                        window.open('https://rpubs.com/XscientFHL', '_blank');
+                        return;
+                    }
+                    
                     const imagesContainer = document.querySelector(`.${skillId.replace('chart', '').toLowerCase()}-images`);
                     
                     if (imagesContainer) {
