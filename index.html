@@ -1215,7 +1215,7 @@
         <main>
             <div class="matrix-rain" id="matrixRain"></div>
             <div class="skills-title-container">
-                <img src="https://github.com/FranciscoFromSoftware/Projeto_HTML/blob/main/imagem/brainiconBlueSky.png?raw=true" alt="Ícone de Cérebro">
+                <img src="https://raw.githubusercontent.com/FranciscoFromSoftware/Projeto_HTML/main/imagem/brainiconBlueSky.png" alt="Ícone de Cérebro" loading="lazy">
                 <h2>Habilidades Técnicas</h2>
             </div>
             <div class="skills-layout">
@@ -2232,6 +2232,12 @@
                 createMathFormulas();
                 // ... existing code ...
             });
+
+            // Adiciona listener para fechar o modal do Figma
+            const figmaCloseBtn = document.querySelector('.figma-modal-close');
+            if (figmaCloseBtn) {
+                figmaCloseBtn.addEventListener('click', window.closeFigmaModal);
+            }
         });
 
         // Função para inicializar o gráfico do header
