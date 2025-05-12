@@ -1427,6 +1427,18 @@
             </iframe>
         </div>
     </div>
+    <!-- Novo Modal do Python -->
+    <div id="pythonModal" class="figma-modal">
+        <div class="figma-modal-content">
+            <span class="hobbies-close python-modal-close" onclick="closePythonModal()">&times;</span>
+            <iframe
+                id="pythonIframe"
+                src=""
+                style="border: 1px solid rgba(0, 0, 0, 0.1);" /* Mantém a borda do seu exemplo */
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
     <!-- Modal de Hobbies -->
     <div id="hobbiesModal" class="hobbies-modal">
         <div class="hobbies-content">
@@ -1829,7 +1841,7 @@
                     
                     // Substitua a verificação do Python:
                     if (skillId === 'chartPython') {
-                        window.open('https://projetobi-populacaobrasil.streamlit.app/', '_blank');
+                        openPythonModal();
                         return;
                     }
                     
@@ -2401,6 +2413,37 @@
             createMathFormulas();
             // ... existing code ...
         });
+
+        // Funções para o modal do Python:
+        function openPythonModal() {
+            const pythonUrl = "https://projetobi-populacaobrasil.streamlit.app/?embedded=true";
+            const pythonModal = document.getElementById('pythonModal');
+            const pythonIframe = document.getElementById('pythonIframe');
+            if (pythonModal && pythonIframe) {
+                pythonIframe.src = pythonUrl;
+                pythonIframe.style.width = '100%';
+                pythonIframe.style.border = 'none';
+                pythonIframe.onerror = function() {
+                    console.error("Erro ao carregar o iframe do Python:", pythonUrl);
+                };
+                pythonModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            } else {
+                console.error("Modal do Python ou Iframe não encontrado!");
+            }
+        }
+
+        function closePythonModal() {
+            const pythonModal = document.getElementById('pythonModal');
+            const pythonIframe = document.getElementById('pythonIframe');
+            if (pythonModal && pythonIframe) {
+                pythonModal.style.display = 'none';
+                pythonIframe.src = '';
+                document.body.style.overflow = '';
+            } else {
+                console.error("Modal do Python ou Iframe não encontrado!");
+            }
+        }
     </script>
 </body>
 </html>
