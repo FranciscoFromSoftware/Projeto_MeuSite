@@ -1869,16 +1869,46 @@
             });
 
             const skillColors = {
-                Python: '#3776AB',
-                "Power BI": '#F69813',
-                "Power Apps": '#5F0483',
-                "Power Automate": '#0C3497',
-                Excel: '#207345',
-                SQL: '#42B160',
-                Sharepoint: '#674987',
-                R: '#198CE7',
-                Pentaho: '#CC0000',
-                Figma: '#F24E1E'
+                Python: {
+                    start: '#00C9FF',
+                    end: '#bab100'
+                },
+                "Power BI": {
+                    start: '#ccfcc1',
+                    end: '#ff8800'
+                },
+                "Power Apps": {
+                    start: '#fcbdf3',
+                    end: '#4A00E0'
+                },
+                "Power Automate": {
+                    start: '#74EBD5',
+                    end: '#ACB6E5'
+                },
+                Excel: {
+                    start: '#00BA37',
+                    end: '#004500'
+                },
+                SQL: {
+                    start: '#007991',
+                    end: '#78ffd6'
+                },
+                Sharepoint: {
+                    start: '#360033',
+                    end: '#0b8793'
+                },
+                R: {
+                    start: '#EB3349',
+                    end: '#F45B69'
+                },
+                Pentaho: {
+                    start: '#150000',
+                    end: '#e30224'
+                },
+                Figma: {
+                    start: '#F270A2',
+                    end: '#f91659'
+                }
             };
 
             Object.entries(skills).forEach(([id, { label, value }]) => {
@@ -1886,7 +1916,15 @@
 
                 const skillCanvas = document.getElementById(id);
                 const ctx = skillCanvas.getContext('2d');
-                const skillColor = skillColors[label];
+                let skillColor = skillColors[label];
+
+                // Se for Python, cria o gradiente
+                if (typeof skillColor === 'object') {
+                    const gradient = ctx.createLinearGradient(0, 0, 0, skillCanvas.height);
+                    gradient.addColorStop(0, skillColor.start);
+                    gradient.addColorStop(1, skillColor.end);
+                    skillColor = gradient;
+                }
 
                 new Chart(ctx, {
                     type: 'doughnut',
