@@ -1435,6 +1435,25 @@
             </iframe>
         </div>
     </div>
+    <!-- Modal do Power BI -->
+    <div id="powerbiModal" class="figma-modal">
+        <div class="figma-modal-content">
+            <span class="hobbies-close powerbi-modal-close" onclick="closePowerBIModal()">&times;</span>
+            <iframe
+                id="powerbiIframe"
+                title="População do Brasil"
+                width="1000"
+                height="500"
+                src="https://app.powerbi.com/view?r=eyJrIjoiYWU0ZmFhNTUtNzNiYS00MWY1LWJhZWUtZTE1MmUwYjJiMTQxIiwidCI6IjY0YjI0ZDg4LTU4ODQtNDg0NC04YmZhLWMwNzFjOThjNjUyMSJ9&filterPaneEnabled=false&navContentPaneEnabled=false&zoomPaneEnabled=false
+                frameborder="0"
+                allowFullScreen="true"
+                filterPaneEnabled="false"
+                navContentPaneEnabled="false"
+                zoomPaneEnabled="false">
+            </iframe>
+        </div>
+    </div>
+
     <!-- Modal de Hobbies -->
     <div id="hobbiesModal" class="hobbies-modal">
         <div class="hobbies-content">
@@ -1832,6 +1851,12 @@
                     // Tratamento especial para o card Figma
                     if (skillId === 'chartFigma') {
                         openFigmaModal();
+                        return;
+                    }
+                    
+                    // Tratamento especial para o card Power BI
+                    if (skillId === 'chartPowerBI') {
+                        openPowerBIModal();
                         return;
                     }
                     
@@ -2442,6 +2467,16 @@
                     }
                 };
             }
+
+            // Adiciona listener para fechar o modal do Power BI ao clicar fora
+            const powerbiModal = document.getElementById('powerbiModal');
+            if (powerbiModal) {
+                powerbiModal.onclick = function(event) {
+                    if (event.target === powerbiModal) {
+                        closePowerBIModal();
+                    }
+                };
+            }
             // Resto do código existente...
             createMatrixRain();
             createMathFormulas();
@@ -2476,6 +2511,36 @@
                 document.body.style.overflow = '';
             } else {
                 console.error("Modal do Python ou Iframe não encontrado!");
+            }
+        }
+
+        // Funções para o modal do Power BI:
+        function openPowerBIModal() {
+            const powerbiModal = document.getElementById('powerbiModal');
+            const powerbiIframe = document.getElementById('powerbiIframe');
+            if (powerbiModal && powerbiIframe) {
+                powerbiIframe.style.width = '100%';
+                powerbiIframe.style.height = '100%';
+                powerbiIframe.style.border = 'none';
+                powerbiIframe.onerror = function() {
+                    console.error("Erro ao carregar o iframe do Power BI");
+                };
+                powerbiModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            } else {
+                console.error("Modal do Power BI ou Iframe não encontrado!");
+            }
+        }
+
+        function closePowerBIModal() {
+            const powerbiModal = document.getElementById('powerbiModal');
+            const powerbiIframe = document.getElementById('powerbiIframe');
+            if (powerbiModal && powerbiIframe) {
+                powerbiModal.style.display = 'none';
+                powerbiIframe.src = '';
+                document.body.style.overflow = '';
+            } else {
+                console.error("Modal do Power BI ou Iframe não encontrado!");
             }
         }
     </script>
