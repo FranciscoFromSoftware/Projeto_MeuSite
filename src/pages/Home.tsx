@@ -49,10 +49,10 @@ export const Home: React.FC = () => {
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: 'Uptime', value: '12.4YRS', color: 'text-secondary' },
-                { label: 'Core Nodes', value: '42+', color: 'text-primary' },
-                { label: 'Latency', value: '0.04ms', color: 'text-tertiary' },
-                { label: 'Encryption', value: 'AES-QNTM', color: 'text-on-surface' },
+                { label: 'Experiência', value: '12.4YRS', color: 'text-secondary' },
+                { label: 'Projetos Concluídos', value: '16', color: 'text-primary' },
+                { label: 'Tipos de Análises Realizadas', value: '39', color: 'text-tertiary' },
+                { label: 'Soluções de Negócios', value: '4', color: 'text-on-surface' },
               ].map((stat) => (
                 <div key={stat.label} className="bg-surface-high p-4 border-l-2 border-primary/30">
                   <span className="block font-mono text-[10px] text-on-surface-variant uppercase">{stat.label}</span>
