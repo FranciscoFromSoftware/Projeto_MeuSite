@@ -2,6 +2,19 @@ import React from 'react';
 import { Cpu, Activity, Terminal, Shield, Network, Settings } from 'lucide-react';
 
 export const Home: React.FC = () => {
+  const skills = [
+    { label: 'Python', value: 82, icon: Cpu },
+    { label: 'Power BI', value: 86, icon: Activity },
+    { label: 'Power Apps', value: 78, icon: Terminal },
+    { label: 'Power Automate', value: 89, icon: Shield },
+    { label: 'Excel', value: 94, icon: Network },
+    { label: 'SQL', value: 84, icon: Settings },
+    { label: 'Sharepoint', value: 92, icon: Cpu },
+    { label: 'R', value: 88, icon: Activity },
+    { label: 'Pentaho', value: 76, icon: Terminal },
+    { label: 'Figma', value: 71, icon: Shield },
+  ];
+
   return (
     <div className="space-y-12">
       {/* Hero Section */}
@@ -10,14 +23,13 @@ export const Home: React.FC = () => {
           <div className="absolute -inset-1 bg-primary/20 blur opacity-25 group-hover:opacity-50 transition duration-1000" />
           <div className="relative bg-surface-low border border-outline/30 overflow-hidden">
             <img 
-              src="https://picsum.photos/seed/cyberpunk/800/1000" 
-              alt="Neural Architect" 
-              className="w-full h-[400px] object-cover grayscale brightness-75 contrast-125"
-              referrerPolicy="no-referrer"
+              src="https://media.licdn.com/dms/image/v2/D4D03AQHUnVFrXcCc_w/profile-displayphoto-crop_800_800/B4DZfyB3TxGgAI-/0/1752112266401?e=1759968000&v=beta&t=RnbCW_rG9HJFDm77ia5FpKLdbq8H6BJG88LXMbbM_Tk" 
+              alt="Francisco Henrique Lomas" 
+              className="w-full h-[400px] object-cover brightness-75 contrast-125"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60" />
             <div className="absolute top-4 left-4 font-mono text-[10px] text-primary/60 bg-surface/80 px-2 py-1">
-              SUBJECT_ID: 9920-X
+              NEURAL_ARCHITECT
             </div>
           </div>
         </div>
@@ -25,14 +37,14 @@ export const Home: React.FC = () => {
         <div className="lg:col-span-8 flex flex-col justify-between">
           <div className="bg-surface-low/60 backdrop-blur-md p-8 border border-outline/20 clip-corner relative">
             <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-secondary">
-              CLEARANCE: OMEGA
+              STATUS: ACTIVE
             </div>
             <h1 className="font-headline font-black text-5xl md:text-7xl text-primary tracking-tighter mb-4 uppercase">
-              System Status: Active
+              Francisco Henrique Lomas
             </h1>
             <div className="w-24 h-1 bg-primary mb-6 shadow-[0_0_10px_#00f3ff]" />
             <p className="font-mono text-on-surface-variant text-lg leading-relaxed mb-6 max-w-2xl">
-              Neural architect specializing in high-density data visualization and distributed systems core logic. Bridging the gap between raw biometric inputs and predictive behavioral models.
+              Admirador de ficção científica futurista, fascinado por tecnologia e inspirado pelas constante evoluções, sempre estou buscando explorar novas tendências e avanços tecnológicos. Com um olhar analítico e estratégico, tenho um grande interesse por estatística e análise de dados, transformando informações em conhecimento valioso.
             </p>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -71,26 +83,23 @@ export const Home: React.FC = () => {
           <span className="font-mono text-[10px] text-primary/40 tracking-[0.3em]">SKILL_MATRIX_V4.0</span>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {[
-            { icon: Cpu, label: 'Neural Logic', progress: 95, color: 'text-primary' },
-            { icon: Activity, label: 'Data HUDs', progress: 88, color: 'text-secondary' },
-            { icon: Terminal, label: 'Core Scripts', progress: 92, color: 'text-tertiary' },
-            { icon: Shield, label: 'Sec_Protocols', progress: 75, color: 'text-primary' },
-            { icon: Network, label: 'Node Networks', progress: 82, color: 'text-secondary' },
-            { icon: Settings, label: 'Hardware', progress: 68, color: 'text-tertiary' },
-          ].map((skill) => (
-            <div key={skill.label} className="bg-surface-low border border-outline/20 p-6 flex flex-col items-center justify-center group hover:border-primary/50 transition-colors">
-              <skill.icon className={`${skill.color} mb-4 group-hover:scale-110 transition-transform`} size={32} />
-              <span className="font-mono text-[10px] uppercase tracking-tighter text-center">{skill.label}</span>
-              <div className="w-full bg-surface-high h-1 mt-4 relative overflow-hidden">
-                <div 
-                  className={`absolute top-0 left-0 h-full ${skill.color.replace('text-', 'bg-')}`} 
-                  style={{ width: `${skill.progress}%` }} 
-                />
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {skills.map((skill) => {
+            const IconComponent = skill.icon;
+            return (
+              <div key={skill.label} className="bg-surface-low border border-outline/20 p-6 flex flex-col items-center justify-center group hover:border-primary/50 transition-colors">
+                <IconComponent className="text-primary mb-4 group-hover:scale-110 transition-transform" size={32} />
+                <span className="font-mono text-[10px] uppercase tracking-tighter text-center">{skill.label}</span>
+                <div className="w-full bg-surface-high h-1 mt-4 relative overflow-hidden">
+                  <div 
+                    className="absolute top-0 left-0 h-full bg-primary" 
+                    style={{ width: `${skill.value}%` }} 
+                  />
+                </div>
+                <span className="font-mono text-[9px] text-primary mt-2">{skill.value}%</span>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 

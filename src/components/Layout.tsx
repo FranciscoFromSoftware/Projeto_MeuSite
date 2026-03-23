@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Terminal, FolderOpen, Network, Settings, Download, Fingerprint } from 'lucide-react';
+import { Terminal, FolderOpen, Network, Settings, Download, Fingerprint, Github, Linkedin, Code2, BookOpen } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -58,12 +58,53 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       </main>
 
       {/* Footer */}
-      <footer className="fixed bottom-0 w-full z-40 flex justify-between items-center px-8 py-2 bg-surface border-t border-surface-bright cursor-crosshair">
+      <footer className="fixed bottom-0 w-full z-40 flex justify-between items-center px-8 py-3 bg-surface border-t border-surface-bright cursor-crosshair">
         <div className="flex items-center gap-6">
           <span className="font-mono text-[10px] tracking-[0.2em] text-secondary uppercase">
             ©2026 // ALL RIGHTS RESERVED
           </span>
         </div>
+        
+        {/* Social Links */}
+        <div className="flex items-center gap-4 absolute left-1/2 transform -translate-x-1/2">
+          <a
+            href="https://github.com/FranciscoFromSoftware"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center w-8 h-8 border border-primary/30 hover:border-primary hover:bg-primary/10 transition-all text-primary hover:text-primary"
+            title="GitHub"
+          >
+            <Github size={16} />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/francisco-henrique-lomas"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center w-8 h-8 border border-primary/30 hover:border-primary hover:bg-primary/10 transition-all text-primary hover:text-primary"
+            title="LinkedIn"
+          >
+            <Linkedin size={16} />
+          </a>
+          <a
+            href="https://www.kaggle.com/franciscohlomas"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center w-8 h-8 border border-primary/30 hover:border-primary hover:bg-primary/10 transition-all text-primary hover:text-primary"
+            title="Kaggle"
+          >
+            <Code2 size={16} />
+          </a>
+          <a
+            href="https://rpubs.com/XscientFHL"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center w-8 h-8 border border-primary/30 hover:border-primary hover:bg-primary/10 transition-all text-primary hover:text-primary"
+            title="RPubs"
+          >
+            <BookOpen size={16} />
+          </a>
+        </div>
+        
         <div className="flex gap-8">
           <span className="font-mono text-[10px] tracking-[0.2em] text-surface-bright uppercase">
             SYSTEM STATUS: SECURE
