@@ -50,7 +50,7 @@ export const Home: React.FC = () => {
           <div className="absolute -inset-1 bg-primary/20 blur opacity-25 group-hover:opacity-50 transition duration-1000" />
           <div className="relative bg-surface-low border border-outline/30 overflow-hidden">
             <img 
-              src="https://i.ibb.co/mVtPLrPm/image-7-1.png" 
+              src="https://i.postimg.cc/G2rj9FFP/1752112266401.png" 
               alt="Francisco Henrique Lomas" 
               className="w-full h-[650px] object-contain brightness-100 contrast-125"
             />
