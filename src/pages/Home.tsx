@@ -52,7 +52,7 @@ export const Home: React.FC = () => {
             <img 
               src="https://i.postimg.cc/G2rj9FFP/1752112266401.png" 
               alt="Francisco Henrique Lomas" 
-              className="w-full h-[400px] object-cover brightness-75 contrast-125"
+              className="w-full h-[200px] object-cover brightness-75 contrast-125"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60" />
             <div className="absolute top-4 left-4 font-mono text-[10px] text-primary/60 bg-surface/80 px-2 py-1">
@@ -144,7 +144,7 @@ export const Home: React.FC = () => {
               date: 'SET 2025 - O MOMENTO',
               title: 'Analista de Dados Pleno',
               company: 'REDE SUPER POPULAR',
-              desc: 'Análise e desenvolvimento com Microsoft Power BI, Apache Hop e Python. Criação de relatórios de vendas em tempo real, painéis para análise diagnóstica e preditiva de estoque, automação de conciliação para e-commerce e elaboração de DRE.',
+              desc: 'Análise e desenvolvimento com Microsoft Power BI, Apache Hop e Python. Criação de relatórios de vendas em tempo real, painéis para análise diagnóstica de faturamento e preditiva de estoque, automação de conciliação para e-commerce e elaboração de DRE.',
               status: 'ACTIVE_PROCESS',
               color: 'primary'
             },
