@@ -114,26 +114,26 @@ export const Home: React.FC = () => {
         <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-primary before:via-secondary before:to-transparent">
           {[
             {
-              date: '2023 - PRESENT',
-              title: 'Lead Neural Architect',
-              company: 'CYBERDINE_SYSTEMS.hq',
-              desc: 'Implementing large-scale synaptic mapping for autonomous defense clusters. Reduced data overhead by 40% using custom-compiled bio-logics.',
+              date: 'SET 2024 - SET 2025',
+              title: 'Analista de Dados Junior',
+              company: 'GRUPO_BELARMINO',
+              desc: 'Desenvolvimento de painéis interativos no Power BI para controle de KPI e indicadores estratégicos. Automações de processos gerenciais em Python e Power Automate, ETL com Pentaho e administração de Data Warehouse com PostgreSQL.',
               status: 'ACTIVE_PROCESS',
               color: 'primary'
             },
             {
-              date: '2020 - 2023',
-              title: 'Sr. Data Visualizer',
-              company: 'TYRELL_CORP.datalake',
-              desc: 'Designed holographic interface overlays for biometric off-world harvesting units. Specialized in high-stress tactical telemetry display.',
+              date: 'MAR 2024 - JUN 2024',
+              title: 'Técnico Planejamento Produção',
+              company: 'ENGECAMPO',
+              desc: 'Relatórios diários de obras, histogramas do empreendimento, integração Power BI com EAP do MS Project. Idealização de controles de obra para planejamento, importação CAD/BIM e integração MS Project com Excel.',
               status: 'COMPLETE',
               color: 'secondary'
             },
             {
-              date: '2018 - 2020',
-              title: 'Junior Sys_Core Eng',
-              company: 'NETRUN_SOLUTIONS.node',
-              desc: 'Maintained distributed ledger security for black-market neural data exchanges. Optimized low-level C++ drivers for sensory input buffers.',
+              date: 'NOV 2023 - MAR 2024',
+              title: 'Estatístico',
+              company: 'RAPIDO_SUMARÉ',
+              desc: 'Promoção em 2 meses devido aos méritos e projetos de melhoria implementados. Aceleração de análises críticas para operação. Planejamento de escalas e análise de dados aplicando base teórica acumulada.',
               status: 'ARCHIVED',
               color: 'tertiary'
             }
