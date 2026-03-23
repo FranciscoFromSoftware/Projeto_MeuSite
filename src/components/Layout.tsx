@@ -1,12 +1,13 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Terminal, FolderOpen, Network, Settings, Download, Github, Linkedin, Code2, BookOpen } from 'lucide-react';
+import { Terminal, FolderOpen, Network, Settings, Download, Github, Linkedin, Code2, BookOpen, Home } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
 
   const navItems = [
+    { path: '/', label: 'HOME', icon: Home },
     { path: '/sobre', label: 'SOBRE_MIM', icon: Terminal },
     { path: '/certificacoes', label: 'CERTIFICAÇÕES', icon: FolderOpen },
     { path: '/projetos', label: 'PROJETOS', icon: Network },

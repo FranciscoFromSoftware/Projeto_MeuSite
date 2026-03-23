@@ -8,7 +8,7 @@ import { Templates } from './pages/Templates';
 
 export default function App() {
   return (
-    <Router>
+    <Router basename="/Projeto_MeuSite/">
       <Layout>
         <Routes>
           <Route path="/" element={<Dashboard />} />
