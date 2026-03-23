@@ -133,19 +133,27 @@ export const Home: React.FC = () => {
       {/* Timeline Section */}
       <section className="pb-20">
         <div className="flex items-center gap-4 mb-8">
-          <h2 className="font-headline font-bold text-2xl uppercase tracking-widest">Professional_Timeline.log</h2>
+          <h2 className="font-headline font-bold text-2xl uppercase tracking-widest">Linha do Tempo Professional</h2>
           <div className="h-[1px] flex-grow bg-outline/30" />
-          <span className="font-mono text-[10px] text-secondary/40 tracking-[0.3em]">CHRONOS_SEQUENCE</span>
+          <span className="font-mono text-[10px] text-secondary/40 tracking-[0.3em]">SEQUÊNCIA CRONOLÓGICA</span>
         </div>
 
         <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-primary before:via-secondary before:to-transparent">
           {[
             {
+              date: 'SET 2025 - O MOMENTO',
+              title: 'Analista de Dados Pleno',
+              company: 'REDE SUPER POPULAR',
+              desc: 'Análise e desenvolvimento com Microsoft Power BI, Apache Hop e Python. Criação de relatórios de vendas em tempo real, painéis para análise diagnóstica e preditiva de estoque, automação de conciliação para e-commerce e elaboração de DRE.',
+              status: 'ACTIVE_PROCESS',
+              color: 'primary'
+            },
+            {
               date: 'SET 2024 - SET 2025',
               title: 'Analista de Dados Junior',
               company: 'GRUPO_BELARMINO',
               desc: 'Desenvolvimento de painéis interativos no Power BI para controle de KPI e indicadores estratégicos. Automações de processos gerenciais em Python e Power Automate, ETL com Pentaho e administração de Data Warehouse com PostgreSQL.',
-              status: 'ACTIVE_PROCESS',
+              status: 'COMPLETE',
               color: 'primary'
             },
             {
