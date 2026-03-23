@@ -7,7 +7,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const location = useLocation();
 
   const navItems = [
-    { path: '/', label: 'HOME', icon: Home },
+    { path: '/', label: 'DASHBOARD', icon: Home },
     { path: '/sobre', label: 'SOBRE_MIM', icon: Terminal },
     { path: '/certificacoes', label: 'CERTIFICAÇÕES', icon: FolderOpen },
     { path: '/projetos', label: 'PROJETOS', icon: Network },
