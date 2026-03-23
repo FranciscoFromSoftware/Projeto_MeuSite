@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Cpu, Activity, Terminal, Shield, Network, Settings } from 'lucide-react';
+import { Activity, SquareTerminal, BarChart, AppWindow, Workflow, FileSpreadsheet, Database, Share2, BarChartHorizontal, DatabaseZap, Figma } from 'lucide-react';
 
 export const Home: React.FC = () => {
   const [experience, setExperience] = useState('');
@@ -30,16 +30,16 @@ export const Home: React.FC = () => {
   }, []);
 
   const skills = [
-    { label: 'Python', value: 82, icon: Cpu },
-    { label: 'Power BI', value: 86, icon: Activity },
-    { label: 'Power Apps', value: 78, icon: Terminal },
-    { label: 'Power Automate', value: 89, icon: Shield },
-    { label: 'Excel', value: 94, icon: Network },
-    { label: 'SQL', value: 84, icon: Settings },
-    { label: 'Sharepoint', value: 92, icon: Cpu },
-    { label: 'R', value: 88, icon: Activity },
-    { label: 'Pentaho', value: 76, icon: Terminal },
-    { label: 'Figma', value: 71, icon: Shield },
+    { label: 'Python', value: 82, icon: SquareTerminal },
+    { label: 'Power BI', value: 86, icon: BarChart },
+    { label: 'Power Apps', value: 78, icon: AppWindow },
+    { label: 'Power Automate', value: 89, icon: Workflow },
+    { label: 'Excel', value: 94, icon: FileSpreadsheet },
+    { label: 'SQL', value: 84, icon: Database },
+    { label: 'Sharepoint', value: 92, icon: Share2 },
+    { label: 'R', value: 88, icon: BarChartHorizontal },
+    { label: 'Pentaho', value: 76, icon: DatabaseZap },
+    { label: 'Figma', value: 71, icon: Figma },
   ];
 
   return (
@@ -52,7 +52,7 @@ export const Home: React.FC = () => {
             <img 
               src="https://i.postimg.cc/G2rj9FFP/1752112266401.png" 
               alt="Francisco Henrique Lomas" 
-              className="w-full h-[200px] object-cover brightness-75 contrast-125"
+              className="w-full h-[400px] object-cover brightness-75 contrast-125"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60" />
             <div className="absolute top-4 left-4 font-mono text-[10px] text-primary/60 bg-surface/80 px-2 py-1">
@@ -92,7 +92,7 @@ export const Home: React.FC = () => {
           <div className="mt-6 flex flex-wrap gap-4">
             <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 border border-primary/20">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="font-mono text-xs text-primary uppercase tracking-widest">Awaiting Command...</span>
+              <span className="font-mono text-xs text-primary uppercase tracking-widest"></span>
             </div>
             <div className="flex items-center gap-2 bg-surface-high px-4 py-2 border border-outline/30">
               <Activity size={12} className="text-primary" />
