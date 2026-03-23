@@ -1,7 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Cpu, Activity, Terminal, Shield, Network, Settings } from 'lucide-react';
 
 export const Home: React.FC = () => {
+  const [experience, setExperience] = useState('');
+
+  useEffect(() => {
+    const calculateExperience = () => {
+      const startDate = new Date('2023-11-01');
+      const currentDate = new Date();
+      
+      let years = currentDate.getFullYear() - startDate.getFullYear();
+      let months = currentDate.getMonth() - startDate.getMonth();
+      
+      if (currentDate.getDate() < startDate.getDate()) {
+        months--;
+      }
+      
+      const totalMonths = years * 12 + months;
+
+      if (totalMonths < 0) {
+        setExperience('0 meses');
+        return;
+      }
+      
+      setExperience(`${totalMonths} meses`);
+    };
+
+    calculateExperience();
+  }, []);
+
   const skills = [
     { label: 'Python', value: 82, icon: Cpu },
     { label: 'Power BI', value: 86, icon: Activity },
@@ -49,7 +76,7 @@ export const Home: React.FC = () => {
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: 'Experiência', value: '12.4YRS', color: 'text-secondary' },
+                { label: 'Experiência', value: experience, color: 'text-secondary' },
                 { label: 'Projetos Concluídos', value: '16', color: 'text-primary' },
                 { label: 'Tipos de Análises Realizadas', value: '39', color: 'text-tertiary' },
                 { label: 'Soluções de Negócios', value: '4', color: 'text-on-surface' },
