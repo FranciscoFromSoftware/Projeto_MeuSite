@@ -56,7 +56,7 @@ export const Home: React.FC = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60" />
             <div className="absolute top-4 left-4 font-mono text-[10px] text-primary/60 bg-surface/80 px-2 py-1">
-              NEURAL_ARCHITECT
+              ANALISTA DE DADOS | DATA ANALYST
             </div>
           </div>
         </div>
@@ -105,9 +105,9 @@ export const Home: React.FC = () => {
       {/* Skills Section */}
       <section>
         <div className="flex items-center gap-4 mb-8">
-          <h2 className="font-headline font-bold text-2xl uppercase tracking-widest">Technical_Skills.exe</h2>
+          <h2 className="font-headline font-bold text-2xl uppercase tracking-widest">HABILIDADES TÉCNICAS</h2>
           <div className="h-[1px] flex-grow bg-outline/30" />
-          <span className="font-mono text-[10px] text-primary/40 tracking-[0.3em]">SKILL_MATRIX_V4.0</span>
+          <span className="font-mono text-[10px] text-primary/40 tracking-[0.3em]">MATRIZ DE HABILIDADE</span>
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
