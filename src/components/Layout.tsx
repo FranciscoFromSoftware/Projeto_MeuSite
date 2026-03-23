@@ -46,12 +46,12 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       </aside>
 
       {/* Main Content */}
-      <main className="ml-20 pb-12 min-h-screen px-8 md:px-12 pt-8 circuit-bg">
+      <main className="ml-20 pb-40 min-h-screen px-8 md:px-12 pt-8 circuit-bg">
         {children}
       </main>
 
       {/* Footer */}
-      <footer className="fixed bottom-0 w-full z-40 flex justify-between items-center px-8 py-3 bg-surface border-t border-surface-bright cursor-crosshair">
+      <footer className="w-full flex justify-between items-center px-8 py-3 bg-surface border-t border-surface-bright cursor-crosshair">
         <div className="flex items-center gap-6">
           <span className="font-mono text-[10px] tracking-[0.2em] text-secondary uppercase">
             ©2026 // ALL RIGHTS RESERVED
