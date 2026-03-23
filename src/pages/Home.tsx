@@ -50,7 +50,7 @@ export const Home: React.FC = () => {
           <div className="absolute -inset-1 bg-primary/20 blur opacity-25 group-hover:opacity-50 transition duration-1000" />
           <div className="relative bg-surface-low border border-outline/30 overflow-hidden">
             <img 
-              src="https://i.postimg.cc/G2rj9FFP/1752112266401.png" 
+              src="https://i.ibb.co/mVtPLrPm/image-7-1.png" 
               alt="Francisco Henrique Lomas" 
               className="w-full h-[400px] object-cover brightness-75 contrast-125"
             />
@@ -92,7 +92,7 @@ export const Home: React.FC = () => {
           <div className="mt-6 flex flex-wrap gap-4">
             <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 border border-primary/20">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="font-mono text-xs text-primary uppercase tracking-widest"></span>
+              <span className="font-mono text-xs text-primary uppercase tracking-widest">"Consistência, determiminação e criatividade é chave para os meu objetivos"</span>
             </div>
             <div className="flex items-center gap-2 bg-surface-high px-4 py-2 border border-outline/30">
               <Activity size={12} className="text-primary" />
