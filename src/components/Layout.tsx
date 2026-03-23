@@ -23,7 +23,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           <div className="w-12 h-12 bg-surface-high border border-primary/30 flex items-center justify-center">
             <Fingerprint className="text-primary" size={24} />
           </div>
-          <span className="font-mono text-[10px] text-primary font-bold">NODE_01</span>
+          <span className="font-mono text-[10px] text-primary font-bold">PERFIL</span>
         </div>
 
         <div className="flex flex-col gap-6 w-full px-2">
