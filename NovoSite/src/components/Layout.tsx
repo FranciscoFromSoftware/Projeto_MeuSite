@@ -1,0 +1,78 @@
+import React from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { Terminal, FolderOpen, Network, Settings, Download, Fingerprint } from 'lucide-react';
+import { cn } from '@/src/lib/utils';
+
+export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const location = useLocation();
+
+  const navItems = [
+    { path: '/', label: 'ABOUT_ME', icon: Terminal },
+    { path: '/bio', label: 'CERTIFICATIONS', icon: FolderOpen },
+    { path: '/logs', label: 'PROJECTS', icon: Network },
+    { path: '/sensors', label: 'TEMPLATES', icon: Settings },
+  ];
+
+  return (
+    <div className="min-h-screen bg-surface text-on-surface font-body overflow-x-hidden">
+      <div className="fixed inset-0 z-[100] scanline-overlay opacity-20 pointer-events-none" />
+      
+      {/* Sidebar */}
+      <aside className="fixed left-0 top-0 h-screen w-20 flex flex-col items-center py-4 bg-surface-low border-r border-primary/10 z-40">
+        <div className="mb-8 flex flex-col items-center gap-1">
+          <div className="w-12 h-12 bg-surface-high border border-primary/30 flex items-center justify-center">
+            <Fingerprint className="text-primary" size={24} />
+          </div>
+          <span className="font-mono text-[10px] text-primary font-bold">NODE_01</span>
+        </div>
+
+        <div className="flex flex-col gap-6 w-full px-2">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) => cn(
+                "flex flex-col items-center gap-1 py-3 w-full transition-all active:scale-95",
+                isActive 
+                  ? "bg-primary/15 text-primary border-r-2 border-primary" 
+                  : "text-surface-bright hover:bg-primary/10 hover:text-primary"
+              )}
+            >
+              <item.icon size={20} />
+              <span className="font-mono text-[9px] uppercase">{item.label.split('_')[0]}</span>
+            </NavLink>
+          ))}
+        </div>
+
+        <div className="mt-auto w-full px-2">
+          <button className="flex flex-col items-center gap-1 py-3 w-full text-primary hover:text-secondary transition-all active:scale-95">
+            <Download size={20} />
+            <span className="font-mono text-[9px] uppercase">CURRÍCULO</span>
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="ml-20 pb-12 min-h-screen px-8 md:px-12 pt-8 circuit-bg">
+        {children}
+      </main>
+
+      {/* Footer */}
+      <footer className="fixed bottom-0 w-full z-40 flex justify-between items-center px-8 py-2 bg-surface border-t border-surface-bright cursor-crosshair">
+        <div className="flex items-center gap-6">
+          <span className="font-mono text-[10px] tracking-[0.2em] text-secondary uppercase">
+            ©2026 // ALL RIGHTS RESERVED
+          </span>
+        </div>
+        <div className="flex gap-8">
+          <span className="font-mono text-[10px] tracking-[0.2em] text-surface-bright uppercase">
+            SYSTEM STATUS: SECURE
+          </span>
+          <span className="font-mono text-[10px] tracking-[0.2em] text-primary uppercase">
+            NEURAL LINK ACTIVE
+          </span>
+        </div>
+      </footer>
+    </div>
+  );
+};
