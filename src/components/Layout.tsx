@@ -1,16 +1,16 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Terminal, FolderOpen, Network, Settings, Download, Fingerprint, Github, Linkedin, Code2, BookOpen } from 'lucide-react';
+import { Terminal, FolderOpen, Network, Settings, Download, Github, Linkedin, Code2, BookOpen } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
 
   const navItems = [
-    { path: '/', label: 'ABOUT_ME', icon: Terminal },
-    { path: '/bio', label: 'CERTIFICATIONS', icon: FolderOpen },
-    { path: '/logs', label: 'PROJECTS', icon: Network },
-    { path: '/sensors', label: 'TEMPLATES', icon: Settings },
+    { path: '/sobre', label: 'SOBRE_MIM', icon: Terminal },
+    { path: '/certificacoes', label: 'CERTIFICAÇÕES', icon: FolderOpen },
+    { path: '/projetos', label: 'PROJETOS', icon: Network },
+    { path: '/modelos', label: 'MODELOS', icon: Settings },
   ];
 
   return (
@@ -19,14 +19,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       
       {/* Sidebar */}
       <aside className="fixed left-0 top-0 h-screen w-20 flex flex-col items-center py-4 bg-surface-low border-r border-primary/10 z-40">
-        <div className="mb-8 flex flex-col items-center gap-1">
-          <div className="w-12 h-12 bg-surface-high border border-primary/30 flex items-center justify-center">
-            <Fingerprint className="text-primary" size={24} />
-          </div>
-          <span className="font-mono text-[10px] text-primary font-bold">PERFIL</span>
-        </div>
-
-        <div className="flex flex-col gap-6 w-full px-2">
+        <div className="flex flex-col gap-6 w-full px-2 mt-4">
           {navItems.map((item) => (
             <NavLink
               key={item.path}
@@ -107,10 +100,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         
         <div className="flex gap-8">
           <span className="font-mono text-[10px] tracking-[0.2em] text-surface-bright uppercase">
-            SYSTEM STATUS: SECURE
+            ATUALIZAÇÃO DOS DADOS: 23/03/2026
           </span>
           <span className="font-mono text-[10px] tracking-[0.2em] text-primary uppercase">
-            NEURAL LINK ACTIVE
+            PROGRESSO EM ANDAMENTO
           </span>
         </div>
       </footer>
