@@ -80,10 +80,10 @@ export const Dashboard: React.FC = () => {
             { label: 'Habilidades', value: '10+', color: 'secondary' },
             { label: 'Experiência', value: '2+ anos', color: 'tertiary' },
             { label: 'Status', value: 'Disponível', color: 'primary' },
-          ].map((stat) => (
-            <div key={stat.label} className={`bg-surface-low border border-${stat.color}/20 p-6 text-center hover:border-${stat.color}/40 transition-colors`}>
-              <p className={`font-mono text-[10px] text-${stat.color} uppercase mb-2`}>{stat.label}</p>
-              <p className={`font-headline font-bold text-3xl text-${stat.color}`}>{stat.value}</p>
+          ].map((stat, idx) => (
+            <div key={stat.label} className="bg-surface-low border border-primary/20 p-6 text-center hover:border-primary/40 transition-colors">
+              <p className="font-mono text-[10px] text-primary uppercase mb-2">{stat.label}</p>
+              <p className="font-headline font-bold text-3xl text-primary">{stat.value}</p>
             </div>
           ))}
         </div>
