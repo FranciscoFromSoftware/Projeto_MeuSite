@@ -23,7 +23,7 @@ export const Home: React.FC = () => {
           <div className="absolute -inset-1 bg-primary/20 blur opacity-25 group-hover:opacity-50 transition duration-1000" />
           <div className="relative bg-surface-low border border-outline/30 overflow-hidden">
             <img 
-              src="https://media.licdn.com/dms/image/v2/D4D03AQHUnVFrXcCc_w/profile-displayphoto-crop_800_800/B4DZfyB3TxGgAI-/0/1752112266401?e=1759968000&v=beta&t=RnbCW_rG9HJFDm77ia5FpKLdbq8H6BJG88LXMbbM_Tk" 
+              src="https://media.licdn.com/dms/image/v2/D4D03AQHUnVFrXcCc_w/profile-displayphoto-crop_800_800/B4DZfyB3TxGgAI-/0/1752112266401?e=1775692800&v=beta&t=ZJ4whHuMYokqhD5V2kxMz5qwi8VmGwRdxba8Ols9nMw" 
               alt="Francisco Henrique Lomas" 
               className="w-full h-[400px] object-cover brightness-75 contrast-125"
             />
