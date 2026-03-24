@@ -56,11 +56,11 @@ VAR CorBarra = "#C0012A"
   const svgs = [
     { 
       id: 'HEATMAP_01', 
-      title: 'Sales Heatmap v1.0', 
+      title: 'Calendario de Intensidade v1.0', 
       color: 'text-primary', 
       isDax: true,
       code: heatmapDax,
-      fileName: 'Medida_Heatmap_Sales',
+      fileName: 'Medida_CalendarIntense_Sales',
       preview: (
         <svg width="100%" height="100%" viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg">
           <g fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#666" textAnchor="middle">
@@ -74,7 +74,7 @@ VAR CorBarra = "#C0012A"
     },
     {
       id: 'DONUT_01',
-      title: 'Sales Category Donut',
+      title: 'Donut de Meta',
       color: 'text-cyan-600',
       isDax: true,
       code: donutVendasDax,
@@ -91,7 +91,7 @@ VAR CorBarra = "#C0012A"
     },
     {
       id: 'THERMO_01',
-      title: 'Goal Thermometer',
+      title: 'Termometro de Vendas',
       color: 'text-secondary',
       isDax: true,
       code: termometroDax,
@@ -129,7 +129,7 @@ VAR CorBarra = "#C0012A"
           <div className="flex items-center justify-between border-b border-outline pb-4">
             <div className="flex items-center gap-3">
               <LayoutIcon className="text-primary" size={20} />
-              <h3 className="font-headline font-bold text-xl uppercase tracking-wider">SVG Graphics Foundry</h3>
+              <h3 className="font-headline font-bold text-xl uppercase tracking-wider">TEMPLATES SVG PARA POWER BI</h3>
             </div>
           </div>
 
