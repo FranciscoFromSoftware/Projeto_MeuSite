@@ -4,14 +4,25 @@ import { Layout as LayoutIcon, Database, Copy, Download, Activity, Calendar, Che
 export const Templates: React.FC = () => {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
+  // Função para baixar a medida como arquivo .txt
+  const handleDownload = (code: string, fileName: string) => {
+    const element = document.createElement("a");
+    const file = new Blob([code], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = `${fileName}.txt`;
+    document.body.appendChild(element); 
+    element.click();
+    document.body.removeChild(element);
+  };
+
   const handleCopy = (code: string, id: string) => {
     navigator.clipboard.writeText(code);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  // Sua medida DAX completa
-  const heatmapDax = `HeatmapVenda1s SVG = ...`; // Inserir aqui o código completo que você enviou
+  const heatmapDax = `HeatmapVenda1s SVG = 
+-- Código DAX do Heatmap aqui...`; 
   
   const termometroDax = `TermometroMeta_Animado_SVG = 
 VAR CorBarra = "#C0012A"
@@ -20,7 +31,7 @@ VAR CorBorda = "#C0C0C0"
 VAR CorDestaqueDia = "#2C9FA3"
 VAR CorLY = "#2C9FA3"
 VAR CorTituloMeta = "#333333"
--- ... (Restante do código DAX fornecido)`;
+-- ... (Restante do código DAX do Termômetro)`;
 
   const svgs = [
     { 
@@ -29,20 +40,17 @@ VAR CorTituloMeta = "#333333"
       color: 'text-primary', 
       isDax: true,
       code: heatmapDax,
-      // Renderização do Preview Real em SVG
+      fileName: 'Medida_Heatmap_Sales',
       preview: (
         <svg width="100%" height="100%" viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg" className="rounded-sm">
-          {/* Cabeçalho do Mini-Grafico */}
           <g fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#666" textAnchor="middle">
             {['D','S','T','Q','Q','S','S'].map((dia, i) => (
               <text key={i} x={15 + (i * 42) + 19} y={25}>{dia}</text>
             ))}
           </g>
-          {/* Grid de Dias (Simulado) */}
           {Array.from({ length: 31 }).map((_, i) => {
             const x = 15 + ((i % 7) * 42);
             const y = 40 + (Math.floor(i / 7) * 42);
-            // Cores baseadas na sua escala (Variação fictícia para o preview)
             const colors = ["#F6F6F6", "#FFF2E6", "#FFCF99", "#FFB866", "#FF8800", "#804400"];
             const color = colors[Math.floor(Math.random() * colors.length)];
             return (
@@ -54,13 +62,7 @@ VAR CorTituloMeta = "#333333"
               </g>
             );
           })}
-          {/* Rodapé do Mini-Grafico */}
           <text x="15" y="265" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#111">OUT 23 | Total: 15,420</text>
-          <g transform="translate(235, 258)">
-             {[ "#FFF2E6", "#FFB866", "#FF8800", "#804400"].map((c, i) => (
-               <rect key={i} x={i * 10} y="0" width="8" height="8" fill={c} />
-             ))}
-          </g>
         </svg>
       )
     },
@@ -70,6 +72,7 @@ VAR CorTituloMeta = "#333333"
       color: 'text-secondary',
       isDax: true,
       code: termometroDax,
+      fileName: 'Medida_Termometro_Animado',
       preview: (
         <svg width="100%" height="100%" viewBox="0 0 180 240" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -82,7 +85,6 @@ VAR CorTituloMeta = "#333333"
           <circle cx="90" cy="170" r="22" fill="#FFFFFF" stroke="#C0C0C0" strokeWidth="1" />
           <rect x="80" y="30" width="20" height="140" rx="10" fill="#FFFFFF" stroke="#C0C0C0" strokeWidth="1" />
           <circle cx="90" cy="170" r="21" fill="#C0012A" />
-          {/* Barra Animada Preview */}
           <rect x="81" y="60" width="18" height="110" fill="#C0012A">
             <animate attributeName="height" from="0" to="110" dur="2s" fill="freeze" />
             <animate attributeName="y" from="170" to="60" dur="2s" fill="freeze" />
@@ -100,7 +102,8 @@ VAR CorTituloMeta = "#333333"
       color: 'text-secondary', 
       isDax: false, 
       code: '<svg>...</svg>',
-      preview: <Activity size={64} className="opacity-40" />
+      fileName: 'Gauge_Asset',
+      preview: <Activity size={64} className="opacity-40 text-secondary" />
     },
   ];
 
@@ -112,7 +115,6 @@ VAR CorTituloMeta = "#333333"
       </div>
 
       <div className="grid grid-cols-12 gap-6">
-        {/* SVG Graphics Foundry */}
         <section className="col-span-12 lg:col-span-9 space-y-6">
           <div className="flex items-center justify-between border-b border-outline pb-4">
             <div className="flex items-center gap-3">
@@ -128,16 +130,14 @@ VAR CorTituloMeta = "#333333"
                   <div className="absolute top-2 left-2 font-mono text-[8px] uppercase tracking-tighter opacity-50 z-10">
                     {svg.id} // PREVIEW_MODE
                   </div>
-                  
                   {svg.preview}
-
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                 </div>
 
                 <div className="px-2 pb-2 space-y-3">
                   <div>
                     <h4 className={`font-headline font-bold uppercase text-sm ${svg.color}`}>{svg.title}</h4>
-                    <p className="font-mono text-[9px] text-outline tracking-widest">
+                    <p className="font-mono text-[9px] text-outline tracking-widest uppercase">
                       {svg.isDax ? 'POWER_BI_DAX_MEASURE' : 'UI_ASSET_SVG'}
                     </p>
                   </div>
@@ -150,8 +150,12 @@ VAR CorTituloMeta = "#333333"
                       {copiedId === svg.id ? <Check size={12} /> : <Copy size={12} />}
                       {copiedId === svg.id ? 'Copied' : 'Copy DAX'}
                     </button>
-                    <button className="bg-transparent border border-outline/10 py-2 font-mono text-[10px] uppercase text-outline-variant hover:border-primary transition-all flex items-center justify-center gap-2">
-                      <Download size={12} /> Shard
+                    {/* Botão de Download Ativado */}
+                    <button 
+                      onClick={() => handleDownload(svg.code, svg.fileName || svg.id)}
+                      className="bg-transparent border border-outline/10 py-2 font-mono text-[10px] uppercase text-outline-variant hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2"
+                    >
+                      <Download size={12} /> Download
                     </button>
                   </div>
                 </div>
@@ -160,7 +164,6 @@ VAR CorTituloMeta = "#333333"
           </div>
         </section>
 
-        {/* Sidebar Datastore */}
         <section className="col-span-12 lg:col-span-3 space-y-6">
           <div className="flex items-center gap-3 border-b border-outline pb-4">
             <Database className="text-secondary" size={20} />
@@ -179,7 +182,9 @@ VAR CorTituloMeta = "#333333"
       </div>
 
       <div className="bg-black/20 border border-white/5 p-3 font-mono text-[9px] text-primary/60">
-        &gt; RENDER_ENGINE: SVG_PREVIEW_GENERATED_SUCCESSFULLY [THERMO_01, HEATMAP_01]
+        &gt; RENDER_ENGINE: SVG_PREVIEW_GENERATED_SUCCESSFULLY [HEATMAP, THERMO]
+        <br />
+        &gt; DOWNLOAD_MANAGER: READY_TO_EXPORT_DAX_MEASURES
       </div>
     </div>
   );
