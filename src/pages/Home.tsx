@@ -52,7 +52,7 @@ export const Home: React.FC = () => {
             <img 
               src="https://i.postimg.cc/G2rj9FFP/1752112266401.png" 
               alt="Francisco Henrique Lomas" 
-              className="w-full h-[650px] object-contain brightness-100 contrast-125"
+              className="w-full h-[350px] object-contain brightness-100 contrast-125"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60" />
             <div className="absolute top-4 left-4 font-mono text-[10px] text-primary/60 bg-surface/80 px-2 py-1">
@@ -92,7 +92,7 @@ export const Home: React.FC = () => {
           <div className="mt-6 flex flex-wrap gap-4">
             <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 border border-primary/20">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="font-mono text-xs text-primary uppercase tracking-widest">"Consistência, determiminação e criatividade é chave para os meu objetivos"</span>
+              <span className="font-mono text-xs text-primary uppercase tracking-widest">"A consistência, aliada à determinação e à criatividade, constitui a base essencial para o sucesso"</span>
             </div>
             <div className="flex items-center gap-2 bg-surface-high px-4 py-2 border border-outline/30">
               <Activity size={12} className="text-primary" />
