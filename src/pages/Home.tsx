@@ -52,7 +52,7 @@ export const Home: React.FC = () => {
             <img 
               src="https://i.ibb.co/84dDvGnd/image-7-2.png" 
               alt="Francisco Henrique Lomas" 
-              className="w-full h-[450px] object-contain brightness-100 contrast-125"
+              className="w-full h-[500px] object-contain brightness-100 contrast-125"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60" />
             <div className="absolute top-4 left-4 font-mono text-[10px] text-primary/60 bg-surface/80 px-2 py-1">
