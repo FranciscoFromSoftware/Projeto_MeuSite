@@ -43,21 +43,22 @@ export const Dashboard: React.FC = () => {
             <div className="bg-surface-low border border-outline/20 p-6 space-y-4">
               <div>
                 <h3 className="font-headline font-bold text-xl text-primary uppercase mb-2">
-                  Interface MySQL + Python
+                  Power BI + Apache Hop
                 </h3>
-                <p className="text-on-surface-variant text-sm">Sistema de Heróis</p>
+                <p className="text-on-surface-variant text-sm">Status da Série Rick e Morty</p>
               </div>
 
               <div className="border-t border-outline/20 pt-4">
                 <p className="text-xs text-on-surface-variant leading-relaxed mb-4">
-                  Conexão entre MySQL e Python com integração Sharepoint e dashboards Power BI para análise de dados em tempo real.
+                O objetivo do projeto é apresentar os detalhes atuais da série Rick e Morty, ajudando  a identificar seu personagem favorito e conhecer melhor cada um deles.
+ 
                 </p>
               </div>
 
               <div className="border-t border-outline/20 pt-4">
                 <p className="text-xs text-outline uppercase font-mono mb-3">Tecnologias:</p>
                 <div className="flex flex-wrap gap-2">
-                  {['Python', 'MySQL', 'Power BI', 'Power Apps'].map(tech => (
+                  {['Power BI', 'Apache Hop', 'MySQL'].map(tech => (
                     <span key={tech} className="text-xs bg-primary/10 text-primary px-2 py-1 border border-primary/20 font-mono uppercase">
                       {tech}
                     </span>
