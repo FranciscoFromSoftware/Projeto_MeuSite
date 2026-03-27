@@ -11,7 +11,7 @@ export const Certifications: React.FC = () => {
       date: '2024',
       icon: Database,
       color: 'text-primary',
-      link: 'https://www.credly.com/org/google/badge/google-data-analytics-professional-certificate'
+      link: 'https://www.credly.com/badges/2028ba37-3013-4a33-bd07-2a88be88e5c7/linked_in_profile'
     },
     {
       id: 'SHARD_02',
@@ -57,11 +57,11 @@ export const Certifications: React.FC = () => {
             Certificações & <span className="text-primary">Cursos</span>
           </h1>
           <div className="flex gap-4 mt-2 font-mono text-[10px] uppercase text-primary/60 tracking-widest">
-            <span>ID_NÓ: ARQUITETO_DE_DADOS_01</span>
+            <span> PROFISSÃO: ANALISTA DE DADOS PLENO</span>
             <span className="text-outline">//</span>
-            <span>NÍVEL_ACESSO: PROTOCOLO_OMEGA</span>
+            <span> </span> ALMEJANDO: ANALISTA DE DADOS SÊNIOR
             <span className="text-outline">//</span>
-            <span className="animate-pulse">STATUS: LINK_NEURAL_ESTÁVEL</span>
+            <span className="animate-pulse">EXPERIÊNCIA: 3 ANOS</span>
           </div>
         </div>
         <div className="text-right font-mono text-[10px] text-outline uppercase">
@@ -75,7 +75,7 @@ export const Certifications: React.FC = () => {
         <div className="md:col-span-2 lg:col-span-2 relative group overflow-hidden bg-surface-low border border-primary/20 p-1 shard-clip">
           <div className="relative bg-surface-high h-full min-h-[500px] p-8 flex flex-col justify-between overflow-hidden">
             <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-primary/40 select-none">
-              REF_FRAGMENTO: GOOGLE-GDA-01
+              GOOGLE
             </div>
             <div>
               <div className="inline-block px-3 py-1 bg-secondary text-surface font-mono text-[10px] font-bold uppercase mb-6 shard-clip">
