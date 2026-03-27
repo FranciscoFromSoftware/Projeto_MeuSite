@@ -75,7 +75,7 @@ export const Certifications: React.FC = () => {
         <div className="md:col-span-2 lg:col-span-2 relative group overflow-hidden bg-surface-low border border-primary/20 p-1 shard-clip">
           <div className="relative bg-surface-high h-full min-h-[500px] p-8 flex flex-col justify-between overflow-hidden">
             <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-primary/40 select-none">
-              GOOGLE
+              GOOGLE PROFESSIONAL CERTIFICATES
             </div>
             <div>
               <div className="inline-block px-3 py-1 bg-secondary text-surface font-mono text-[10px] font-bold uppercase mb-6 shard-clip">
