@@ -15,28 +15,29 @@ export const Certifications: React.FC = () => {
     },
     {
       id: 'SHARD_02',
-      title: 'Tensor Flow Dynamics',
-      issuer: 'DEEP_MINDS_LAB',
+      title: 'Analyzing and Visualizing Data in Looker',
+      issuer: 'GOOGLE',
       status: 'VERIFICADO',
-      date: 'Q4_2023',
+      date: 'nov. 2024',
       icon: Award,
-      color: 'text-primary'
+      color: 'text-secondary',
+      link: 'https://www.skills.google/public_profiles/1067b624-972b-4e50-a873-eaf5a092c6ae/badges/12713844?utm_medium=social&utm_source=linkedin&utm_campaign=ql-social-share'
     },
     {
       id: 'SHARD_03',
-      title: 'Crypto-Static Defense',
-      issuer: 'CYBER_CORE_SEC',
+      title: 'Certificação em métricas do Google Ads',
+      issuer: 'GOOGLE',
       status: 'VERIFICADO',
-      date: 'Q1_2024',
+      date: 'set. 2024',
       icon: Shield,
       color: 'text-secondary'
     },
     {
       id: 'SHARD_04',
-      title: 'High-Freq Computing',
-      issuer: 'PLASMA_NETWORKS',
-      status: 'EXPIRA_EM_BREVE',
-      date: 'Q2_2024',
+      title: 'Certificação do Google Analytics',
+      issuer: 'GOOGLE',
+      status: 'EXPIRADO',
+      date: 'set. 2024',
       icon: Zap,
       color: 'text-tertiary'
     }
