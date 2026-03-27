@@ -22,11 +22,17 @@ export const Dashboard: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <div className="relative bg-surface-low border border-outline/30 overflow-hidden">
-              <img 
-                src="https://i.ibb.co/1YpfFZBh/capaprojeto-Heroes.png" 
-                alt="Interface MySQL + Python - Sistema de Heróis" 
-                className="w-full h-96 object-cover"
-              />
+              <div className="w-full h-96 flex items-center justify-center">
+                <iframe 
+                  title="RickMorty" 
+                  width="100%" 
+                  height="100%" 
+                  src="https://app.powerbi.com/view?r=eyJrIjoiNjI4YWRlYjUtODkxZi00ZGM5LWJlYTUtZmYzNTgzNDQzMDEyIiwidCI6IjY0YjI0ZDg4LTU4ODQtNDg0NC04YmZhLWMwNzFjOThjNjUyMSJ9" 
+                  frameBorder="0" 
+                  allowFullScreen={true}
+                  style={{ minHeight: '100%' }}
+                />
+              </div>
               <div className="absolute top-4 left-4 bg-primary text-surface font-mono text-xs font-bold px-3 py-1">
                 PROJETO_01
               </div>
