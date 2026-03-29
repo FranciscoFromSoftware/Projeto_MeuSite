@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Github } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -9,6 +9,7 @@ interface Project {
   skills: string[];
   description: string;
   iframeUrl?: string;
+  githubUrl?: string;
 }
 
 export const Projects: React.FC = () => {
@@ -23,6 +24,7 @@ export const Projects: React.FC = () => {
       skills: ['Power BI', 'MySQL', 'Apache Hop'],
       description: 'Projeto de análise de dados da série Rick e Morty, utilizando Power BI para visualização, MySQL para armazenamento e Apache Hop para orquestração dos dados. O projeto apresenta insights sobre os personagens, episódios e temporadas da série, ajudando a identificar o personagem favorito dos fãs e conhecer melhor cada um deles.',
       iframeUrl: 'https://app.powerbi.com/view?r=eyJrIjoiNjI4YWRlYjUtODkxZi00ZGM5LWJlYTUtZmYzNTgzNDQzMDEyIiwidCI6IjY0YjI0ZDg4LTU4ODQtNDg0NC04YmZhLWMwNzFjOThjNjUyMSJ9',
+      githubUrl: 'https://github.com/FranciscoFromSoftware/RickMorty',
     },
     {
       id: 'projeto2',
@@ -168,7 +170,7 @@ export const Projects: React.FC = () => {
                 </p>
 
                 <h3 className="font-headline font-bold text-primary mb-3 uppercase">Tecnologias Utilizadas</h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 mb-6">
                   {projects
                     .find((p) => p.id === selectedProject)
                     ?.skills.map((skill) => (
@@ -180,6 +182,19 @@ export const Projects: React.FC = () => {
                       </span>
                     ))}
                 </div>
+
+                {projects.find((p) => p.id === selectedProject)?.githubUrl && (
+                  <div className="border-t border-outline/20 pt-6">
+                    <a
+                      href={projects.find((p) => p.id === selectedProject)?.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-primary text-surface px-4 py-2 hover:bg-primary/90 font-mono text-xs uppercase font-bold transition-colors"
+                    >
+                      <Github size={16} /> Ver no GitHub
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>
