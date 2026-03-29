@@ -8,6 +8,7 @@ interface Project {
   images: string[];
   skills: string[];
   description: string;
+  iframeUrl?: string;
 }
 
 export const Projects: React.FC = () => {
@@ -16,15 +17,12 @@ export const Projects: React.FC = () => {
   const projects: Project[] = [
     {
       id: 'projeto1',
-      title: 'Interface MySQL + Python - Sistema de Heróis',
-      cover: 'https://i.ibb.co/1YpfFZBh/capaprojeto-Heroes.png',
-      images: [
-        'https://i.ibb.co/spqszWpq/print-Interface-My-SQL-Python-Viloes.png',
-        'https://i.ibb.co/0RTddHMH/print-Interface-My-SQL-Python-Local.png',
-        'https://i.ibb.co/YBsKfWd0/print-Interface-My-SQL-Python.png',
-      ],
-      skills: ['Python', 'MySQL', 'Power Apps', 'Sharepoint', 'Power BI'],
-      description: 'Conexão do MySQL com Sharepoint e interfaces. Desenvolvimento de aplicativos para controle de alertas, armazenamento de dados no Microsoft List, criação de dashboards e relatórios analíticos.',
+      title: 'Análise da Série - Rick Morty',
+      cover: 'https://app.powerbi.com/view?r=eyJrIjoiNjI4YWRlYjUtODkxZi00ZGM5LWJlYTUtZmYzNTgzNDQzMDEyIiwidCI6IjY0YjI0ZDg4LTU4ODQtNDg0NC04YmZhLWMwNzFjOThjNjUyMSJ9',
+      images: [],
+      skills: ['Power BI', 'MySQL', 'Apache Hop'],
+      description: 'Projeto de análise de dados da série Rick e Morty, utilizando Power BI para visualização, MySQL para armazenamento e Apache Hop para orquestração dos dados. O projeto apresenta insights sobre os personagens, episódios e temporadas da série, ajudando a identificar o personagem favorito dos fãs e conhecer melhor cada um deles.',
+      iframeUrl: 'https://app.powerbi.com/view?r=eyJrIjoiNjI4YWRlYjUtODkxZi00ZGM5LWJlYTUtZmYzNTgzNDQzMDEyIiwidCI6IjY0YjI0ZDg4LTU4ODQtNDg0NC04YmZhLWMwNzFjOThjNjUyMSJ9',
     },
     {
       id: 'projeto2',
@@ -64,12 +62,25 @@ export const Projects: React.FC = () => {
           >
             {/* Project Cover */}
             <div className="relative overflow-hidden h-48 bg-surface">
-              <img
-                src={project.cover}
-                alt={project.title}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+              {project.iframeUrl ? (
+                <iframe
+                  title={project.title}
+                  src={project.iframeUrl}
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  className="group-hover:scale-105 transition-transform duration-300"
+                />
+              ) : (
+                <>
+                  <img
+                    src={project.cover}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+                </>
+              )}
             </div>
 
             {/* Project Info */}
@@ -117,24 +128,37 @@ export const Projects: React.FC = () => {
               </button>
             </div>
 
-            {/* Images Grid */}
+            {/* Images/iframe Grid */}
             <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {projects
-                  .find((p) => p.id === selectedProject)
-                  ?.images.map((image, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-surface border border-outline/30 overflow-hidden hover:border-primary/40 transition-colors"
-                    >
-                      <img
-                        src={image}
-                        alt={`Screenshot ${idx + 1}`}
-                        className="w-full h-auto hover:scale-105 transition-transform duration-300 cursor-pointer"
-                      />
-                    </div>
-                  ))}
-              </div>
+              {projects.find((p) => p.id === selectedProject)?.iframeUrl ? (
+                <div className="bg-surface border border-outline/30 overflow-hidden">
+                  <iframe
+                    title="Project Visualization"
+                    src={projects.find((p) => p.id === selectedProject)?.iframeUrl}
+                    width="100%"
+                    height="600"
+                    frameBorder="0"
+                    allowFullScreen={true}
+                  />
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {projects
+                    .find((p) => p.id === selectedProject)
+                    ?.images.map((image, idx) => (
+                      <div
+                        key={idx}
+                        className="bg-surface border border-outline/30 overflow-hidden hover:border-primary/40 transition-colors"
+                      >
+                        <img
+                          src={image}
+                          alt={`Screenshot ${idx + 1}`}
+                          className="w-full h-auto hover:scale-105 transition-transform duration-300 cursor-pointer"
+                        />
+                      </div>
+                    ))}
+                </div>
+              )}
 
               {/* Project Description */}
               <div className="mt-6 pt-6 border-t border-outline/20">
