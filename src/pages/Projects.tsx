@@ -18,7 +18,7 @@ export const Projects: React.FC = () => {
     {
       id: 'projeto1',
       title: 'Análise da Série - Rick Morty',
-      cover: 'https://app.powerbi.com/view?r=eyJrIjoiNjI4YWRlYjUtODkxZi00ZGM5LWJlYTUtZmYzNTgzNDQzMDEyIiwidCI6IjY0YjI0ZDg4LTU4ODQtNDg0NC04YmZhLWMwNzFjOThjNjUyMSJ9',
+      cover: '<iframe title="RickMorty" width="1024" height="612" src="https://app.powerbi.com/view?r=eyJrIjoiNjI4YWRlYjUtODkxZi00ZGM5LWJlYTUtZmYzNTgzNDQzMDEyIiwidCI6IjY0YjI0ZDg4LTU4ODQtNDg0NC04YmZhLWMwNzFjOThjNjUyMSJ9" frameborder="0" allowFullScreen="true"></iframe>',
       images: [],
       skills: ['Power BI', 'MySQL', 'Apache Hop'],
       description: 'Projeto de análise de dados da série Rick e Morty, utilizando Power BI para visualização, MySQL para armazenamento e Apache Hop para orquestração dos dados. O projeto apresenta insights sobre os personagens, episódios e temporadas da série, ajudando a identificar o personagem favorito dos fãs e conhecer melhor cada um deles.',
