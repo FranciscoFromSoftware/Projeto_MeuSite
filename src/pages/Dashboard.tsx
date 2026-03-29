@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ExternalLink, Github, Linkedin } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
@@ -67,9 +68,9 @@ export const Dashboard: React.FC = () => {
               </div>
 
               <div className="border-t border-outline/20 pt-4">
-                <a href="Projeto_MeuSite/projetos" className="inline-flex items-center gap-2 bg-primary text-surface px-4 py-2 font-mono text-xs uppercase font-bold hover:bg-primary/90">
+                <Link to="/projetos" className="inline-flex items-center gap-2 bg-primary text-surface px-4 py-2 font-mono text-xs uppercase font-bold hover:bg-primary/90">
                   Ver Todos os Projetos <ExternalLink size={14} />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
