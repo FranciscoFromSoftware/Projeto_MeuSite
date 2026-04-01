@@ -871,8 +871,8 @@ RETURN "data:image/svg+xml;utf8,<svg><!-- Radar Chart - Implementar coordenadas 
   return (
     <div className="space-y-8">
       <div className="mb-12 border-l-4 border-primary pl-6 py-2 bg-primary/5">
-        <h2 className="text-4xl font-headline font-black tracking-tight text-on-surface uppercase mb-1">Sector_Alpha: Resource_Hub</h2>
-        <p className="font-mono text-sm text-primary/70">UPLINK STATUS: STABLE // DATALINK: SECURED_ENCRYPTION_LAYER_8</p>
+        <h2 className="text-4xl font-headline font-black tracking-tight text-on-surface uppercase mb-1">Templates Visuais e Temas</h2>
+        <p className="font-mono text-sm text-primary/70">STORYTELLING: ON // DATALINK: ON</p>
       </div>
 
       <div className="grid grid-cols-12 gap-6">
@@ -930,9 +930,9 @@ RETURN "data:image/svg+xml;utf8,<svg><!-- Radar Chart - Implementar coordenadas 
       </div>
 
       <div className="bg-black/20 border border-white/5 p-3 font-mono text-[9px] text-primary/60">
-        &gt; RENDER_ENGINE: SVG_PREVIEW_GENERATED_SUCCESSFULLY [HEATMAP, DONUT, THERMO]
+        &gt; RENDER_STATUS: SVG_PREVIEW_GENERATED_SUCCESSFULLY [HEATMAP, DONUT, THERMO, RADAR]
         <br />
-        &gt; DOWNLOAD_MANAGER: READY_TO_EXPORT_DAX_MEASURES
+        &gt; DOWNLOAD ON: DAX_MEASURES
       </div>
     </div>
   );
