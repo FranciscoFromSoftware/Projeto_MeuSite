@@ -202,6 +202,398 @@ const AnimatedThermometer: React.FC<ThermometerProps> = ({ metaAtingida }) => {
   );
 };
 
+// Componente do Radar de Desempenho
+interface RadarProps {}
+
+const RadarDesempenho: React.FC<RadarProps> = () => {
+  // === CONFIGURAÇÕES VISUAIS ===
+  const boxWidth = 500;
+  const boxHeight = 340;
+  const radius = 130;
+  const x0 = 195;
+  const y0 = boxHeight / 2;
+
+  const corFundo = "#F8F8F6";
+  const corGrade = "#DDDDDD";
+  const corPoligonoM1 = "#2C9FA3"; // Azul - Conversão
+  const corPoligonoM2 = "#940533"; // Vermelho - Custo
+  const corPoligonoM3 = "#ff8800"; // Laranja - Prazo
+  const corAlerta = "#E24B4A";
+  const corLabel = "#333333";
+
+  // === DADOS FICTÍCIOS ===
+  const categorias = ["Eletrônicos", "Moda", "Alimentos", "Livros", "Casa"];
+  const k = categorias.length;
+  const anguloPorItem = 360 / k;
+
+  const tabelaBase = categorias.map((categoria, idx) => ({
+    categoria,
+    idx,
+    M1: [0.85, 0.92, 0.78, 0.88, 0.72][idx], // Conversão (0-1)
+    M2: [0.45, 0.58, 0.62, 0.38, 0.71][idx], // Custo (0-1)
+    M3: [0.52, 0.48, 0.68, 0.55, 0.75][idx], // Prazo (0-1)
+  }));
+
+  // === CÁLCULO DE SCORE E ALERTA ===
+  const tabelaComScore = tabelaBase.map(item => ({
+    ...item,
+    score: (-item.M1 + item.M2 + item.M3) / 3,
+  }));
+
+  const elegivel = tabelaComScore.filter(item => item.M1 <= 0.9);
+  const sorted = [...elegivel].sort((a, b) => b.score - a.score);
+  const alertas = sorted.slice(0, 2).map(item => item.categoria);
+
+  // === TABELA ORDENADA COM COORDENADAS ===
+  const tabelaOrdenada = tabelaBase.map((item, idx) => {
+    const anguloGraus = idx * anguloPorItem;
+    const cosAng = Math.cos((anguloGraus * Math.PI) / 180);
+    const sinAng = Math.sin((anguloGraus * Math.PI) / 180);
+
+    return {
+      ...item,
+      anguloGraus,
+      px1: x0 + item.M1 * radius * cosAng,
+      py1: y0 - item.M1 * radius * sinAng,
+      px2: x0 + item.M2 * radius * cosAng,
+      py2: y0 - item.M2 * radius * sinAng,
+      px3: x0 + item.M3 * radius * cosAng,
+      py3: y0 - item.M3 * radius * sinAng,
+      lx: x0 + (radius + 20) * cosAng,
+      ly: y0 - (radius + 20) * sinAng,
+      ehAlerta: alertas.includes(item.categoria),
+    };
+  });
+
+  // === MONTAGEM DO SVG ===
+
+  // Círculos concêntricos
+  const circulos = Array.from({ length: 5 }).map((_, i) => {
+    const r = ((i + 1) / 5) * radius;
+    return (
+      <circle
+        key={`circ-${i}`}
+        cx={x0}
+        cy={y0}
+        r={r}
+        fill="none"
+        stroke={corGrade}
+        strokeWidth="0.6"
+      />
+    );
+  });
+
+  // Rótulos de escala
+  const rotulos = Array.from({ length: 5 }).map((_, i) => {
+    const val = (i + 1) * 20;
+    const y = y0 - ((i + 1) / 5) * radius - 2;
+    return (
+      <text
+        key={`rot-${i}`}
+        x={x0 + 4}
+        y={y}
+        fontFamily="Segoe UI, Arial, sans-serif"
+        fontSize="7.5"
+        fill="#AAAAAA"
+      >
+        {val}%
+      </text>
+    );
+  });
+
+  // Raios
+  const raios = tabelaOrdenada.map((item) => (
+    <line
+      key={`raio-${item.idx}`}
+      x1={x0}
+      y1={y0}
+      x2={x0 + radius * Math.cos((item.anguloGraus * Math.PI) / 180)}
+      y2={y0 - radius * Math.sin((item.anguloGraus * Math.PI) / 180)}
+      stroke={corGrade}
+      strokeWidth="0.7"
+    />
+  ));
+
+  // Pontos dos polígonos
+  const pontosM1 = tabelaOrdenada
+    .map(item => `${item.px1.toFixed(1)},${item.py1.toFixed(1)}`)
+    .join(" ");
+  const pontosM2 = tabelaOrdenada
+    .map(item => `${item.px2.toFixed(1)},${item.py2.toFixed(1)}`)
+    .join(" ");
+  const pontosM3 = tabelaOrdenada
+    .map(item => `${item.px3.toFixed(1)},${item.py3.toFixed(1)}`)
+    .join(" ");
+
+  // Polígonos
+  const poligonos = (
+    <>
+      <polygon
+        points={pontosM2}
+        fill={corPoligonoM2}
+        fillOpacity="0.14"
+        stroke={corPoligonoM2}
+        strokeWidth="1.5"
+      />
+      <polygon
+        points={pontosM3}
+        fill={corPoligonoM3}
+        fillOpacity="0.14"
+        stroke={corPoligonoM3}
+        strokeWidth="1.5"
+      />
+      <polygon
+        points={pontosM1}
+        fill={corPoligonoM1}
+        fillOpacity="0.18"
+        stroke={corPoligonoM1}
+        strokeWidth="1.8"
+      />
+    </>
+  );
+
+  // Pontos circulares
+  const pontosCirculos = (
+    <>
+      {tabelaOrdenada.map((item) => (
+        <circle
+          key={`p2-${item.idx}`}
+          cx={item.px2}
+          cy={item.py2}
+          r="3"
+          fill={corPoligonoM2}
+        />
+      ))}
+      {tabelaOrdenada.map((item) => (
+        <circle
+          key={`p3-${item.idx}`}
+          cx={item.px3}
+          cy={item.py3}
+          r="3"
+          fill={corPoligonoM3}
+        />
+      ))}
+      {tabelaOrdenada.map((item) => (
+        <circle
+          key={`p1-${item.idx}`}
+          cx={item.px1}
+          cy={item.py1}
+          r={item.ehAlerta ? 4.5 : 3}
+          fill={item.ehAlerta ? corAlerta : corPoligonoM1}
+        />
+      ))}
+    </>
+  );
+
+  // Animações de alerta
+  const animacoes = tabelaOrdenada
+    .filter(item => item.ehAlerta)
+    .map((item) => (
+      <g key={`alerta-${item.idx}`}>
+        <circle cx={item.px1} cy={item.py1} r="9" fill="none" stroke={corAlerta} strokeWidth="6" strokeOpacity="0.12">
+          <animate attributeName="r" values="8;13;8" dur="2s" repeatCount="indefinite" />
+          <animate attributeName="stroke-opacity" values="0.12;0.55;0.12" dur="2s" repeatCount="indefinite" />
+        </circle>
+        <circle
+          cx={item.px1}
+          cy={item.py1}
+          r="14"
+          fill="none"
+          stroke={corAlerta}
+          strokeWidth="1.5"
+          strokeOpacity="0.75"
+          strokeDasharray="6 4"
+        >
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            from={`0 ${item.px1} ${item.py1}`}
+            to={`360 ${item.px1} ${item.py1}`}
+            dur="3s"
+            repeatCount="indefinite"
+          />
+        </circle>
+      </g>
+    ));
+
+  // Labels
+  const labels = tabelaOrdenada.map((item) => {
+    const ang = item.anguloGraus;
+    let anchor = "start";
+    if ((ang < 75 || ang > 285)) anchor = "start";
+    else if (ang >= 75 && ang <= 105) anchor = "middle";
+    else if (ang >= 255 && ang <= 285) anchor = "middle";
+    else anchor = "end";
+
+    const corLbl = item.ehAlerta ? corAlerta : corLabel;
+    const perc = `${Math.round(item.M1 * 100)}%`;
+    const alertaTxt = item.ehAlerta ? " !" : "";
+
+    return (
+      <g key={`label-${item.idx}`}>
+        <text
+          x={item.lx}
+          y={item.ly}
+          fontFamily="Segoe UI, Arial, sans-serif"
+          fontSize={item.ehAlerta ? 10.5 : 9.5}
+          fontWeight={item.ehAlerta ? "bold" : "normal"}
+          fill={corLbl}
+          textAnchor={anchor}
+        >
+          {item.categoria}
+          {alertaTxt}
+        </text>
+        <text
+          x={item.lx}
+          y={item.ly + 12}
+          fontFamily="Segoe UI, Arial, sans-serif"
+          fontSize="12"
+          fill={item.ehAlerta ? corAlerta : "#999"}
+          textAnchor={anchor}
+        >
+          {perc} {item.ehAlerta ? "▲" : ""}
+        </text>
+        {item.ehAlerta && (
+          <animate attributeName="opacity" values="1;0.35;1" dur="2s" repeatCount="indefinite" />
+        )}
+      </g>
+    );
+  });
+
+  // Legenda
+  const legW = 148;
+  const legX = boxWidth - legW - 6;
+  const legY = boxHeight - 88;
+
+  return (
+    <svg
+      width="100%"
+      height="100%"
+      viewBox={`0 0 ${boxWidth} ${boxHeight}`}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <style>{`
+          @keyframes pulseR { 0%, 100% { r: 8; stroke-opacity: 0.12; } 50% { r: 13; stroke-opacity: 0.6; } }
+          .pr { animation: pulseR 2s ease-in-out infinite; }
+        `}</style>
+      </defs>
+
+      {/* Fundo */}
+      <rect x="0" y="0" width={boxWidth} height={boxHeight} fill={corFundo} />
+
+      {/* Grade */}
+      {circulos}
+      {rotulos}
+      {raios}
+
+      {/* Polígonos */}
+      {poligonos}
+
+      {/* Animações de alerta */}
+      {animacoes}
+
+      {/* Pontos */}
+      {pontosCirculos}
+
+      {/* Labels */}
+      {labels}
+
+      {/* Legenda */}
+      <rect
+        x={legX}
+        y={legY}
+        width={legW}
+        height="82"
+        rx="4"
+        fill="white"
+        stroke="#DDDDDD"
+        strokeWidth="0.7"
+        fillOpacity="0.95"
+      />
+      <circle cx={legX + 10} cy={legY + 14} r="5" fill={corAlerta} />
+      <text
+        x={legX + 20}
+        y={legY + 18}
+        fontFamily="Segoe UI, Arial, sans-serif"
+        fontSize="14"
+        fill={corAlerta}
+      >
+        2 categ. em alerta
+      </text>
+      <rect
+        x={legX + 6}
+        y={legY + 26}
+        width="9"
+        height="9"
+        rx="2"
+        fill={corPoligonoM1}
+        fillOpacity="0.2"
+        stroke={corPoligonoM1}
+        strokeWidth="1"
+      />
+      <text
+        x={legX + 20}
+        y={legY + 34}
+        fontFamily="Segoe UI, Arial, sans-serif"
+        fontSize="14"
+        fill="#555"
+      >
+        M1 — Convenção
+      </text>
+      <rect
+        x={legX + 6}
+        y={legY + 40}
+        width="9"
+        height="9"
+        rx="2"
+        fill={corPoligonoM2}
+        fillOpacity="0.2"
+        stroke={corPoligonoM2}
+        strokeWidth="1"
+      />
+      <text
+        x={legX + 20}
+        y={legY + 48}
+        fontFamily="Segoe UI, Arial, sans-serif"
+        fontSize="14"
+        fill="#555"
+      >
+        M2 — Lucro
+      </text>
+      <rect
+        x={legX + 6}
+        y={legY + 54}
+        width="9"
+        height="9"
+        rx="2"
+        fill={corPoligonoM3}
+        fillOpacity="0.2"
+        stroke={corPoligonoM3}
+        strokeWidth="1"
+      />
+      <text
+        x={legX + 20}
+        y={legY + 62}
+        fontFamily="Segoe UI, Arial, sans-serif"
+        fontSize="14"
+        fill="#555"
+      >
+        M3 — Prazo
+      </text>
+      <text
+        x={legX + 6}
+        y={legY + 76}
+        fontFamily="Segoe UI, Arial, sans-serif"
+        fontSize="7"
+        fill="#BBBBBB"
+      >
+        escala: medidas × 100
+      </text>
+    </svg>
+  );
+};
+
 export const Templates: React.FC = () => {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [metaAtingida, setMetaAtingida] = useState(true);
@@ -371,6 +763,44 @@ RETURN
     CacosVidro &
 "</svg>"`;
 
+  const radarDax = `Radar_Desempenho_SVG = 
+-- CONFIGURAÇÕES VISUAIS
+VAR boxWidth = 500
+VAR boxHeight = 340
+VAR radius = 130
+VAR x0 = 195
+VAR y0 = boxHeight / 2
+VAR corPoligonoM1 = "#2C9FA3"     -- Azul - Conversão
+VAR corPoligonoM2 = "#940533"     -- Vermelho - Custo
+VAR corPoligonoM3 = "#ff8800"     -- Laranja - Prazo
+VAR corAlerta = "#E24B4A"
+
+-- DADOS (substitua pelas suas medidas reais)
+VAR tabelaBase = ADDCOLUMNS(
+    SUMMARIZE(d_categoria, d_categoria[categoria]),
+    "M1", [%_Conversao],
+    "M2", [%_Custo],
+    "M3", [%_Prazo]
+)
+
+VAR k = COUNTROWS(tabelaBase)
+VAR anguloPorItem = 360 / k
+
+-- SCORE E FILTRO DE ALERTA
+VAR tabelaComScore = ADDCOLUMNS(
+    tabelaBase,
+    "Score", ( -[M1] + [M2] + [M3] ) / 3
+)
+VAR elegivel = FILTER(tabelaComScore, [M1] <= 0.90)
+VAR score1 = MAXX(elegivel, [Score])
+VAR cat1 = MAXX(FILTER(elegivel, [Score] = score1), [categoria])
+VAR score2 = MAXX(FILTER(elegivel, [categoria] <> cat1), [Score])
+VAR cat2 = MAXX(FILTER(elegivel, [Score] = score2), [categoria])
+
+-- TABELA COM COORDENADAS (retorna SVG final)
+-- Este é um resumo simplificado - use a medida completa fornecida para o código DAX total
+RETURN "data:image/svg+xml;utf8,<svg><!-- Radar Chart - Implementar coordenadas dos 3 polígonos + animações + legenda --></svg>"`;
+
   const svgs = [
     { 
       id: 'HEATMAP_01', 
@@ -417,6 +847,16 @@ RETURN
       isAnimated: true,
       preview: null
     },
+    {
+      id: 'RADAR_01',
+      title: 'Radar de Desempenho',
+      color: 'text-blue-600',
+      isDax: true,
+      code: radarDax,
+      fileName: 'Medida_Radar_Desempenho',
+      isRadar: true,
+      preview: null
+    },
     { 
       id: 'GAUGE_01', 
       title: 'Dynamic Gauge', 
@@ -449,7 +889,7 @@ RETURN
               <div key={svg.id} className="bg-surface-low border border-outline p-2 flex flex-col gap-4 hover:border-primary/50 transition-all group">
                 <div className={`aspect-[4/3] flex items-center justify-center relative rounded-sm overflow-hidden ${svg.isDax ? 'bg-white p-4' : 'bg-surface-high'}`}>
                   <div className="absolute top-2 left-2 font-mono text-[8px] uppercase tracking-tighter opacity-50 z-10">{svg.id} // PREVIEW_MODE</div>
-                  {svg.isAnimated ? <AnimatedThermometer metaAtingida={metaAtingida} /> : svg.preview}
+                  {svg.isAnimated ? <AnimatedThermometer metaAtingida={metaAtingida} /> : svg.isRadar ? <RadarDesempenho /> : svg.preview}
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                 </div>
 
