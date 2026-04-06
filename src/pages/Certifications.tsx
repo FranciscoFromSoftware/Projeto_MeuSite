@@ -1,7 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import { Award, Shield, Zap, Microscope, Network, Database, ExternalLink } from 'lucide-react';
 
-export const Certifications: React.FC = () => {
+export const Certifications = () => {
   const certs = [
     {
       id: 'SHARD_01',
@@ -30,7 +30,8 @@ export const Certifications: React.FC = () => {
       status: 'VERIFICADO',
       date: 'set. 2024',
       icon: Shield,
-      color: 'text-secondary'
+      color: 'text-secondary',
+      link: ''
     },
     {
       id: 'SHARD_04',
@@ -39,7 +40,8 @@ export const Certifications: React.FC = () => {
       status: 'EXPIRADO',
       date: 'set. 2024',
       icon: Zap,
-      color: 'text-tertiary'
+      color: 'text-tertiary',
+      link: ''
     }
   ];
 
@@ -120,10 +122,10 @@ export const Certifications: React.FC = () => {
 
         {/* Shard Grid */}
         {certs.slice(1).map((cert) => (
-          <div key={cert.id} className="bg-surface-low border border-outline hover:border-primary/50 transition-colors group cursor-crosshair shard-clip p-1">
+          <div key={cert.id} className="bg-surface-low border border-outline hover:border-primary/50 transition-colors group cursor-pointer shard-clip p-1">
             <div className="bg-surface-high p-6 flex flex-col h-full gap-4 transition-transform group-hover:scale-[0.98]">
               <div className="flex justify-between items-start">
-                <cert.icon className={`${cert.color} text-3xl`} size={32} />
+                {React.createElement(cert.icon, { className: cert.color, size: 32 })}
                 <span className="font-mono text-[10px] text-outline uppercase tracking-widest">{cert.id}</span>
               </div>
               <div className="flex-1">

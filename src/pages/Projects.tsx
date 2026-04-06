@@ -10,12 +10,23 @@ interface Project {
   description: string;
   iframeUrl?: string;
   githubUrl?: string;
+  status?: 'developing' | 'completed';
 }
 
 export const Projects: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
 
   const projects: Project[] = [
+    {
+      id: 'powerbi-projeto',
+      title: 'Power BI - Dashboard Estratégico',
+      cover: 'https://i.ibb.co/Lzsk8pyS/Aguarde-Novos-Projetos.png',
+      images: [],
+      skills: ['Power BI', 'Analytics', 'Desenvolvimento'],
+      description: 'Dashboard interativo em desenvolvimento com análises estratégicas e visualizações de dados em tempo real. Acompanhe a evolução do projeto em tempo real através do visualizador do Power BI.',
+      iframeUrl: 'https://app.powerbi.com/view?r=eyJrIjoiODdmODA3NzYtMmM5Ny00MjM4LThjNWMtYzk3NDMzNmY5ZDkyIiwidCI6IjY0YjI0ZDg4LTU4ODQtNDg0NC04YmZhLWMwNzFjOThjNjUyMSJ9',
+      status: 'developing',
+    },
     {
       id: 'projeto1',
       title: 'Análise da Série - Rick Morty',
@@ -59,9 +70,15 @@ export const Projects: React.FC = () => {
         {projects.map((project) => (
           <div
             key={project.id}
-            className="bg-surface-low border border-outline hover:border-primary/40 transition-all cursor-pointer group overflow-hidden"
+            className="bg-surface-low border border-outline hover:border-primary/40 transition-all cursor-pointer group overflow-hidden relative"
             onClick={() => setSelectedProject(project.id)}
           >
+            {/* Status Badge */}
+            {project.status === 'developing' && (
+              <div className="absolute top-2 right-2 z-10 bg-secondary text-surface font-mono text-[10px] font-bold px-3 py-1 uppercase">
+                Desenvolvimento Agora
+              </div>
+            )}
             {/* Project Cover */}
             <div className="relative overflow-hidden h-48 bg-surface">
               {project.iframeUrl ? (
