@@ -44,7 +44,7 @@ export const Projects: React.FC = () => {
       images: [],
       skills: ['Python', 'Streamlit'],
       description: 'Análise publicada no StreamLit, desenvolvida em Python. Dados sobre o crescimento da população do Brasil de 2001 a 2024.',
-      iframeUrl: 'https://brasilpopulacao.streamlit.app/',
+      iframeUrl: 'https://brasilpopulacao.streamlit.app/?embed_options=dark_theme,show_toolbar,show_colored_line,show_padding',
     },
     {
       id: 'projeto3',
