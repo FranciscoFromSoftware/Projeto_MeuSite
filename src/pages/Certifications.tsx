@@ -55,6 +55,7 @@ export const Certifications = () => {
     {
       id: 'CRS_01',
       title: 'Explore a IA Generativa para Produtividade com a Microsoft e o LinkedIn',
+      school: 'Microsoft & LinkedIn',
       issuer: 'LINKEDIN_LEARNING',
       date: 'set. 2024',
       competencies: [
@@ -64,6 +65,36 @@ export const Certifications = () => {
       ],
       certificateUrl:
         'https://www.linkedin.com/learning/certificates/07caddd6ee9bf108704d1b59e6a88e9b9a6c850fe561ef51496098fa97b3f856',
+    },
+    {
+      id: 'CRS_02',
+      title: 'Fundamentos para Análise de Dados por Microsoft e LinkedIn',
+      school: 'Microsoft',
+      issuer: 'LINKEDIN_LEARNING',
+      date: '28/08/2024',
+      competencies: ['Visualização de dados', 'Análise de dados'],
+      certificateUrl:
+        'https://www.linkedin.com/learning/certificates/f1b0579c706bf1be1406192a7002f19baa1b78b857225d6b89583c8b2c705ecc',
+    },
+    {
+      id: 'CRS_03',
+      title: 'Storytelling com Dados para Comunicação Profissional de Sucesso',
+      school: 'Enap',
+      issuer: 'ENAP',
+      date: '05/2024',
+      competencies: ['Comunicação visual', 'Arco narrativo e métodos de storytelling'],
+      certificateUrl:
+        'https://www.linkedin.com/in/francisco-henrique-lomas/overlay/Certifications/292597552/treasury/?profileId=ACoAADoHAIIBLfJkjHd2x7aPEryijW0qjCNAGCQ',
+    },
+    {
+      id: 'CRS_04',
+      title: 'Matemática Financeira',
+      school: 'Enap',
+      issuer: 'ENAP',
+      date: '28/04/2024',
+      competencies: ['Matemática financeira'],
+      certificateUrl:
+        'https://www.linkedin.com/in/francisco-henrique-lomas/overlay/Certifications/292597552/treasury/?profileId=ACoAADoHAIIBLfJkjHd2x7aPEryijW0qjCNAGCQ',
     },
   ];
 
@@ -170,7 +201,7 @@ export const Certifications = () => {
             <div className="flex items-center gap-3 mb-2">
               <BookOpen className="text-secondary" size={22} />
               <span className="font-mono text-[10px] text-primary/60 uppercase tracking-widest">
-                LINKEDIN_LEARNING // CURSOS
+                FORMAÇÃO_CONTÍNUA // CURSOS
               </span>
             </div>
             <h2 className="text-2xl font-headline font-black uppercase tracking-tighter text-on-surface">
@@ -197,6 +228,9 @@ export const Certifications = () => {
                     {course.title}
                   </h3>
                   <p className="font-mono text-[10px] text-on-surface-variant mt-2 uppercase tracking-tight">
+                    ESCOLA: {course.school}
+                  </p>
+                  <p className="font-mono text-[10px] text-on-surface-variant mt-1 uppercase tracking-tight">
                     PLATAFORMA: {course.issuer}
                   </p>
                   <p className="font-mono text-[10px] text-outline mt-1 uppercase">

@@ -24,6 +24,8 @@ interface Project {
   iframeUrl?: string;
   /** App Streamlit: tentativa de embed no modal com `?embedded=true`; use também para abrir em nova aba. */
   externalAppUrl?: string;
+  /** Pré-visualização do Streamlit no card (iframe reduzido com zoom); requer externalAppUrl. */
+  streamlitCardEmbed?: boolean;
   githubUrl?: string;
   status?: 'developing' | 'completed';
 }
@@ -55,12 +57,13 @@ export const Projects: React.FC = () => {
     {
       id: 'projeto2',
       title: 'Crescimento da População do Brasil - 2001 a 2024',
-      cover: 'https://brasilpopulacao.streamlit.app/?embed_options=dark_theme,show_toolbar,show_colored_line,show_padding',
+      cover: 'https://i.ibb.co/Lzsk8pyS/Aguarde-Novos-Projetos.png',
       images: [],
       skills: ['Python', 'Streamlit'],
       description: 'Análise publicada no StreamLit, desenvolvida em Python. Dados sobre o crescimento da população do Brasil de 2001 a 2024.',
       externalAppUrl:
         'https://brasilpopulacao.streamlit.app/?embed_options=dark_theme,show_toolbar,show_colored_line,show_padding',
+      streamlitCardEmbed: true,
     },
     {
       id: 'projeto3',
@@ -111,6 +114,15 @@ export const Projects: React.FC = () => {
                   frameBorder="0"
                   className="group-hover:scale-105 transition-transform duration-300"
                 />
+              ) : project.streamlitCardEmbed && project.externalAppUrl ? (
+                <div className="relative h-full w-full overflow-hidden bg-[#0d1117]">
+                  <iframe
+                    title={project.title}
+                    src={streamlitEmbeddedSrc(project.externalAppUrl)}
+                    loading="lazy"
+                    className="pointer-events-none absolute left-1/2 top-0 h-[720px] w-[min(920px,220vw)] max-w-none -translate-x-1/2 border-0 origin-top scale-[0.38] transition-transform duration-300 group-hover:scale-[0.42]"
+                  />
+                </div>
               ) : (
                 <>
                   <img
