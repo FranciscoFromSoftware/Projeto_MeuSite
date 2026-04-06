@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import { ExternalLink, Github } from 'lucide-react';
 
+/** URL do Streamlit Cloud com `embedded=true` (modo embed oficial), preservando outros query params. */
+function streamlitEmbeddedSrc(pageUrl: string): string {
+  try {
+    const u = new URL(pageUrl);
+    u.searchParams.set('embedded', 'true');
+    return u.toString();
+  } catch {
+    const join = pageUrl.includes('?') ? '&' : '?';
+    return `${pageUrl}${join}embedded=true`;
+  }
+}
+
 interface Project {
   id: string;
   title: string;
@@ -8,9 +20,9 @@ interface Project {
   images: string[];
   skills: string[];
   description: string;
-  /** URLs que permitem iframe (ex.: Power BI). Streamlit Cloud não suporta embed em sites externos. */
+  /** URL para iframe (ex.: Power BI “public view”). */
   iframeUrl?: string;
-  /** App que abre em nova aba em vez de iframe (ex.: Streamlit). */
+  /** App Streamlit: tentativa de embed no modal com `?embedded=true`; use também para abrir em nova aba. */
   externalAppUrl?: string;
   githubUrl?: string;
   status?: 'developing' | 'completed';
@@ -59,6 +71,10 @@ export const Projects: React.FC = () => {
       description: 'Fique atento para novos projetos em desenvolvimento.',
     },
   ];
+
+  const activeProject = selectedProject
+    ? projects.find((p) => p.id === selectedProject)
+    : undefined;
 
   return (
     <div className="space-y-8 pb-20">
@@ -155,7 +171,7 @@ export const Projects: React.FC = () => {
             {/* Close Button */}
             <div className="sticky top-0 flex justify-between items-center p-6 border-b border-outline/20">
               <h2 className="font-headline font-bold text-2xl text-primary uppercase">
-                {projects.find((p) => p.id === selectedProject)?.title}
+                {activeProject?.title}
               </h2>
               <button
                 onClick={() => setSelectedProject(null)}
@@ -167,38 +183,49 @@ export const Projects: React.FC = () => {
 
             {/* Images/iframe Grid */}
             <div className="p-6">
-              {projects.find((p) => p.id === selectedProject)?.iframeUrl ? (
+              {activeProject?.iframeUrl ? (
                 <div className="bg-surface border border-outline/30 overflow-hidden">
                   <iframe
                     title="Project Visualization"
-                    src={projects.find((p) => p.id === selectedProject)?.iframeUrl}
+                    src={activeProject.iframeUrl}
                     width="100%"
                     height="600"
                     frameBorder="0"
                     allowFullScreen={true}
                   />
                 </div>
-              ) : projects.find((p) => p.id === selectedProject)?.externalAppUrl ? (
-                <div className="bg-surface border border-outline/30 p-8 text-center space-y-4">
-                  <p className="font-body text-sm text-on-surface-variant leading-relaxed max-w-xl mx-auto">
-                    O Streamlit Cloud não permite incorporar o app em iframes em sites externos (cookies e redirecionamentos em{' '}
-                    <span className="font-mono text-[11px] text-primary">share.streamlit.io</span>
-                    ). Abra o projeto diretamente no Streamlit para usar a análise interativa.
-                  </p>
-                  <a
-                    href={projects.find((p) => p.id === selectedProject)?.externalAppUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-secondary text-surface px-6 py-3 hover:bg-secondary/90 font-mono text-xs uppercase font-bold transition-colors"
-                  >
-                    Abrir no Streamlit <ExternalLink size={16} />
-                  </a>
+              ) : activeProject?.externalAppUrl ? (
+                <div className="space-y-4">
+                  <div className="bg-surface overflow-hidden border border-black/10">
+                    <iframe
+                      title="Streamlit"
+                      src={streamlitEmbeddedSrc(activeProject.externalAppUrl)}
+                      width="100%"
+                      height={600}
+                      className="block w-full border-0"
+                      allowFullScreen
+                    />
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-center sm:text-left">
+                    <p className="font-body text-xs text-on-surface-variant leading-relaxed max-w-2xl">
+                      Mesmo padrão do embed com{' '}
+                      <span className="font-mono text-[10px] text-primary">?embedded=true</span>. Se aparecer erro de
+                      redirecionamento ou tela em branco, o navegador ou o Streamlit Cloud bloqueou o iframe — abra em
+                      nova aba.
+                    </p>
+                    <a
+                      href={activeProject.externalAppUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 shrink-0 bg-secondary text-surface px-5 py-2.5 hover:bg-secondary/90 font-mono text-xs uppercase font-bold transition-colors"
+                    >
+                      Abrir no Streamlit <ExternalLink size={16} />
+                    </a>
+                  </div>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {projects
-                    .find((p) => p.id === selectedProject)
-                    ?.images.map((image, idx) => (
+                  {activeProject?.images.map((image, idx) => (
                       <div
                         key={idx}
                         className="bg-surface border border-outline/30 overflow-hidden hover:border-primary/40 transition-colors"
@@ -217,27 +244,25 @@ export const Projects: React.FC = () => {
               <div className="mt-6 pt-6 border-t border-outline/20">
                 <h3 className="font-headline font-bold text-primary mb-3 uppercase">Descrição</h3>
                 <p className="font-body text-sm text-on-surface-variant mb-4 leading-relaxed">
-                  {projects.find((p) => p.id === selectedProject)?.description}
+                  {activeProject?.description}
                 </p>
 
                 <h3 className="font-headline font-bold text-primary mb-3 uppercase">Tecnologias Utilizadas</h3>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {projects
-                    .find((p) => p.id === selectedProject)
-                    ?.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="text-[10px] bg-primary/10 text-primary px-3 py-1 border border-primary/20 font-mono uppercase"
-                      >
-                        {skill}
-                      </span>
-                    ))}
+                  {activeProject?.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="text-[10px] bg-primary/10 text-primary px-3 py-1 border border-primary/20 font-mono uppercase"
+                    >
+                      {skill}
+                    </span>
+                  ))}
                 </div>
 
-                {projects.find((p) => p.id === selectedProject)?.githubUrl && (
+                {activeProject?.githubUrl && (
                   <div className="border-t border-outline/20 pt-6">
                     <a
-                      href={projects.find((p) => p.id === selectedProject)?.githubUrl}
+                      href={activeProject.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 bg-primary text-surface px-4 py-2 hover:bg-primary/90 font-mono text-xs uppercase font-bold transition-colors"
