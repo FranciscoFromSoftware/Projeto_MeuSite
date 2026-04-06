@@ -8,7 +8,10 @@ interface Project {
   images: string[];
   skills: string[];
   description: string;
+  /** URLs que permitem iframe (ex.: Power BI). Streamlit Cloud não suporta embed em sites externos. */
   iframeUrl?: string;
+  /** App que abre em nova aba em vez de iframe (ex.: Streamlit). */
+  externalAppUrl?: string;
   githubUrl?: string;
   status?: 'developing' | 'completed';
 }
@@ -44,7 +47,8 @@ export const Projects: React.FC = () => {
       images: [],
       skills: ['Python', 'Streamlit'],
       description: 'Análise publicada no StreamLit, desenvolvida em Python. Dados sobre o crescimento da população do Brasil de 2001 a 2024.',
-      iframeUrl: 'https://brasilpopulacao.streamlit.app/?embed_options=dark_theme,show_toolbar,show_colored_line,show_padding',
+      externalAppUrl:
+        'https://brasilpopulacao.streamlit.app/?embed_options=dark_theme,show_toolbar,show_colored_line,show_padding',
     },
     {
       id: 'projeto3',
@@ -91,6 +95,19 @@ export const Projects: React.FC = () => {
                   frameBorder="0"
                   className="group-hover:scale-105 transition-transform duration-300"
                 />
+              ) : project.externalAppUrl ? (
+                <>
+                  <img
+                    src={project.cover}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/35 group-hover:bg-black/25 transition-colors flex items-center justify-center">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-primary bg-surface/90 px-3 py-1.5 border border-primary/40">
+                      Abrir app — nova aba
+                    </span>
+                  </div>
+                </>
               ) : (
                 <>
                   <img
@@ -160,6 +177,22 @@ export const Projects: React.FC = () => {
                     frameBorder="0"
                     allowFullScreen={true}
                   />
+                </div>
+              ) : projects.find((p) => p.id === selectedProject)?.externalAppUrl ? (
+                <div className="bg-surface border border-outline/30 p-8 text-center space-y-4">
+                  <p className="font-body text-sm text-on-surface-variant leading-relaxed max-w-xl mx-auto">
+                    O Streamlit Cloud não permite incorporar o app em iframes em sites externos (cookies e redirecionamentos em{' '}
+                    <span className="font-mono text-[11px] text-primary">share.streamlit.io</span>
+                    ). Abra o projeto diretamente no Streamlit para usar a análise interativa.
+                  </p>
+                  <a
+                    href={projects.find((p) => p.id === selectedProject)?.externalAppUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-secondary text-surface px-6 py-3 hover:bg-secondary/90 font-mono text-xs uppercase font-bold transition-colors"
+                  >
+                    Abrir no Streamlit <ExternalLink size={16} />
+                  </a>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
