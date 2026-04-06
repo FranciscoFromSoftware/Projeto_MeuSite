@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Award, Shield, Zap, Microscope, Network, Database, ExternalLink } from 'lucide-react';
+import { Award, Shield, Zap, Microscope, Network, Database, ExternalLink, BookOpen } from 'lucide-react';
 
 export const Certifications = () => {
   const certs = [
@@ -49,6 +49,22 @@ export const Certifications = () => {
     "Data Aggregation", "Data Analytics", "Data Calculations", "Data Cleaning", 
     "Data Ethics", "Data Visualization", "Presentations", "Problem Solving", 
     "R", "Spreadsheets", "SQL", "Structured Thinking"
+  ];
+
+  const courses = [
+    {
+      id: 'CRS_01',
+      title: 'Explore a IA Generativa para Produtividade com a Microsoft e o LinkedIn',
+      issuer: 'LINKEDIN_LEARNING',
+      date: 'set. 2024',
+      competencies: [
+        'Ferramentas de inteligência artificial generativa',
+        'Prompt Engineering',
+        'Inteligência artificial para negócios',
+      ],
+      certificateUrl:
+        'https://www.linkedin.com/learning/certificates/07caddd6ee9bf108704d1b59e6a88e9b9a6c850fe561ef51496098fa97b3f856',
+    },
   ];
 
   return (
@@ -146,6 +162,78 @@ export const Certifications = () => {
           </div>
         ))}
       </div>
+
+      {/* Cursos */}
+      <section className="mt-12 space-y-6">
+        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-outline pb-4">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <BookOpen className="text-secondary" size={22} />
+              <span className="font-mono text-[10px] text-primary/60 uppercase tracking-widest">
+                LINKEDIN_LEARNING // CURSOS
+              </span>
+            </div>
+            <h2 className="text-2xl font-headline font-black uppercase tracking-tighter text-on-surface">
+              Cursos <span className="text-secondary">concluídos</span>
+            </h2>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {courses.map((course) => (
+            <article
+              key={course.id}
+              className="bg-surface-low border border-outline hover:border-secondary/50 transition-colors shard-clip p-1"
+            >
+              <div className="bg-surface-high p-6 flex flex-col h-full gap-4">
+                <div className="flex justify-between items-start gap-3">
+                  <BookOpen className="text-secondary shrink-0" size={28} />
+                  <span className="font-mono text-[10px] text-outline uppercase tracking-widest">
+                    {course.id}
+                  </span>
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-headline font-bold text-lg uppercase tracking-tighter text-on-surface leading-snug">
+                    {course.title}
+                  </h3>
+                  <p className="font-mono text-[10px] text-on-surface-variant mt-2 uppercase tracking-tight">
+                    PLATAFORMA: {course.issuer}
+                  </p>
+                  <p className="font-mono text-[10px] text-outline mt-1 uppercase">
+                    Conclusão: {course.date}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-mono text-[9px] text-outline uppercase tracking-widest mb-2">
+                    Competências
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {course.competencies.map((c) => (
+                      <span
+                        key={c}
+                        className="text-[9px] font-mono border border-secondary/30 px-2 py-0.5 text-secondary/90 bg-secondary/5"
+                      >
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="border-t border-outline pt-4 flex flex-wrap items-center justify-between gap-3">
+                  <span className="font-mono text-[10px] uppercase text-secondary">Certificado verificável</span>
+                  <a
+                    href={course.certificateUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-secondary text-surface font-mono px-5 py-2 text-xs font-bold uppercase transition-all hover:translate-x-0.5 flex items-center gap-2 shard-clip"
+                  >
+                    Ver certificado <ExternalLink size={12} />
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
 
       {/* Seção de Telemetria */}
       <section className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
