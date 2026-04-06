@@ -39,12 +39,12 @@ export const Projects: React.FC = () => {
     },
     {
       id: 'projeto2',
-      title: 'Análise Estatística - R',
+      title: 'Crescimento da População do Brasil - 2001 a 2024',
       cover: 'https://i.ibb.co/Lzsk8pyS/Aguarde-Novos-Projetos.png',
       images: [],
-      skills: ['R', 'RPubs', 'Estatística'],
-      description: 'Análise estatística publicada no RPubs, desenvolvida em R. Visualize o relatório completo diretamente pelo visualizador embarcado.',
-      iframeUrl: 'https://rpubs.com/XscientFHL/1275208',
+      skills: ['Python', 'Streamlit'],
+      description: 'Análise publicada no StreamLit, desenvolvida em Python. Dados sobre o crescimento da população do Brasil de 2001 a 2024.',
+      iframeUrl: 'https://brasilpopulacao.streamlit.app/',
     },
     {
       id: 'projeto3',
