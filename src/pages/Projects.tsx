@@ -19,10 +19,10 @@ export const Projects: React.FC = () => {
   const projects: Project[] = [
     {
       id: 'powerbi-projeto',
-      title: 'Power BI - Dashboard Estratégico',
+      title: 'Governo do Brasil - Dados e Estatísticas',
       cover: 'https://i.ibb.co/Lzsk8pyS/Aguarde-Novos-Projetos.png',
       images: [],
-      skills: ['Power BI', 'Analytics', 'Desenvolvimento'],
+      skills: ['Power BI', 'Python'],
       description: 'Dashboard interativo em desenvolvimento com análises estratégicas e visualizações de dados em tempo real. Acompanhe a evolução do projeto em tempo real através do visualizador do Power BI.',
       iframeUrl: 'https://app.powerbi.com/view?r=eyJrIjoiODdmODA3NzYtMmM5Ny00MjM4LThjNWMtYzk3NDMzNmY5ZDkyIiwidCI6IjY0YjI0ZDg4LTU4ODQtNDg0NC04YmZhLWMwNzFjOThjNjUyMSJ9',
       status: 'developing',
@@ -60,8 +60,8 @@ export const Projects: React.FC = () => {
       {/* Header */}
       <div className="mb-8 flex justify-between items-end border-b border-outline pb-4">
         <div>
-          <h1 className="font-headline font-black text-4xl text-primary tracking-tighter uppercase">Project_Databanks.exe</h1>
-          <p className="font-mono text-xs text-secondary mt-2 tracking-widest uppercase">Repository Access: Active</p>
+          <h1 className="font-headline font-black text-4xl text-primary tracking-tighter uppercase">Projetos</h1>
+          <p className="font-mono text-xs text-secondary mt-2 tracking-widest uppercase">Repositorio de Projetos: </p>
         </div>
       </div>
 

@@ -130,6 +130,88 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* Analysis Techniques Section */}
+      <section>
+        <div className="flex items-center gap-4 mb-8">
+          <h2 className="font-headline font-bold text-2xl uppercase tracking-widest">TÉCNICAS DE ANÁLISES</h2>
+          <div className="h-[1px] flex-grow bg-outline/30" />
+          <span className="font-mono text-[10px] text-primary/40 tracking-[0.3em]">REPOSITÓRIO ANALÍTICO</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            {
+              name: 'Distribuição de Frequência por Classe',
+              desc: 'Técnica utilizada para ilustrar a distribuição mais ideal para a quantidade de motoristas sobre as linhas de ônibus operadas.',
+              tag: 'Estatística Descritiva',
+              color: 'primary'
+            },
+            {
+              name: 'Curva S de Avanço Físico',
+              desc: 'Monitoramento do progresso acumulado de obras de engenharia ao longo do tempo, comparando o planejado versus o realizado.',
+              tag: 'Gestão de Obras',
+              color: 'secondary'
+            },
+            {
+              name: 'Análise de Valor Agregado (EVA)',
+              desc: 'Avaliação do desempenho de projetos de construção civil com base em custo, prazo e escopo — identificando desvios e tendências.',
+              tag: 'Gestão de Obras',
+              color: 'secondary'
+            },
+            {
+              name: 'Histograma de Recursos',
+              desc: 'Visualização da alocação de equipes e equipamentos ao longo das fases da obra, apoiando o nivelamento de recursos.',
+              tag: 'Planejamento',
+              color: 'tertiary'
+            },
+            {
+              name: 'Análise de Pareto',
+              desc: 'Identificação dos 20% de causas responsáveis por 80% dos problemas operacionais, priorizando ações corretivas de maior impacto.',
+              tag: 'Qualidade',
+              color: 'primary'
+            },
+            {
+              name: 'Previsão de Estoque (Forecast)',
+              desc: 'Projeção preditiva de demanda de produtos com base em séries históricas de vendas, reduzindo rupturas e excessos.',
+              tag: 'Análise Preditiva',
+              color: 'secondary'
+            },
+            {
+              name: 'Análise de Cohort',
+              desc: 'Segmentação de clientes em grupos por período de aquisição para rastrear comportamento e retenção ao longo do tempo.',
+              tag: 'Comportamento',
+              color: 'tertiary'
+            },
+            {
+              name: 'Regressão Linear',
+              desc: 'Modelagem da relação entre variáveis para identificar tendências e realizar projeções de faturamento e desempenho.',
+              tag: 'Estatística Inferencial',
+              color: 'primary'
+            },
+            {
+              name: 'Análise de Índices de Produtividade',
+              desc: 'Cálculo e acompanhamento de RUP (Razão Unitária de Produção) em obras, comparando produtividade entre frentes de serviço.',
+              tag: 'Gestão de Obras',
+              color: 'secondary'
+            },
+          ].map((technique, idx) => (
+            <div key={idx} className="bg-surface-low border border-outline/20 p-6 flex flex-col gap-3 hover:border-primary/50 transition-colors group">
+              <div className="flex items-start justify-between gap-2">
+                <h3 className="font-headline font-bold text-base uppercase leading-tight group-hover:text-primary transition-colors">
+                  {technique.name}
+                </h3>
+                <span className={`font-mono text-[9px] uppercase tracking-wider text-${technique.color} bg-surface-high px-2 py-1 shrink-0 border border-${technique.color}/20`}>
+                  {technique.tag}
+                </span>
+              </div>
+              <div className="w-8 h-0.5 bg-primary/40" />
+              <p className="text-on-surface-variant text-sm leading-relaxed italic">
+                {technique.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
       {/* Timeline Section */}
       <section className="pb-20">
         <div className="flex items-center gap-4 mb-8">

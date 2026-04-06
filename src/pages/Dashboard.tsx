@@ -93,8 +93,8 @@ export const Dashboard: React.FC = () => {
             <p className="font-headline font-bold text-3xl text-tertiary">2+ anos</p>
           </div>
           <div className="bg-surface-low border border-primary/20 p-6 text-center">
-            <p className="font-mono text-xs text-primary uppercase mb-2">Status</p>
-            <p className="font-headline font-bold text-3xl text-primary">Disponível</p>
+            <p className="font-mono text-xs text-primary uppercase mb-2">Almejando</p>
+            <p className="font-headline font-bold text-3xl text-primary">Senioridade</p>
           </div>
         </div>
       </section>
