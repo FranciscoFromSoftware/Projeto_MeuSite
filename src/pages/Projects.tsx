@@ -167,7 +167,13 @@ export const Projects: React.FC = () => {
       {/* Modal */}
       {selectedProject && (
         <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
-          <div className="bg-surface-low border border-outline max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div
+            className={`bg-surface-low border border-outline w-full max-h-[90vh] overflow-y-auto ${
+              activeProject?.iframeUrl || activeProject?.externalAppUrl
+                ? 'max-w-[min(95vw,1400px)]'
+                : 'max-w-4xl'
+            }`}
+          >
             {/* Close Button */}
             <div className="sticky top-0 flex justify-between items-center p-6 border-b border-outline/20">
               <h2 className="font-headline font-bold text-2xl text-primary uppercase">
