@@ -44,6 +44,7 @@ export const Projects: React.FC = () => {
       images: ['https://i.ibb.co/Lzsk8pyS/Aguarde-Novos-Projetos.png'],
       skills: ['Em Breve'],
       description: 'Fique atento para novos projetos em desenvolvimento.',
+      iframeUrl: 'http://rpubs.com/XscientFHL/1275208'
     },
     {
       id: 'projeto3',
