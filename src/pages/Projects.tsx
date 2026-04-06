@@ -39,12 +39,12 @@ export const Projects: React.FC = () => {
     },
     {
       id: 'projeto2',
-      title: 'Novos Projetos em Desenvolvimento',
+      title: 'Análise Estatística - R',
       cover: 'https://i.ibb.co/Lzsk8pyS/Aguarde-Novos-Projetos.png',
-      images: ['https://i.ibb.co/Lzsk8pyS/Aguarde-Novos-Projetos.png'],
-      skills: ['Em Breve'],
-      description: 'Fique atento para novos projetos em desenvolvimento.',
-      iframeUrl: 'http://rpubs.com/XscientFHL/1275208'
+      images: [],
+      skills: ['R', 'RPubs', 'Estatística'],
+      description: 'Análise estatística publicada no RPubs, desenvolvida em R. Visualize o relatório completo diretamente pelo visualizador embarcado.',
+      iframeUrl: 'https://rpubs.com/XscientFHL/1275208',
     },
     {
       id: 'projeto3',
