@@ -419,7 +419,7 @@ const RadarDesempenho: React.FC<RadarProps> = () => {
   // Labels
   const labels = tabelaOrdenada.map((item) => {
     const ang = item.anguloGraus;
-    let anchor = "start";
+    let anchor: "start" | "middle" | "end" = "start";
     if ((ang < 75 || ang > 285)) anchor = "start";
     else if (ang >= 75 && ang <= 105) anchor = "middle";
     else if (ang >= 255 && ang <= 285) anchor = "middle";
@@ -764,42 +764,385 @@ RETURN
 "</svg>"`;
 
   const radarDax = `Radar_Desempenho_SVG = 
--- CONFIGURAÇÕES VISUAIS
-VAR boxWidth = 500
-VAR boxHeight = 340
-VAR radius = 130
-VAR x0 = 195
-VAR y0 = boxHeight / 2
-VAR corPoligonoM1 = "#2C9FA3"     -- Azul - Conversão
-VAR corPoligonoM2 = "#940533"     -- Vermelho - Custo
-VAR corPoligonoM3 = "#ff8800"     -- Laranja - Prazo
-VAR corAlerta = "#E24B4A"
 
--- DADOS (substitua pelas suas medidas reais)
-VAR tabelaBase = ADDCOLUMNS(
-    SUMMARIZE(d_categoria, d_categoria[categoria]),
-    "M1", [%_Conversao],
-    "M2", [%_Custo],
-    "M3", [%_Prazo]
-)
+    -- ============================================================
+    -- CONFIGURAÇÕES VISUAIS 
+    -- ============================================================
+    VAR boxWidth        = 500   
+    VAR boxHeight       = 340
+    VAR radius          = 130
+    VAR x0              = 195
+    VAR y0              = boxHeight / 2
 
-VAR k = COUNTROWS(tabelaBase)
-VAR anguloPorItem = 360 / k
+    VAR corFundo        = "#F8F8F6"
+    VAR corGrade        = "#DDDDDD"
+    VAR corPoligonoM1   = "#378ADD"   -- Azul   — Conversão
+    VAR corPoligonoM2   = "#E8933A"   -- Laranja — Custo
+    VAR corPoligonoM3   = "#3AB87A"   -- Verde   — Prazo
+    VAR corAlerta       = "#E24B4A"
+    VAR corLabel        = "#333333"
+    VAR corLabelAlerta  = "#E24B4A"
 
--- SCORE E FILTRO DE ALERTA
-VAR tabelaComScore = ADDCOLUMNS(
-    tabelaBase,
-    "Score", ( -[M1] + [M2] + [M3] ) / 3
-)
-VAR elegivel = FILTER(tabelaComScore, [M1] <= 0.90)
-VAR score1 = MAXX(elegivel, [Score])
-VAR cat1 = MAXX(FILTER(elegivel, [Score] = score1), [categoria])
-VAR score2 = MAXX(FILTER(elegivel, [categoria] <> cat1), [Score])
-VAR cat2 = MAXX(FILTER(elegivel, [Score] = score2), [categoria])
+    -- ============================================================
+    -- DADOS — substitua pelos nomes reais da sua tabela/medidas
+    -- [Categoria] = coluna de texto com o nome da categoria
+    -- [Medida1]   = % de conversão em formato 0-1 (menor = pior)
+    -- [Medida2]   = % de custo     em formato 0-1 (maior = pior)
+    -- [Medida3]   = % de prazo     em formato 0-1 (maior = pior)
+    -- ============================================================
+    VAR tabelaBase = ADDCOLUMNS(
+        SUMMARIZE(
+            d_categoria,
+            d_categoria[categoria],
+            "M1", [%_Vendas_at_ua],
+            "M2", [%_LucrosVendas]
+        ),
+        "M3",
+            DIVIDE(
+                -- Numerador: vendas da categoria atual (contexto da linha)
+                CALCULATE( SUM(fVendasDetalhes[valor_total]) ),
+                -- Denominador: total geral (ALL remove o filtro da dimensão)
+                CALCULATE( SUM(fVendasDetalhes[valor_total]), ALL(d_categoria[categoria]) ),
+                0
+            )
+    )
+    VAR k              = COUNTROWS(tabelaBase)
+    VAR anguloPorItem  = 360 / k
 
--- TABELA COM COORDENADAS (retorna SVG final)
--- Este é um resumo simplificado - use a medida completa fornecida para o código DAX total
-RETURN "data:image/svg+xml;utf8,<svg><!-- Radar Chart - Implementar coordenadas dos 3 polígonos + animações + legenda --></svg>"`;
+    -- ============================================================
+    -- ⚠️SCORE DE PIOR DESEMPENHO POR CATEGORIA
+    -- Regra 1 (nova): se M1 > 0.90, categoria NUNCA entra em alerta
+    -- Regra 2: entre as elegíveis, pega as 2 com pior score
+    -- Score = -M1 + M2 + M3 (normalizado /3) — maior = pior
+    -- ============================================================
+    VAR tabelaComScore = ADDCOLUMNS(
+        tabelaBase,
+        "Score", ( -[M1] + [M2] + [M3] ) / 3
+    )
+
+    -- Filtra apenas categorias elegíveis para alerta (M1 <= 0.90)
+    VAR tabelaElegivel = FILTER(
+        tabelaComScore,
+        [M1] <= 0.90
+    )
+
+    -- Pega as 2 piores somente entre as elegíveis
+    VAR score1 = MAXX(tabelaElegivel, [Score])
+    VAR cat1   = MAXX(FILTER(tabelaElegivel, [Score] = score1), [Categoria])
+
+    VAR score2 = MAXX(FILTER(tabelaElegivel, [Categoria] <> cat1), [Score])
+    VAR cat2   = MAXX(FILTER(tabelaElegivel, [Score] = score2), [Categoria])
+
+    -- ============================================================
+    -- TABELA COM COORDENADAS SVG
+    -- CORREÇÃO: medidas chegam como 0-1, multiplicar por 100
+    --           para converter para escala percentual (0-100),
+    --           e depois dividir por 100 ao calcular o raio em px.
+    --           Simplificado: raio_px = [Medida] * radius
+    -- ============================================================
+    VAR tabelaOrdenada = ADDCOLUMNS(
+        ADDCOLUMNS(
+            tabelaComScore,
+            "Idx", RANKX(tabelaComScore, [Categoria],, ASC, Dense)
+        ),
+
+        -- Ângulo de cada eixo em graus
+        "AnguloGraus", ( [Idx] - 1 ) * anguloPorItem,
+
+        -- ── Polígono M1 (Conversão — azul) ──
+        -- CORREÇÃO: era [M1] / 100 * radius (assumia valores 0-100)
+        --           agora: [M1] * radius    (valores 0-1, sem divisão extra)
+        "PX1",
+            x0 + ( [M1] * radius )
+              * COS( RADIANS( ([Idx]-1) * anguloPorItem ) ),
+        "PY1",
+            y0 - ( [M1] * radius )
+              * SIN( RADIANS( ([Idx]-1) * anguloPorItem ) ),
+
+        -- ── Polígono M2 (Custo — laranja) ── NOVO
+        "PX2",
+            x0 + ( [M2] * radius )
+              * COS( RADIANS( ([Idx]-1) * anguloPorItem ) ),
+        "PY2",
+            y0 - ( [M2] * radius )
+              * SIN( RADIANS( ([Idx]-1) * anguloPorItem ) ),
+
+        -- ── Polígono M3 (Prazo — verde) ── NOVO
+        "PX3",
+            x0 + ( [M3] * radius )
+              * COS( RADIANS( ([Idx]-1) * anguloPorItem ) ),
+        "PY3",
+            y0 - ( [M3] * radius )
+              * SIN( RADIANS( ([Idx]-1) * anguloPorItem ) ),
+
+        -- ── Ponto do label (fora do círculo) ──
+        "LX",
+            x0 + ( radius + 20 )
+              * COS( RADIANS( ([Idx]-1) * anguloPorItem ) ),
+        "LY",
+            y0 - ( radius + 20 )
+              * SIN( RADIANS( ([Idx]-1) * anguloPorItem ) ),
+
+        -- ── É categoria em alerta? ──
+        "EhAlerta", IF( [Categoria] = cat1 || [Categoria] = cat2, 1, 0 )
+    )
+
+    -- ============================================================
+    -- BLOCO CSS — animações SMIL (compatível com visual Power BI)
+    -- ============================================================
+    VAR cssAnimacoes =
+        "<defs>"
+        & "<style>"
+        & "@keyframes pulseR{0%,100%{r:8;stroke-opacity:.12}50%{r:13;stroke-opacity:.6}}"
+        & ".pr{animation:pulseR 2s ease-in-out infinite}"
+        & "</style>"
+        & "</defs>"
+
+    -- ============================================================
+    -- CÍRCULOS CONCÊNTRICOS (grade — 5 anéis = 20%, 40%... 100%)
+    -- ============================================================
+    VAR circulos = CONCATENATEX(
+        GENERATESERIES(1, 5),
+        "<circle cx='" & x0 & "' cy='" & y0
+            & "' r='" & FORMAT( [Value] * radius / 5, "0.0", "en-US" )
+            & "' fill='none' stroke='" & corGrade & "' stroke-width='0.6'/>",
+        ""
+    )
+
+    -- Rótulos de escala no eixo superior (0° = topo, ângulo -90° no SVG)
+    VAR rotulos = CONCATENATEX(
+        GENERATESERIES(1, 5),
+        "<text x='" & FORMAT( x0 + 4, "0.0", "en-US" )
+            & "' y='" & FORMAT( y0 - [Value] * radius / 5 - 2, "0.0", "en-US" )
+            & "' font-family='Segoe UI,Arial,sans-serif' font-size='7.5' fill='#AAAAAA'>"
+            & FORMAT( [Value] * 20, "0" ) & "%</text>",
+        ""
+    )
+
+    -- ============================================================
+    -- RAIOS (linhas do centro para cada vértice)
+    -- ============================================================
+    VAR raios = CONCATENATEX(
+        tabelaOrdenada,
+        "<line x1='" & FORMAT(x0, "0.0", "en-US")
+            & "' y1='" & FORMAT(y0, "0.0", "en-US")
+            & "' x2='" & FORMAT( x0 + radius * COS( RADIANS([AnguloGraus]) ), "0.0", "en-US" )
+            & "' y2='" & FORMAT( y0 - radius * SIN( RADIANS([AnguloGraus]) ), "0.0", "en-US" )
+            & "' stroke='" & corGrade & "' stroke-width='0.7'/>",
+        "",
+        [Idx], ASC
+    )
+
+    -- ============================================================
+    -- POLÍGONO M2 — Custo (laranja) — desenhado primeiro (fundo)
+    -- ============================================================
+    VAR pontosM2 = CONCATENATEX(
+        tabelaOrdenada,
+        FORMAT([PX2], "0.0", "en-US") & "," & FORMAT([PY2], "0.0", "en-US") & " ",
+        "",
+        [Idx], ASC
+    )
+    VAR poligonoM2 =
+        "<polygon points='" & pontosM2
+        & "' fill='" & corPoligonoM2 & "' fill-opacity='0.14'"
+        & " stroke='" & corPoligonoM2 & "' stroke-width='1.5'/>"
+
+    -- ============================================================
+    -- POLÍGONO M3 — Prazo (verde) — desenhado segundo (meio)
+    -- ============================================================
+    VAR pontosM3 = CONCATENATEX(
+        tabelaOrdenada,
+        FORMAT([PX3], "0.0", "en-US") & "," & FORMAT([PY3], "0.0", "en-US") & " ",
+        "",
+        [Idx], ASC
+    )
+    VAR poligonoM3 =
+        "<polygon points='" & pontosM3
+        & "' fill='" & corPoligonoM3 & "' fill-opacity='0.14'"
+        & " stroke='" & corPoligonoM3 & "' stroke-width='1.5'/>"
+
+    -- ============================================================
+    -- POLÍGONO M1 — Conversão (azul) — desenhado por cima (frente)
+    -- ============================================================
+    VAR pontosM1 = CONCATENATEX(
+        tabelaOrdenada,
+        FORMAT([PX1], "0.0", "en-US") & "," & FORMAT([PY1], "0.0", "en-US") & " ",
+        "",
+        [Idx], ASC
+    )
+    VAR poligonoM1 =
+        "<polygon points='" & pontosM1
+        & "' fill='" & corPoligonoM1 & "' fill-opacity='0.18'"
+        & " stroke='" & corPoligonoM1 & "' stroke-width='1.8'/>"
+
+    -- ============================================================
+    -- PONTOS NOS VÉRTICES (três séries)
+    -- ============================================================
+    VAR pontosM1Circ = CONCATENATEX(
+        tabelaOrdenada,
+        "<circle cx='" & FORMAT([PX1], "0.0", "en-US")
+            & "' cy='" & FORMAT([PY1], "0.0", "en-US")
+            & "' r='" & IF([EhAlerta]=1, "4.5", "3")
+            & "' fill='" & IF([EhAlerta]=1, corAlerta, corPoligonoM1) & "'/>",
+        "", [Idx], ASC
+    )
+    VAR pontosM2Circ = CONCATENATEX(
+        tabelaOrdenada,
+        "<circle cx='" & FORMAT([PX2], "0.0", "en-US")
+            & "' cy='" & FORMAT([PY2], "0.0", "en-US")
+            & "' r='3' fill='" & corPoligonoM2 & "'/>",
+        "", [Idx], ASC
+    )
+    VAR pontosM3Circ = CONCATENATEX(
+        tabelaOrdenada,
+        "<circle cx='" & FORMAT([PX3], "0.0", "en-US")
+            & "' cy='" & FORMAT([PY3], "0.0", "en-US")
+            & "' r='3' fill='" & corPoligonoM3 & "'/>",
+        "", [Idx], ASC
+    )
+
+    -- ============================================================
+    -- ANIMAÇÕES DE ALERTA (anel pulsante + arco girando — SMIL)
+    -- ============================================================
+    VAR animacoes = CONCATENATEX(
+        FILTER(tabelaOrdenada, [EhAlerta] = 1),
+
+        -- Anel pulsante
+        "<circle cx='" & FORMAT([PX1], "0.0", "en-US")
+            & "' cy='" & FORMAT([PY1], "0.0", "en-US")
+            & "' r='9' fill='none' stroke='" & corAlerta
+            & "' stroke-width='6' stroke-opacity='0.12'>"
+            & "<animate attributeName='r' values='8;13;8' dur='2s' repeatCount='indefinite'/>"
+            & "<animate attributeName='stroke-opacity' values='0.12;0.55;0.12' dur='2s' repeatCount='indefinite'/>"
+        & "</circle>"
+
+        -- Arco tracejado girando
+        & "<circle cx='" & FORMAT([PX1], "0.0", "en-US")
+            & "' cy='" & FORMAT([PY1], "0.0", "en-US")
+            & "' r='14' fill='none' stroke='" & corAlerta
+            & "' stroke-width='1.5' stroke-opacity='0.75' stroke-dasharray='6 4'>"
+            & "<animateTransform attributeName='transform' type='rotate'"
+            & " from='0 " & FORMAT([PX1], "0.0", "en-US") & " " & FORMAT([PY1], "0.0", "en-US")
+            & "' to='360 " & FORMAT([PX1], "0.0", "en-US") & " " & FORMAT([PY1], "0.0", "en-US")
+            & "' dur='3s' repeatCount='indefinite'/>"
+        & "</circle>",
+
+        "",
+        [Idx], ASC
+    )
+
+    -- ============================================================
+    -- LABELS DAS CATEGORIAS
+    -- CORREÇÃO: perc agora mostra [M1]*100 (pois M1 vem como 0-1)
+    -- ============================================================
+    VAR labels = CONCATENATEX(
+        tabelaOrdenada,
+
+        VAR ang    = [AnguloGraus]
+        VAR anchor = SWITCH( TRUE(),
+            ang < 75 || ang > 285,          "start",
+            ang >= 75 && ang <= 105,        "middle",
+            ang >= 255 && ang <= 285,       "middle",
+            "end"
+        )
+        VAR corLbl  = IF([EhAlerta]=1, corLabelAlerta, corLabel)
+        -- CORREÇÃO: era FORMAT([M1], "0%") que funcionava se M1 fosse 0-1
+        --           mantemos o mesmo pois FORMAT com "0%" já multiplica por 100
+        VAR perc    = FORMAT([M1], "0%")
+        VAR alertaTxt = IF([EhAlerta]=1, " !", "")
+
+        RETURN
+        "<text x='" & FORMAT([LX], "0.0", "en-US")
+            & "' y='" & FORMAT([LY], "0.0", "en-US")
+            & "' font-family='Segoe UI,Arial,sans-serif'"
+            & " font-size='" & IF([EhAlerta]=1, "10.5", "9.5") & "'"
+            & " font-weight='" & IF([EhAlerta]=1, "bold", "normal") & "'"
+            & " fill='" & corLbl & "'"
+            & " text-anchor='" & anchor & "'>"
+            & [Categoria] & alertaTxt
+            & "<tspan x='" & FORMAT([LX], "0.0", "en-US")
+                & "' dy='12' font-size='8' fill='" & IF([EhAlerta]=1, corLabelAlerta, "#999") & "'>"
+                & perc & IF([EhAlerta]=1, " ▲", "")
+            & "</tspan>"
+            & IF([EhAlerta]=1,
+                "<animate attributeName='opacity' values='1;0.35;1' dur='2s' repeatCount='indefinite'/>",
+                ""
+            )
+        & "</text>",
+
+        "",
+        [Idx], ASC
+    )
+
+    -- ============================================================
+    -- LEGENDA — reposicionada para canto inferior direito
+    -- fora da área de plotagem do radar
+    -- ============================================================
+    VAR legW  = 148
+    VAR legX  = boxWidth - legW - 6   -- ainda na borda direita
+    VAR legY  = boxHeight - 88         -- parte inferior, abaixo das categorias
+
+    VAR legenda =
+        "<rect x='" & legX & "' y='" & legY & "' width='" & legW & "' height='82'"
+            & " rx='4' fill='white' stroke='#DDDDDD' stroke-width='0.7'"
+            & " fill-opacity='0.95'/>"
+        & "<circle cx='" & (legX + 10) & "' cy='" & (legY + 14) & "' r='5' fill='" & corAlerta & "'/>"
+        & "<text x='" & (legX + 20) & "' y='" & (legY + 18)
+            & "' font-family='Segoe UI,Arial,sans-serif' font-size='8' fill='" & corAlerta & "'>2 categ. em alerta</text>"
+        & "<rect x='" & (legX + 6) & "' y='" & (legY + 26) & "' width='9' height='9' rx='2'"
+            & " fill='" & corPoligonoM1 & "' fill-opacity='0.2' stroke='" & corPoligonoM1 & "' stroke-width='1'/>"
+        & "<text x='" & (legX + 20) & "' y='" & (legY + 34)
+            & "' font-family='Segoe UI,Arial,sans-serif' font-size='8' fill='#555'>M1 — Conversão</text>"
+        & "<rect x='" & (legX + 6) & "' y='" & (legY + 40) & "' width='9' height='9' rx='2'"
+            & " fill='" & corPoligonoM2 & "' fill-opacity='0.2' stroke='" & corPoligonoM2 & "' stroke-width='1'/>"
+        & "<text x='" & (legX + 20) & "' y='" & (legY + 48)
+            & "' font-family='Segoe UI,Arial,sans-serif' font-size='8' fill='#555'>M2 — Custo</text>"
+        & "<rect x='" & (legX + 6) & "' y='" & (legY + 54) & "' width='9' height='9' rx='2'"
+            & " fill='" & corPoligonoM3 & "' fill-opacity='0.2' stroke='" & corPoligonoM3 & "' stroke-width='1'/>"
+        & "<text x='" & (legX + 20) & "' y='" & (legY + 62)
+            & "' font-family='Segoe UI,Arial,sans-serif' font-size='8' fill='#555'>M3 — Prazo</text>"
+        & "<text x='" & (legX + 6) & "' y='" & (legY + 76)
+            & "' font-family='Segoe UI,Arial,sans-serif' font-size='7' fill='#BBBBBB'>escala: medidas × 100</text>"
+
+    -- ============================================================
+    -- FUNDO + MONTAGEM FINAL
+    -- Ordem de renderização (z-order):
+    --   1. Fundo
+    --   2. Grade (círculos + raios + rótulos)
+    --   3. Polígonos: M2 → M3 → M1 (M1 fica na frente)
+    --   4. Animações de alerta
+    --   5. Pontos dos vértices: M2 → M3 → M1
+    --   6. Labels
+    --   7. Legenda
+    -- ============================================================
+    VAR fundo =
+        "<rect x='0' y='0' width='" & boxWidth & "' height='" & boxHeight
+            & "' fill='" & corFundo & "'/>"
+
+    VAR svgFinal =
+        "data:image/svg+xml;utf8,"
+        & "<svg xmlns='http://www.w3.org/2000/svg'"
+            & " xmlns:xlink='http://www.w3.org/1999/xlink'"
+            & " viewBox='0 0 " & boxWidth & " " & boxHeight & "'>"
+        & cssAnimacoes
+        & fundo
+        & circulos
+        & rotulos
+        & raios
+        & poligonoM2
+        & poligonoM3
+        & poligonoM1
+        & animacoes
+        & pontosM2Circ
+        & pontosM3Circ
+        & pontosM1Circ
+        & labels
+        & legenda
+        & "</svg>"
+
+    RETURN
+    //IF(ISBLANK(cat1), BLANK(), svgFinal) 🤔
+    svgFinal`;
 
   const svgs = [
     { 
